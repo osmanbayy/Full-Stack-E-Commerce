@@ -139,6 +139,35 @@ const ShopContextProvider = (prop) => {
     }
   };
 
+  const addToWishList = async (itemId) => {
+    if (!itemId) {
+      toast.error("Item ID is required!");
+      return;
+    }
+  
+    if (token) {
+      try {
+        const response = await axios.post(
+          backendUrl + "/api/wishlist/add",
+          { itemId },
+          { headers: { token } }
+        );
+  
+        if (response.data.success) {
+          toast.success("Item added to Wish List!");
+        } else {
+          toast.error(response.data.message);
+        }
+      } catch (error) {
+        console.error(error);
+        toast.error(error.message);
+      }
+    } else {
+      toast.error("You need to be logged in to add items to Wish List.");
+    }
+  };
+  
+
   useEffect(() => {
     getProductsData();
   }, []);
@@ -168,6 +197,7 @@ const ShopContextProvider = (prop) => {
     backendUrl,
     token,
     setToken,
+    addToWishList
   };
 
   return (

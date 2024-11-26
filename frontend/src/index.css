@@ -10,7 +10,7 @@ a.active hr {
 }
 
 * {
-    font-family: 'Outfit', sans-serif;
+    font-family:'Inter 24pt 24pt semibold';
     transition: all 0.3s ease;
 }
 

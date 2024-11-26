@@ -57,6 +57,9 @@ const Navbar = () => {
           className="w-5 cursor-pointer"
           alt=""
         />
+        <Link to={"/wishlist"}>
+          <img src={assets.wishlist} alt="" />
+        </Link>
 
         <div className="relative group">
           <img
