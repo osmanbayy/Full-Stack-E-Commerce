@@ -1,13 +1,14 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { assets } from "../assets/assets";
 import CartTotal from "../components/CartTotal";
 import Title from "../components/Title";
 import { ShopContext } from "../context/ShopContext";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { provinces } from "../utils/provinces";
 
 const PlaceOrder = () => {
-  //Default cash on delivery (cod)
+  // Default cash on delivery (cod)
   const [method, setMethod] = useState("cod");
   const {
     navigate,
@@ -31,6 +32,34 @@ const PlaceOrder = () => {
     phone: "",
   });
 
+  const API_URL = "https://turkiyeapi.dev/api/v1/";
+  const [selectedProvince, setSelectedProvince] = useState("");
+  const [selectedDistrict, setSelectedDistrict] = useState("");
+  const [districts, setDistricts] = useState([]);
+
+  const sortedProvinces = [...provinces].sort((a, b) =>
+    a.name.localeCompare(b.name, "tr", { sensitivity: "base" })
+  );
+
+  const getProvinceInfo = async () => {
+    try {
+      const response = await fetch(
+        `${API_URL}provinces?name=${selectedProvince}`
+      );
+      const data = await response.json();
+      if (data.status === "OK" && data.data && data.data.length > 0) {
+        const provinceData = data.data[0];
+        const districtList = provinceData.districts || [];
+        setDistricts(districtList);
+      } else {
+        setDistricts([]);
+      }
+    } catch (error) {
+      console.error("Hata:", error);
+      setDistricts([]);
+    }
+  };
+
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     try {
@@ -50,23 +79,32 @@ const PlaceOrder = () => {
         }
       }
 
+      // Add province and district to formData
       let orderData = {
-        address: formData,
+        address: {
+          ...formData,
+          city: selectedProvince.toString(),  // Add selectedProvince as city
+          state: selectedDistrict.toString(),  // Add selectedDistrict as state
+        },
         items: orderItems,
         amount: getCartAmount() + delivery_fee,
       };
 
       switch (method) {
-        case "cod":
-          { const response = await axios.post(backendUrl + '/api/order/place-cash-on-delivery', orderData, {headers: {token}});
+        case "cod": {
+          const response = await axios.post(
+            backendUrl + "/api/order/place-cash-on-delivery",
+            orderData,
+            { headers: { token } }
+          );
           if (response.data.success) {
             setCartItems({});
             navigate("/orders");
-          }else{
+          } else {
             toast.error(response.data.message);
           }
-          break; }
-
+          break;
+        }
         default:
           break;
       }
@@ -82,6 +120,12 @@ const PlaceOrder = () => {
 
     setFormData((data) => ({ ...data, [name]: value }));
   };
+
+  useEffect(() => {
+    if (selectedProvince) {
+      getProvinceInfo();
+    }
+  }, [selectedProvince]);
 
   return (
     <form
@@ -134,24 +178,37 @@ const PlaceOrder = () => {
         />
 
         <div className="flex gap-3">
-          <input
-            onChange={onChangeHandler}
+          <select
+            onChange={(e) => setSelectedProvince(e.target.value)}
             name="city"
-            value={formData.city}
-            type="text"
-            placeholder="City"
+            value={selectedProvince}
             className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
             required
-          />
-          <input
-            onChange={onChangeHandler}
+          >
+            <option value=""></option>
+            {sortedProvinces.map((province) => (
+              <option key={province.id} value={province.name}>
+                {province.name}
+              </option>
+            ))}
+          </select>
+          <select
+            onChange={(e) => setSelectedDistrict(e.target.value)}
             name="state"
-            value={formData.state}
-            type="text"
-            placeholder="State"
+            value={selectedDistrict}
             className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
             required
-          />
+          >
+            {districts?.length > 0 ? (
+              districts.map((district) => (
+                <option key={district.id} value={district.name}>
+                  {district.name}
+                </option>
+              ))
+            ) : (
+              <option disabled={selectedProvince}></option>
+            )}
+          </select>
         </div>
 
         <div className="flex gap-3">
