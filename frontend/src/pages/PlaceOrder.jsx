@@ -185,7 +185,7 @@ const PlaceOrder = () => {
             className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
             required
           >
-            <option value=""></option>
+            <option value="">Choose Province</option>
             {sortedProvinces.map((province) => (
               <option key={province.id} value={province.name}>
                 {province.name}
@@ -206,7 +206,7 @@ const PlaceOrder = () => {
                 </option>
               ))
             ) : (
-              <option disabled={selectedProvince}></option>
+              <option disabled={selectedProvince}>Choose District</option>
             )}
           </select>
         </div>
