@@ -18,7 +18,49 @@ connectCloudinary();
 
 // Middlewares
 app.use(express.json());
-app.use(cors());
+
+// CORS Configuration
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (process.env.NODE_ENV !== "production") {
+      callback(null, true);
+      return;
+    }
+
+    if (!origin) {
+      callback(null, true);
+      return;
+    }
+
+    const allowedOrigins = [
+      process.env.FRONTEND_URL,
+      process.env.ADMIN_URL,
+    ].filter(Boolean);
+
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+      return;
+    }
+
+    if (origin.includes(".vercel.app")) {
+      callback(null, true);
+      return;
+    }
+
+    if (origin.includes("localhost") || origin.includes("127.0.0.1")) {
+      callback(null, true);
+      return;
+    }
+
+    callback(null, true);
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "token", "x-requested-with"],
+  exposedHeaders: ["Content-Range", "X-Content-Range"]
+};
+
+app.use(cors(corsOptions));
 
 // API Endpoints
 app.use("/api/user", userRouter);
@@ -31,7 +73,11 @@ app.get("/", (req, res) => {
   res.send("API Working!");
 });
 
-app.listen(PORT, () => {
-  console.log("Server started on: ", PORT);
-});
+export default app;
+
+if (process.env.NODE_ENV !== "production") {
+  app.listen(PORT, () => {
+    console.log("Server started on: ", PORT);
+  });
+}
 
