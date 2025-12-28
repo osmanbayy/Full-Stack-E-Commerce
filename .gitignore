@@ -1,0 +1,41 @@
+# Dependencies
+**/node_modules/
+node_modules/
+**/package-lock.json
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# Builds / caches
+**/dist/
+**/build/
+**/.vite/
+**/.next/
+**/.cache/
+**/.turbo/
+**/.parcel-cache/
+
+# Env / secrets
+.env
+.env.*
+**/.env
+**/.env.*
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Coverage
+coverage/
+
+# Hosting output
+.vercel/
+.netlify/
