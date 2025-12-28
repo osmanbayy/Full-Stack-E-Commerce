@@ -10,7 +10,8 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 // eslint-disable-next-line react-refresh/only-export-components
-export const backendUrl = import.meta.env.VITE_BACKEND_URL;
+// Backend URL'inin sonundaki slash'ı temizle
+export const backendUrl = (import.meta.env.VITE_BACKEND_URL || "").replace(/\/+$/, "");
 export const currency = '$';
 
 const App = () => {

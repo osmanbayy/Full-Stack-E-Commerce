@@ -19,48 +19,41 @@ connectCloudinary();
 // Middlewares
 app.use(express.json());
 
-// CORS Configuration
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (process.env.NODE_ENV !== "production") {
-      callback(null, true);
-      return;
-    }
+// CORS Configuration - Vercel için optimize edilmiş
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  
+  // Tüm Vercel URL'lerini ve localhost'u kabul et
+  if (
+    !origin ||
+    origin.includes(".vercel.app") ||
+    origin.includes("localhost") ||
+    origin.includes("127.0.0.1") ||
+    process.env.NODE_ENV !== "production"
+  ) {
+    res.header("Access-Control-Allow-Origin", origin || "*");
+    res.header("Access-Control-Allow-Credentials", "true");
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH, OPTIONS");
+    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, token, x-requested-with");
+    res.header("Access-Control-Expose-Headers", "Content-Range, X-Content-Range");
+  }
 
-    if (!origin) {
-      callback(null, true);
-      return;
-    }
+  // OPTIONS request için hemen cevap ver
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
 
-    const allowedOrigins = [
-      process.env.FRONTEND_URL,
-      process.env.ADMIN_URL,
-    ].filter(Boolean);
+  next();
+});
 
-    if (allowedOrigins.includes(origin)) {
-      callback(null, true);
-      return;
-    }
-
-    if (origin.includes(".vercel.app")) {
-      callback(null, true);
-      return;
-    }
-
-    if (origin.includes("localhost") || origin.includes("127.0.0.1")) {
-      callback(null, true);
-      return;
-    }
-
-    callback(null, true);
-  },
+// CORS middleware'i de ekle (ekstra güvenlik için)
+app.use(cors({
+  origin: true, // Tüm origin'lere izin ver
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization", "token", "x-requested-with"],
   exposedHeaders: ["Content-Range", "X-Content-Range"]
-};
-
-app.use(cors(corsOptions));
+}));
 
 // API Endpoints
 app.use("/api/user", userRouter);
