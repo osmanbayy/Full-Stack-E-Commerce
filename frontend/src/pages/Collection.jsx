@@ -183,13 +183,22 @@ const Collection = () => {
           </select>
         </div>
         {/* Map Products */}
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 gap-y-6">
-          {isLoadingProducts ? (
-            Array.from({ length: 8 }).map((_, index) => (
+        {isLoadingProducts ? (
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 gap-y-6">
+            {Array.from({ length: 8 }).map((_, index) => (
               <ProductItemSkeleton key={index} />
-            ))
-          ) : (
-            filterProducts.map((item, index) => (
+            ))}
+          </div>
+        ) : filterProducts.length === 0 && (showSearch && search) ? (
+          <div className="flex flex-col items-center justify-center py-20 text-center">
+            <p className="text-xl font-medium text-gray-500 mb-2">No items found</p>
+            <p className="text-sm text-gray-400">
+              Try adjusting your search or filters
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 gap-y-6">
+            {filterProducts.map((item, index) => (
               <ProductItem
                 key={index}
                 name={item.name}
@@ -197,9 +206,9 @@ const Collection = () => {
                 price={item.price}
                 image={item.image}
               />
-            ))
-          )}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
