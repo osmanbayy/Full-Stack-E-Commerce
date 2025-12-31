@@ -49,13 +49,13 @@ const BestSeller = () => {
         <motion.div className="py-8 text-3xl text-center">
             <Title text1={'BEST'} text2={'SELLERS'}/>
             <motion.p
-                className="w-3/4 m-auto text-xs text-gray-600 sm:text-sm md:text-base"
+                className="w-3/4 m-auto text-xs text-gray-600 sm:text-sm md:text-base italic font-semibold"
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.2 }}
             >
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque, ad.
+                Our most loved pieces, chosen by customers
             </motion.p>
         </motion.div>
 

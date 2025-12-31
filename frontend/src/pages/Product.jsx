@@ -4,13 +4,24 @@ import { useParams } from "react-router-dom";
 import { ShopContext } from "../context/ShopContext";
 import { assets } from "../assets/assets";
 import RelatedProducts from "../components/RelatedProducts";
+import { motion } from "framer-motion";
 
 const Product = () => {
   const { productId } = useParams();
-  const { products, currency, addToCart, addToWishList } = useContext(ShopContext);
+  const { products, currency, addToCart, addToWishList, wishlistItems, removeFromWishlist } = useContext(ShopContext);
   const [productData, setProductData] = useState(false);
   const [image, setImage] = useState("");
   const [size, setSize] = useState("");
+  
+  const isInWishlist = productData ? wishlistItems.includes(productData._id) : false;
+  
+  const handleWishlistClick = () => {
+    if (isInWishlist) {
+      removeFromWishlist(productData._id);
+    } else {
+      addToWishList(productData._id);
+    }
+  };
 
   const fetchProductData = async () => {
     await products.map((item) => {
@@ -66,25 +77,77 @@ const Product = () => {
             {productData.description}
           </p>
           <div className="flex flex-col gap-4 my-8">
-            <p>Select Size</p>
-            <div className="flex gap-2">
+            <p className="text-sm font-medium text-gray-700">Select Size</p>
+            <div className="flex flex-wrap gap-3">
               {productData.sizes.map((item, index) => (
-                <button
+                <motion.button
                   onClick={() => setSize(item)}
-                  className={`border py-2 px-4 bg-gray-100 ${
-                    item === size ? "border-orange-500" : ""
+                  className={`px-6 py-2.5 text-sm font-medium transition-all duration-200 rounded-md flex items-center gap-2 ${
+                    item === size
+                      ? "bg-black text-white shadow-lg scale-105"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-300"
                   }`}
                   key={index}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ type: "spring", stiffness: 300 }}
                 >
+                  {item === size && (
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                  )}
                   {item}
-                </button>
+                </motion.button>
               ))}
             </div>
           </div>
-          <button onClick={()=> addToCart(productData._id, size)} className="px-8 py-3 text-sm text-white bg-black active:bg-gray-700">
-            ADD TO CART
-          </button>
-          <button onClick={()=> addToWishList(productData._id)} className="px-8 py-3 mt-2 text-sm text-white bg-gray-600 active:bg-gray-700">ADD TO WISHLIST</button>
+          <div className="flex flex-col gap-3 mt-6">
+            <motion.button
+              onClick={() => addToCart(productData._id, size)}
+              className="px-8 py-4 text-sm font-semibold text-white bg-black rounded-md hover:bg-gray-800 transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              <img src={assets.cart_icon} alt="cart" className="w-5 h-5 invert" />
+              ADD TO CART
+            </motion.button>
+            <motion.button
+              onClick={handleWishlistClick}
+              className={`px-8 py-4 text-sm font-semibold rounded-md transition-all duration-200 flex items-center justify-center gap-2 ${
+                isInWishlist
+                  ? "bg-red-50 text-red-600 border-2 border-red-300 hover:bg-red-100 hover:border-red-400"
+                  : "text-gray-700 bg-white border-2 border-gray-300 hover:bg-gray-50 hover:border-gray-400"
+              }`}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              {isInWishlist ? (
+                <svg
+                  className="w-5 h-5 fill-current"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M12,21 L10.55,19.7051771 C5.4,15.1242507 2,12.1029973 2,8.39509537 C2,5.37384196 4.42,3 7.5,3 C9.24,3 10.91,3.79455041 12,5.05013624 C13.09,3.79455041 14.76,3 16.5,3 C19.58,3 22,5.37384196 22,8.39509537 C22,12.1029973 18.6,15.1242507 13.45,19.7149864 L12,21 Z" />
+                </svg>
+              ) : (
+                <img src={assets.wishlist} alt="wishlist" className="w-5 h-5" />
+              )}
+              {isInWishlist ? "REMOVE FROM WISHLIST" : "ADD TO WISHLIST"}
+            </motion.button>
+          </div>
           <hr className="mt-8 sm:w-4/5" />
           <div className="flex flex-col gap-1 mt-5 text-sm text-gray-500">
             <p>100% Original Product</p>
@@ -96,11 +159,23 @@ const Product = () => {
 
       {/* ---------------- Description & Review Section------------------ */}
       <div className="mt-20">
-        <div className="flex">
-          <b className="px-5 py-3 text-sm border">Description</b>
-          <p className="px-5 py-3 text-sm border">Reviews (122)</p>
+        <div className="flex border-b border-gray-200">
+          <motion.button
+            className="px-6 py-3 text-sm font-semibold text-gray-700 border-b-2 border-black bg-transparent"
+            whileHover={{ backgroundColor: "#f9fafb" }}
+            transition={{ duration: 0.2 }}
+          >
+            Description
+          </motion.button>
+          <motion.button
+            className="px-6 py-3 text-sm font-medium text-gray-500 bg-transparent hover:text-gray-700"
+            whileHover={{ backgroundColor: "#f9fafb" }}
+            transition={{ duration: 0.2 }}
+          >
+            Reviews (122)
+          </motion.button>
         </div>
-        <div className="flex flex-col gap-4 px-6 py-6 text-sm text-gray-500 border">
+        <div className="flex flex-col gap-4 px-6 py-6 text-sm text-gray-500 border border-t-0 rounded-b-md">
           <p>
             An e-commerce website is an online platform that facilities the
             buying and selling of products or services over the internet. It
