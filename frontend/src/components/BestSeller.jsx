@@ -2,11 +2,12 @@ import { useContext, useEffect, useState } from "react"
 import { ShopContext } from "../context/ShopContext"
 import Title from "./Title";
 import ProductItem from "./ProductItem";
+import ProductItemSkeleton from "./ProductItemSkeleton";
 
 
 const BestSeller = () => {
 
-    const {products} = useContext(ShopContext);
+    const {products, isLoadingProducts} = useContext(ShopContext);
     const [bestSeller, setBestSeller] = useState([]);
 
     useEffect(()=> {
@@ -22,11 +23,15 @@ const BestSeller = () => {
         </div>
 
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-y-6">
-            {
+            {isLoadingProducts ? (
+                Array.from({ length: 5 }).map((_, index) => (
+                    <ProductItemSkeleton key={index} />
+                ))
+            ) : (
                 bestSeller.map((item, index)=> (
                     <ProductItem key={index} id={item._id} image={item.image} name={item.name} price={item.price} />
                 ))
-            }
+            )}
         </div>
     </div>
   )

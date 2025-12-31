@@ -4,9 +4,10 @@ import { ShopContext } from "../context/ShopContext";
 import { assets } from "../assets/assets";
 import Title from "../components/Title";
 import ProductItem from "../components/ProductItem";
+import ProductItemSkeleton from "../components/ProductItemSkeleton";
 
 const Collection = () => {
-  const { products, search, showSearch } = useContext(ShopContext);
+  const { products, search, showSearch, isLoadingProducts } = useContext(ShopContext);
   const [showFilter, setShowFilter] = useState(false);
   const [filterProducts, setFilterProducts] = useState([]);
   const [category, setCategory] = useState([]);
@@ -183,15 +184,21 @@ const Collection = () => {
         </div>
         {/* Map Products */}
         <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 gap-y-6">
-          {filterProducts.map((item, index) => (
-            <ProductItem
-              key={index}
-              name={item.name}
-              id={item._id}
-              price={item.price}
-              image={item.image}
-            />
-          ))}
+          {isLoadingProducts ? (
+            Array.from({ length: 8 }).map((_, index) => (
+              <ProductItemSkeleton key={index} />
+            ))
+          ) : (
+            filterProducts.map((item, index) => (
+              <ProductItem
+                key={index}
+                name={item.name}
+                id={item._id}
+                price={item.price}
+                image={item.image}
+              />
+            ))
+          )}
         </div>
       </div>
     </div>

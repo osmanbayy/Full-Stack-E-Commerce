@@ -16,6 +16,7 @@ const ShopContextProvider = (prop) => {
   const [products, setProducts] = useState([]);
   const [token, setToken] = useState("");
   const [wishlistItems, setWishlistItems] = useState([]);
+  const [isLoadingProducts, setIsLoadingProducts] = useState(true);
 
   const navigate = useNavigate();
 
@@ -74,6 +75,7 @@ const ShopContextProvider = (prop) => {
   };
 
   const getProductsData = async () => {
+    setIsLoadingProducts(true);
     try {
       const response = await axios.get(backendUrl + "/api/product/list");
       if (response.data.success) {
@@ -84,6 +86,8 @@ const ShopContextProvider = (prop) => {
     } catch (error) {
       console.log(error);
       toast.error(error.message);
+    } finally {
+      setIsLoadingProducts(false);
     }
   };
 
@@ -258,7 +262,8 @@ const ShopContextProvider = (prop) => {
     addToWishList,
     wishlistItems,
     removeFromWishlist,
-    getUserWishlist
+    getUserWishlist,
+    isLoadingProducts
   };
 
   return (
