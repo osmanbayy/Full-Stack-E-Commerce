@@ -4,6 +4,7 @@ import { ShopContext } from "../context/ShopContext";
 import { assets } from "../assets/assets";
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 const SearchBar = () => {
   const { search, setSearch, showSearch, setShowSearch } =
@@ -11,6 +12,7 @@ const SearchBar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const inputRef = useRef(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (search && showSearch) {
@@ -77,7 +79,7 @@ const SearchBar = () => {
                 onKeyDown={handleKeyDown}
                 type="text"
                 className="flex-1 text-base outline-none bg-transparent"
-                placeholder="Search products..."
+                placeholder={t("search.placeholder")}
               />
               <motion.img
                 src={assets.search_icon}

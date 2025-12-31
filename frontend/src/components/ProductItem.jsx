@@ -3,6 +3,7 @@ import { useContext, useState } from "react";
 import { ShopContext } from "../context/ShopContext";
 import { Link } from "react-router-dom";
 import { assets } from "../assets/assets.js";
+import { useTranslation } from "react-i18next";
 
 const ProductItem = ({ id, image, name, price }) => {
   const { currency, addToWishList, wishlistItems, removeFromWishlist } = useContext(ShopContext);

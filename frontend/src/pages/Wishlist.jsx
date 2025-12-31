@@ -3,10 +3,13 @@ import { ShopContext } from "../context/ShopContext";
 import Title from "../components/Title";
 import { assets } from "../assets/assets";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { getProductName } from "../utils/productTranslations";
 
 const Wishlist = () => {
   const { wishlistItems, products, currency, removeFromWishlist, token, navigate } = useContext(ShopContext);
   const [wishlistData, setWishlistData] = useState([]);
+  const { i18n } = useTranslation();
 
   useEffect(() => {
     if (products.length > 0 && wishlistItems.length > 0) {
@@ -66,10 +69,10 @@ const Wishlist = () => {
                   <img
                     src={product.image[0]}
                     className="transition duration-500 ease-in-out hover:scale-110"
-                    alt={product.name}
+                    alt={getProductName(product, i18n.language)}
                   />
                 </div>
-                <p className="pt-3 pb-1 pl-2 text-sm">{product.name}</p>
+                <p className="pt-3 pb-1 pl-2 text-sm">{getProductName(product, i18n.language)}</p>
                 <p className="pl-2 text-sm font-medium">
                   {currency} {product.price}
                 </p>

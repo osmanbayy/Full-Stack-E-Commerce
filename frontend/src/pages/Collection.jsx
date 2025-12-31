@@ -5,6 +5,8 @@ import { assets } from "../assets/assets";
 import Title from "../components/Title";
 import ProductItem from "../components/ProductItem";
 import ProductItemSkeleton from "../components/ProductItemSkeleton";
+import { useTranslation } from "react-i18next";
+import { searchProducts, getProductName } from "../utils/productTranslations";
 
 const Collection = () => {
   const { products, search, showSearch, isLoadingProducts } = useContext(ShopContext);
@@ -13,6 +15,7 @@ const Collection = () => {
   const [category, setCategory] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
   const [sortType, setSortType] = useState("relevant");
+  const { t, i18n } = useTranslation();
 
   const toggleCategory = (event) => {
     if (category.includes(event.target.value)) {
@@ -36,9 +39,8 @@ const Collection = () => {
     let productsCopy = products.slice();
 
     if (search) {
-      productsCopy = productsCopy.filter((item) =>
-        item.name.toLowerCase().includes(search.toLowerCase())
-      );
+      // Use multilingual search function
+      productsCopy = searchProducts(productsCopy, search);
     }
 
     if (category.length > 0) {
@@ -85,7 +87,7 @@ const Collection = () => {
           onClick={() => setShowFilter(!showFilter)}
           className="flex items-center gap-2 my-2 text-xl cursor-pointer"
         >
-          FILTERS
+          {t("collection.filters")}
           <img
             src={assets.dropdown_icon}
             className={`h-3 sm:hidden ${showFilter ? "rotate-90" : ""}`}
@@ -98,7 +100,7 @@ const Collection = () => {
             showFilter ? "" : "hidden"
           } sm:block`}
         >
-          <p className="mb-3 text-sm font-medium">CATEGORIES</p>
+          <p className="mb-3 text-sm font-medium">{t("collection.categories")}</p>
           <div className="flex flex-col gap-2 text-sm font-light text-gray-700">
             <p className="flex gap-2">
               <input
@@ -135,7 +137,7 @@ const Collection = () => {
             showFilter ? "" : "hidden"
           } sm:block`}
         >
-          <p className="mb-3 text-sm font-medium">TYPE</p>
+          <p className="mb-3 text-sm font-medium">{t("collection.type")}</p>
           <div className="flex flex-col gap-2 text-sm font-light text-gray-700">
             <p className="flex gap-2">
               <input
@@ -171,15 +173,15 @@ const Collection = () => {
       {/* Right Side */}
       <div className="flex-1">
         <div className="flex justify-between mb-4 text-base sm:text-2xl">
-          <Title text1={"ALL"} text2={"COLLECTIONS"} />
+          <Title text1={t("collection.allCollections").split(" ")[0]} text2={t("collection.allCollections").split(" ").slice(1).join(" ")} />
           {/* Product Sort */}
           <select
             onChange={(e) => setSortType(e.target.value)}
             className="px-2 text-sm border-2 border-gray-300"
           >
-            <option value="relevant">Relevant</option>
-            <option value="low-high">Low to High</option>
-            <option value="high-low">High to Low</option>
+            <option value="relevant">{t("collection.relevant")}</option>
+            <option value="low-high">{t("collection.lowToHigh")}</option>
+            <option value="high-low">{t("collection.highToLow")}</option>
           </select>
         </div>
         {/* Map Products */}
@@ -191,22 +193,22 @@ const Collection = () => {
           </div>
         ) : filterProducts.length === 0 && search ? (
           <div className="flex flex-col items-center justify-center py-20 text-center">
-            <p className="text-xl font-medium text-gray-500 mb-2">No items found</p>
+            <p className="text-xl font-medium text-gray-500 mb-2">{t("collection.noItemsFound")}</p>
             <p className="text-sm text-gray-400">
-              Try adjusting your search or filters
+              {t("collection.tryAdjusting")}
             </p>
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 gap-y-6">
-            {filterProducts.map((item, index) => (
-              <ProductItem
-                key={index}
-                name={item.name}
-                id={item._id}
-                price={item.price}
-                image={item.image}
-              />
-            ))}
+             {filterProducts.map((item, index) => (
+               <ProductItem
+                 key={index}
+                 name={getProductName(item, i18n.language)}
+                 id={item._id}
+                 price={item.price}
+                 image={item.image}
+               />
+             ))}
           </div>
         )}
       </div>

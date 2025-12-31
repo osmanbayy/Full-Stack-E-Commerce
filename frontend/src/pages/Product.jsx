@@ -5,6 +5,8 @@ import { ShopContext } from "../context/ShopContext";
 import { assets } from "../assets/assets";
 import RelatedProducts from "../components/RelatedProducts";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
+import { getProductName } from "../utils/productTranslations";
 
 const Product = () => {
   const { productId } = useParams();
@@ -12,6 +14,7 @@ const Product = () => {
   const [productData, setProductData] = useState(false);
   const [image, setImage] = useState("");
   const [size, setSize] = useState("");
+  const { t, i18n } = useTranslation();
   
   const isInWishlist = productData ? wishlistItems.includes(productData._id) : false;
   
@@ -61,7 +64,7 @@ const Product = () => {
         </div>
         {/* ------------- Product Info -------------- */}
         <div className="flex-1">
-          <h1 className="mt-2 text-2xl font-medium">{productData.name}</h1>
+          <h1 className="mt-2 text-2xl font-medium">{getProductName(productData, i18n.language)}</h1>
           <div className="flex items-center gap-1 mt-2">
             <img src={assets.star_icon} alt="" className="w-3 5" />
             <img src={assets.star_icon} alt="" className="w-3 5" />
@@ -77,7 +80,7 @@ const Product = () => {
             {productData.description}
           </p>
           <div className="flex flex-col gap-4 my-8">
-            <p className="text-sm font-medium text-gray-700">Select Size</p>
+            <p className="text-sm font-medium text-gray-700">{t("product.selectSize")}</p>
             <div className="flex flex-wrap gap-3">
               {productData.sizes.map((item, index) => (
                 <motion.button
@@ -121,7 +124,7 @@ const Product = () => {
               transition={{ type: "spring", stiffness: 300 }}
             >
               <img src={assets.cart_icon} alt="cart" className="w-5 h-5 invert" />
-              ADD TO CART
+              {t("product.addToCart")}
             </motion.button>
             <motion.button
               onClick={handleWishlistClick}
@@ -145,14 +148,14 @@ const Product = () => {
               ) : (
                 <img src={assets.wishlist} alt="wishlist" className="w-5 h-5" />
               )}
-              {isInWishlist ? "REMOVE FROM WISHLIST" : "ADD TO WISHLIST"}
+              {isInWishlist ? t("product.removeFromWishlist") : t("product.addToWishlist")}
             </motion.button>
           </div>
           <hr className="mt-8 sm:w-4/5" />
           <div className="flex flex-col gap-1 mt-5 text-sm text-gray-500">
-            <p>100% Original Product</p>
-            <p>Cash on delivery is available on this product.</p>
-            <p>Easy return and exchange policy within 7 days.</p>
+            <p>{t("product.originalProduct")}</p>
+            <p>{t("product.cashOnDelivery")}</p>
+            <p>{t("product.returnPolicy")}</p>
           </div>
         </div>
       </div>
@@ -165,14 +168,14 @@ const Product = () => {
             whileHover={{ backgroundColor: "#f9fafb" }}
             transition={{ duration: 0.2 }}
           >
-            Description
+            {t("product.description")}
           </motion.button>
           <motion.button
             className="px-6 py-3 text-sm font-medium text-gray-500 bg-transparent hover:text-gray-700"
             whileHover={{ backgroundColor: "#f9fafb" }}
             transition={{ duration: 0.2 }}
           >
-            Reviews (122)
+            {t("product.reviews")} (122)
           </motion.button>
         </div>
         <div className="flex flex-col gap-4 px-6 py-6 text-sm text-gray-500 border border-t-0 rounded-b-md">

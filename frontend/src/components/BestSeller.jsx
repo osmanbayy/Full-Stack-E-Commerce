@@ -4,12 +4,14 @@ import Title from "./Title";
 import ProductItem from "./ProductItem";
 import ProductItemSkeleton from "./ProductItemSkeleton";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
+import { getProductName } from "../utils/productTranslations";
 
 
 const BestSeller = () => {
-
     const {products, isLoadingProducts} = useContext(ShopContext);
     const [bestSeller, setBestSeller] = useState([]);
+    const { t, i18n } = useTranslation();
 
     useEffect(()=> {
         const bestProduct = products.filter((item)=>item.bestseller);
@@ -47,7 +49,7 @@ const BestSeller = () => {
         variants={containerVariants}
     >
         <motion.div className="py-8 text-3xl text-center">
-            <Title text1={'BEST'} text2={'SELLERS'}/>
+            <Title text1={t("home.bestSellers").split(" ")[0]} text2={t("home.bestSellers").split(" ").slice(1).join(" ")}/>
             <motion.p
                 className="w-3/4 m-auto text-xs text-gray-600 sm:text-sm md:text-base italic font-semibold"
                 initial={{ opacity: 0, y: 10 }}
@@ -55,7 +57,7 @@ const BestSeller = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.2 }}
             >
-                Our most loved pieces, chosen by customers
+                {t("home.bestSellersDesc")}
             </motion.p>
         </motion.div>
 
@@ -67,7 +69,7 @@ const BestSeller = () => {
             ) : bestSeller.length > 0 ? (
                 bestSeller.map((item, index)=> (
                     <motion.div key={item._id} variants={itemVariants}>
-                        <ProductItem id={item._id} image={item.image} name={item.name} price={item.price} />
+                        <ProductItem id={item._id} image={item.image} name={getProductName(item, i18n.language)} price={item.price} />
                     </motion.div>
                 ))
             ) : null}

@@ -1,7 +1,9 @@
 import { assets } from "../assets/assets"
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 const OurPolicy = () => {
+  const { t } = useTranslation();
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -41,8 +43,8 @@ const OurPolicy = () => {
           whileHover={{ scale: 1.1, rotate: 5 }}
           transition={{ type: "spring", stiffness: 300 }}
         />
-        <p className="font-semibold">Easy Exchange Policy</p>
-        <p className="text-gray-400">We offer hassle free exchange policy.</p>
+        <p className="font-semibold">{t("policy.easyExchange")}</p>
+        <p className="text-gray-400">{t("policy.easyExchangeDesc")}</p>
       </motion.div>
       <motion.div variants={itemVariants}>
         <motion.img
@@ -52,8 +54,8 @@ const OurPolicy = () => {
           whileHover={{ scale: 1.1, rotate: 5 }}
           transition={{ type: "spring", stiffness: 300 }}
         />
-        <p className="font-semibold">7 Days Return Policy</p>
-        <p className="text-gray-400">We provide 7 days free return policy.</p>
+        <p className="font-semibold">{t("policy.returnPolicy")}</p>
+        <p className="text-gray-400">{t("policy.returnPolicyDesc")}</p>
       </motion.div>
       <motion.div variants={itemVariants}>
         <motion.img
@@ -63,8 +65,8 @@ const OurPolicy = () => {
           whileHover={{ scale: 1.1, rotate: 5 }}
           transition={{ type: "spring", stiffness: 300 }}
         />
-        <p className="font-semibold">Best Customer Support</p>
-        <p className="text-gray-400">We provide 24/7 customer support.</p>
+        <p className="font-semibold">{t("policy.customerSupport")}</p>
+        <p className="text-gray-400">{t("policy.customerSupportDesc")}</p>
       </motion.div>
     </motion.div>
   )

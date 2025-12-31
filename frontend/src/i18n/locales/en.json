@@ -1,0 +1,98 @@
+{
+  "navbar": {
+    "home": "HOME",
+    "collection": "COLLECTION",
+    "about": "ABOUT",
+    "contact": "CONTACT"
+  },
+  "hero": {
+    "bestsellers": "OUR BESTSELLERS",
+    "latestArrivals": "Latest Arrivals",
+    "shopNow": "SHOP NOW!"
+  },
+  "home": {
+    "latestCollections": "LATEST COLLECTIONS",
+    "latestCollectionsDesc": "Discover our newest designs, crafted for the season.",
+    "bestSellers": "BEST SELLERS",
+    "bestSellersDesc": "Our most loved pieces, chosen by customers"
+  },
+  "collection": {
+    "allCollections": "ALL COLLECTIONS",
+    "filters": "FILTERS",
+    "categories": "CATEGORIES",
+    "type": "TYPE",
+    "relevant": "Relevant",
+    "lowToHigh": "Low to High",
+    "highToLow": "High to Low",
+    "noItemsFound": "No items found",
+    "tryAdjusting": "Try adjusting your search or filters"
+  },
+  "product": {
+    "selectSize": "Select Size",
+    "addToCart": "ADD TO CART",
+    "addToWishlist": "ADD TO WISHLIST",
+    "removeFromWishlist": "REMOVE FROM WISHLIST",
+    "description": "Description",
+    "reviews": "Reviews",
+    "originalProduct": "100% Original Product",
+    "cashOnDelivery": "Cash on delivery is available on this product.",
+    "returnPolicy": "Easy return and exchange policy within 7 days."
+  },
+  "search": {
+    "placeholder": "Search products...",
+    "pleaseSelectSize": "Please Select Product Size!"
+  },
+  "wishlist": {
+    "yourWishlist": "YOUR WISHLIST",
+    "noItems": "No items in your wishlist!",
+    "pleaseLogin": "Please login to view your wishlist.",
+    "itemAdded": "Item added to Wish List!",
+    "itemRemoved": "Item removed from Wish List!",
+    "loginRequired": "You need to be logged in to add items to Wish List."
+  },
+  "cart": {
+    "myCart": "MY CART",
+    "emptyCart": "Your cart is empty!"
+  },
+  "orders": {
+    "myOrders": "MY ORDERS",
+    "trackOrder": "TRACK ORDER"
+  },
+  "login": {
+    "login": "Login",
+    "signUp": "Sign Up",
+    "forgotPassword": "Forgot your password?",
+    "createAccount": "Create an Account",
+    "loginHere": "Login Here",
+    "signIn": "Sign In"
+  },
+  "placeOrder": {
+    "deliveryInformation": "DELIVERY INFORMATION",
+    "paymentMethod": "PAYMENT METHOD",
+    "placeOrder": "PLACE ORDER",
+    "firstName": "Firstname",
+    "lastName": "Lastname",
+    "email": "Email address",
+    "street": "Street",
+    "chooseProvince": "Choose Province",
+    "chooseDistrict": "Choose District",
+    "zipcode": "Zipcode",
+    "country": "Country",
+    "phone": "Phone"
+  },
+  "policy": {
+    "easyExchange": "Easy Exchange Policy",
+    "easyExchangeDesc": "We offer hassle free exchange policy.",
+    "returnPolicy": "7 Days Return Policy",
+    "returnPolicyDesc": "We provide 7 days free return policy.",
+    "customerSupport": "Best Customer Support",
+    "customerSupportDesc": "We provide 24/7 customer support."
+  },
+  "newsletter": {
+    "subscribe": "Subscribe now & get 20% off!",
+    "subscribeDesc": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo, doloribus!",
+    "enterEmail": "Enter your email...",
+    "subscribeButton": "SUBSCRIBE"
+  }
+}
+

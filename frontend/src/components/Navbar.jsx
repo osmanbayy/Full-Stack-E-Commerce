@@ -2,9 +2,11 @@ import { useContext, useState } from "react";
 import { assets } from "../assets/assets.js";
 import { Link, NavLink } from "react-router-dom";
 import { ShopContext } from "../context/ShopContext.jsx";
+import { useTranslation } from "react-i18next";
 
 const Navbar = () => {
   const [visible, setVisible] = useState(false);
+  const { t, i18n } = useTranslation();
 
   const {
     setShowSearch,
@@ -14,6 +16,10 @@ const Navbar = () => {
     setToken,
     setCartItems,
   } = useContext(ShopContext);
+
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+  };
 
   const logout = () => {
     navigate("/login");
@@ -30,27 +36,45 @@ const Navbar = () => {
 
       <ul className="hidden gap-5 text-sm text-gray-700 sm:flex">
         <NavLink to="/" className="flex flex-col items-center gap-1">
-          <p>HOME</p>
+          <p>{t("navbar.home")}</p>
           <hr className="w-2/4 border-none h-[1.5px] bg-gray-700 hidden" />
         </NavLink>
 
         <NavLink to="/collection" className="flex flex-col items-center gap-1">
-          <p>COLLECTION</p>
+          <p>{t("navbar.collection")}</p>
           <hr className="w-2/4 border-none h-[1.5px] bg-gray-700 hidden" />
         </NavLink>
 
         <NavLink to="/about" className="flex flex-col items-center gap-1">
-          <p>ABOUT</p>
+          <p>{t("navbar.about")}</p>
           <hr className="w-2/4 border-none h-[1.5px] bg-gray-700 hidden" />
         </NavLink>
 
         <NavLink to="/contact" className="flex flex-col items-center gap-1">
-          <p>CONTACT</p>
+          <p>{t("navbar.contact")}</p>
           <hr className="w-2/4 border-none h-[1.5px] bg-gray-700 hidden" />
         </NavLink>
       </ul>
 
-      <div className="flex items-center gap-6">
+      <div className="flex items-center gap-4">
+        <div className="hidden sm:flex items-center gap-2 border border-gray-300 rounded px-2 py-1">
+          <button
+            onClick={() => changeLanguage("en")}
+            className={`text-xs font-medium px-2 py-1 rounded transition-colors ${
+              i18n.language === "en" ? "bg-black text-white" : "text-gray-600 hover:bg-gray-100"
+            }`}
+          >
+            EN
+          </button>
+          <button
+            onClick={() => changeLanguage("tr")}
+            className={`text-xs font-medium px-2 py-1 rounded transition-colors ${
+              i18n.language === "tr" ? "bg-black text-white" : "text-gray-600 hover:bg-gray-100"
+            }`}
+          >
+            TR
+          </button>
+        </div>
         <img
           onClick={() => setShowSearch(true)}
           src={assets.search_icon}
@@ -119,29 +143,56 @@ const Navbar = () => {
             className="py-2 pl-6 border"
             to="/"
           >
-            HOME
+            {t("navbar.home")}
           </NavLink>
           <NavLink
             onClick={() => setVisible(false)}
             className="py-2 pl-6 border"
             to="/collection"
           >
-            COLLECTION
+            {t("navbar.collection")}
           </NavLink>
           <NavLink
             onClick={() => setVisible(false)}
             className="py-2 pl-6 border"
             to="/about"
           >
-            ABOUT
+            {t("navbar.about")}
           </NavLink>
           <NavLink
             onClick={() => setVisible(false)}
             className="py-2 pl-6 border"
             to="/contact"
           >
-            CONTACT
+            {t("navbar.contact")}
           </NavLink>
+          <div className="py-3 pl-6 border border-t-2">
+            <p className="mb-2 text-sm font-semibold text-gray-700">Language / Dil</p>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => {
+                  changeLanguage("en");
+                  setVisible(false);
+                }}
+                className={`text-sm font-medium px-4 py-2 rounded transition-colors ${
+                  i18n.language === "en" ? "bg-black text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                }`}
+              >
+                EN
+              </button>
+              <button
+                onClick={() => {
+                  changeLanguage("tr");
+                  setVisible(false);
+                }}
+                className={`text-sm font-medium px-4 py-2 rounded transition-colors ${
+                  i18n.language === "tr" ? "bg-black text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                }`}
+              >
+                TR
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

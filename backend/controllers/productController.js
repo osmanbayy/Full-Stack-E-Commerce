@@ -8,6 +8,8 @@ const addProduct = async (req, res) => {
 
     const {
       name,
+      nameEn,
+      nameTr,
       description,
       price,
       category,
@@ -35,7 +37,9 @@ const addProduct = async (req, res) => {
     );
 
     const productData = {
-      name,
+      name: name || nameEn || nameTr, // Backward compatibility
+      nameEn: nameEn || name,
+      nameTr: nameTr || name,
       description,
       category,
       subCategory,

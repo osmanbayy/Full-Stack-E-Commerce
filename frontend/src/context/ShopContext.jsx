@@ -3,6 +3,7 @@ import { createContext, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import i18n from "../i18n/config.js";
 
 export const ShopContext = createContext();
 
@@ -22,7 +23,7 @@ const ShopContextProvider = (prop) => {
 
   const addToCart = async (itemId, size) => {
     if (!size) {
-      toast.error("Please Select Product Size!");
+      toast.error(i18n.t("search.pleaseSelectSize"));
       return;
     }
 

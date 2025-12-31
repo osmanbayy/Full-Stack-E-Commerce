@@ -5,10 +5,13 @@ import { useContext, useEffect, useState } from "react";
 import { ShopContext } from "../context/ShopContext";
 import Title from "./Title";
 import ProductItem from "./ProductItem";
+import { useTranslation } from "react-i18next";
+import { getProductName } from "../utils/productTranslations";
 
 const RelatedProducts = ({ category, subCategory }) => {
   const { products } = useContext(ShopContext);
   const [related, setRelated] = useState([]);
+  const { i18n } = useTranslation();
 
   useEffect(() => {
     if (products.length > 0) {
@@ -32,7 +35,7 @@ const RelatedProducts = ({ category, subCategory }) => {
           <ProductItem
             key={index}
             id={item._id}
-            name={item.name}
+            name={getProductName(item, i18n.language)}
             image={item.image}
             price={item.price}
           />

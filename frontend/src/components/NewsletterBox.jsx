@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 const NewsletterBox = () => {
+    const { t } = useTranslation();
 
     const onSubmitHandler = (event) => {
         event.preventDefault();
@@ -42,14 +44,13 @@ const NewsletterBox = () => {
         className="text-2xl font-medium text-gray-700"
         variants={itemVariants}
       >
-        Subscribe now & get 20% off!
+        {t("newsletter.subscribe")}
       </motion.p>
       <motion.p
         className="text-gray-400 mt-3"
         variants={itemVariants}
       >
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo,
-        doloribus!
+        {t("newsletter.subscribeDesc")}
       </motion.p>
       <motion.form
         onSubmit={onSubmitHandler}
@@ -58,7 +59,7 @@ const NewsletterBox = () => {
       >
         <input
           type="email"
-          placeholder="Enter your email..."
+          placeholder={t("newsletter.enterEmail")}
           className="w-full sm:flex-1 outline-none"
           required
         />
@@ -68,7 +69,7 @@ const NewsletterBox = () => {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
-          SUBSCRIBE
+          {t("newsletter.subscribeButton")}
         </motion.button>
       </motion.form>
     </motion.div>

@@ -4,10 +4,13 @@ import Title from "./Title";
 import ProductItem from "./ProductItem";
 import ProductItemSkeleton from "./ProductItemSkeleton";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
+import { getProductName } from "../utils/productTranslations";
 
 const LatestCollection = () => {
   const { products, isLoadingProducts } = useContext(ShopContext);
   const [latestProducts, setLatestProducts] = useState([]);
+  const { t, i18n } = useTranslation();
 
   useEffect(() => {
     setLatestProducts(products.slice(0, 10));
@@ -44,7 +47,7 @@ const LatestCollection = () => {
       variants={containerVariants}
     >
       <motion.div className="py-8 text-3xl text-center">
-        <Title text1={"LATEST"} text2={"COLLECTIONS"} />
+        <Title text1={t("home.latestCollections").split(" ")[0]} text2={t("home.latestCollections").split(" ").slice(1).join(" ")} />
         <motion.p
           className="w-3/4 m-auto text-xs text-gray-600 sm:text-sm md:text-base italic font-semibold"
           initial={{ opacity: 0, y: 10 }}
@@ -52,7 +55,7 @@ const LatestCollection = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          Discover our newest designs, crafted for the season.
+          {t("home.latestCollectionsDesc")}
         </motion.p>
       </motion.div>
 
@@ -68,7 +71,7 @@ const LatestCollection = () => {
               <ProductItem
                 id={item._id}
                 image={item.image}
-                name={item.name}
+                name={getProductName(item, i18n.language)}
                 price={item.price}
               />
             </motion.div>

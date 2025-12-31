@@ -3,10 +3,13 @@ import { ShopContext } from "../context/ShopContext";
 import Title from "../components/Title";
 import { assets } from "../assets/assets";
 import CartTotal from "../components/CartTotal";
+import { useTranslation } from "react-i18next";
+import { getProductName } from "../utils/productTranslations";
 
 const Cart = () => {
   const { products, currency, cartItems, updateQuantity, navigate } =
     useContext(ShopContext);
+  const { i18n } = useTranslation();
 
   const [cartData, setCartData] = useState([]);
 
@@ -53,7 +56,7 @@ const Cart = () => {
                 />
                 <div>
                   <p className="text-sm font-medium sm:text-lg">
-                    {productData?.name}
+                    {productData ? getProductName(productData, i18n.language) : ''}
                   </p>
                   <div className="flex items-center gap-5 mt-2">
                     <p>

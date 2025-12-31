@@ -12,6 +12,8 @@ const Add = ({ token }) => {
   const [image4, setImage4] = useState(false);
 
   const [name, setName] = useState("");
+  const [nameEn, setNameEn] = useState("");
+  const [nameTr, setNameTr] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("Men");
@@ -24,7 +26,9 @@ const Add = ({ token }) => {
 
     try {
       const formData = new FormData();
-      formData.append("name", name);
+      formData.append("name", name || nameEn || nameTr); // Fallback for backward compatibility
+      formData.append("nameEn", nameEn || name);
+      formData.append("nameTr", nameTr || name);
       formData.append("description", description);
       formData.append("price", price);
       formData.append("category", category);
@@ -47,6 +51,8 @@ const Add = ({ token }) => {
       if (response.data.success) {
         toast.success(response.data.message);
         setName("");
+        setNameEn("");
+        setNameTr("");
         setDescription("");
         setImage1(false);
         setImage2(false);
@@ -128,13 +134,36 @@ const Add = ({ token }) => {
       </div>
 
       <div className="w-full">
-        <p className="mb-2">Product Name</p>
+        <p className="mb-2">Product Name (Fallback - Optional)</p>
         <input
           onChange={(e) => setName(e.target.value)}
           value={name}
+          className="w-full max-w-[500px] px-3 py-2 mb-3"
+          type="text"
+          placeholder="Type Here... (Will be used if nameEn/nameTr not provided)"
+        />
+      </div>
+
+      <div className="w-full">
+        <p className="mb-2">Product Name (English) *</p>
+        <input
+          onChange={(e) => setNameEn(e.target.value)}
+          value={nameEn}
           className="w-full max-w-[500px] px-3 py-2"
           type="text"
-          placeholder="Type Here..."
+          placeholder="Type English Name Here..."
+          required
+        />
+      </div>
+
+      <div className="w-full">
+        <p className="mb-2">Product Name (Turkish) *</p>
+        <input
+          onChange={(e) => setNameTr(e.target.value)}
+          value={nameTr}
+          className="w-full max-w-[500px] px-3 py-2"
+          type="text"
+          placeholder="Türkçe İsim Buraya..."
           required
         />
       </div>

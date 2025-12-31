@@ -1,7 +1,9 @@
 import { assets } from "../assets/assets";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 const Hero = () => {
+  const { t } = useTranslation();
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -52,13 +54,13 @@ const Hero = () => {
         <div className="text-[#414141]">
           <div className="flex items-center gap-2">
             <p className="w-8 md:w-11 h-[2px] bg-[#414141]"></p>
-            <p className="font-medium text-sm md:text-base">OUR BESTSELLERS</p>
+            <p className="font-medium text-sm md:text-base">{t("hero.bestsellers")}</p>
           </div>
           <h1 className="prata-regular text-3xl sm:py-3 lg:text-lg leading-relaxed">
-            Latest Arrivals
+            {t("hero.latestArrivals")}
           </h1>
           <div className="flex items-center gap-2">
-            <p className="font-semibold text-sm md:text-base">SHOP NOW!</p>
+            <p className="font-semibold text-sm md:text-base">{t("hero.shopNow")}</p>
             <p className="w-8 md:w-11 h-[1px] bg-[#414141]"></p>
           </div>
         </div>

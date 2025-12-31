@@ -1,0 +1,98 @@
+{
+  "navbar": {
+    "home": "ANA SAYFA",
+    "collection": "KOLEKSİYON",
+    "about": "HAKKIMIZDA",
+    "contact": "İLETİŞİM"
+  },
+  "hero": {
+    "bestsellers": "EN ÇOK SATANLAR",
+    "latestArrivals": "Yeni Gelenler",
+    "shopNow": "HEMEN ALIŞVERİŞ YAP!"
+  },
+  "home": {
+    "latestCollections": "YENİ KOLEKSİYONLAR",
+    "latestCollectionsDesc": "Mevsim için tasarlanmış en yeni tasarımlarımızı keşfedin.",
+    "bestSellers": "EN ÇOK SATANLAR",
+    "bestSellersDesc": "Müşteriler tarafından seçilen en sevilen parçalarımız"
+  },
+  "collection": {
+    "allCollections": "TÜM KOLEKSİYONLAR",
+    "filters": "FİLTRELER",
+    "categories": "KATEGORİLER",
+    "type": "TÜR",
+    "relevant": "İlgili",
+    "lowToHigh": "Düşükten Yükseğe",
+    "highToLow": "Yüksekten Düşüğe",
+    "noItemsFound": "Ürün bulunamadı",
+    "tryAdjusting": "Arama veya filtrelerinizi ayarlamayı deneyin"
+  },
+  "product": {
+    "selectSize": "Beden Seçin",
+    "addToCart": "SEPETE EKLE",
+    "addToWishlist": "İSTEK LİSTESİNE EKLE",
+    "removeFromWishlist": "İSTEK LİSTESİNDEN ÇIKAR",
+    "description": "Açıklama",
+    "reviews": "Yorumlar",
+    "originalProduct": "%100 Orijinal Ürün",
+    "cashOnDelivery": "Bu üründe kapıda ödeme mevcuttur.",
+    "returnPolicy": "7 gün içinde kolay iade ve değişim politikası."
+  },
+  "search": {
+    "placeholder": "Ürün ara...",
+    "pleaseSelectSize": "Lütfen Ürün Bedenini Seçin!"
+  },
+  "wishlist": {
+    "yourWishlist": "İSTEK LİSTENİZ",
+    "noItems": "İstek listenizde ürün yok!",
+    "pleaseLogin": "İstek listenizi görmek için lütfen giriş yapın.",
+    "itemAdded": "Ürün İstek Listesine Eklendi!",
+    "itemRemoved": "Ürün İstek Listesinden Çıkarıldı!",
+    "loginRequired": "İstek listesine ürün eklemek için giriş yapmanız gerekiyor."
+  },
+  "cart": {
+    "myCart": "SEPETİM",
+    "emptyCart": "Sepetiniz boş!"
+  },
+  "orders": {
+    "myOrders": "SİPARİŞLERİM",
+    "trackOrder": "SİPARİŞİ TAKİP ET"
+  },
+  "login": {
+    "login": "Giriş",
+    "signUp": "Kayıt Ol",
+    "forgotPassword": "Şifrenizi mi unuttunuz?",
+    "createAccount": "Hesap Oluştur",
+    "loginHere": "Buradan Giriş Yap",
+    "signIn": "Giriş Yap"
+  },
+  "placeOrder": {
+    "deliveryInformation": "TESLİMAT BİLGİLERİ",
+    "paymentMethod": "ÖDEME YÖNTEMİ",
+    "placeOrder": "SİPARİŞ VER",
+    "firstName": "Ad",
+    "lastName": "Soyad",
+    "email": "E-posta adresi",
+    "street": "Sokak",
+    "chooseProvince": "İl Seçin",
+    "chooseDistrict": "İlçe Seçin",
+    "zipcode": "Posta Kodu",
+    "country": "Ülke",
+    "phone": "Telefon"
+  },
+  "policy": {
+    "easyExchange": "Kolay Değişim Politikası",
+    "easyExchangeDesc": "Sorunsuz değişim politikası sunuyoruz.",
+    "returnPolicy": "7 Gün İade Politikası",
+    "returnPolicyDesc": "7 gün ücretsiz iade politikası sağlıyoruz.",
+    "customerSupport": "En İyi Müşteri Desteği",
+    "customerSupportDesc": "7/24 müşteri desteği sağlıyoruz."
+  },
+  "newsletter": {
+    "subscribe": "Şimdi abone olun ve %20 indirim kazanın!",
+    "subscribeDesc": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo, doloribus!",
+    "enterEmail": "E-posta adresinizi girin...",
+    "subscribeButton": "ABONE OL"
+  }
+}
+

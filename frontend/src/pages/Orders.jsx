@@ -4,9 +4,12 @@ import { ShopContext } from "../context/ShopContext";
 import Title from "../components/Title";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
+import { getProductName } from "../utils/productTranslations";
 
 const Orders = () => {
   const { backendUrl, token, currency } = useContext(ShopContext);
+  const { i18n } = useTranslation();
 
   const [orderData, setOrderData] = useState([]);
 
@@ -58,7 +61,7 @@ const Orders = () => {
             <div className="flex items-start gap-6 text-sm">
               <img src={item.image[0]} className="w-16 sm:w-20" alt="" />
               <div>
-                <p className="font-medium sm:text-base">{item.name}</p>
+                <p className="font-medium sm:text-base">{getProductName(item, i18n.language)}</p>
                 <div className="flex items-center gap-3 mt-1 text-base text-gray-700">
                   <p className="text-lg">
                     {currency}
