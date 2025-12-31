@@ -6,8 +6,7 @@ import List from "./pages/List";
 import Orders from "./pages/Orders";
 import { useEffect, useState } from "react";
 import Login from "./components/Login";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { Toaster } from "react-hot-toast";
 
 // eslint-disable-next-line react-refresh/only-export-components
 // Backend URL'inin sonundaki slash'ı temizle
@@ -23,7 +22,7 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <ToastContainer />
+      <Toaster position="top-center" />
       {token === "" ? (
         <Login setToken={setToken} />
       ) : (

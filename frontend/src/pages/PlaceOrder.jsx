@@ -4,7 +4,7 @@ import CartTotal from "../components/CartTotal";
 import Title from "../components/Title";
 import { ShopContext } from "../context/ShopContext";
 import axios from "axios";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import { provinces } from "../utils/provinces";
 
 const PlaceOrder = () => {

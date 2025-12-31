@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { createContext, useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -9,7 +9,6 @@ export const ShopContext = createContext();
 const ShopContextProvider = (prop) => {
   const currency = "$";
   const delivery_fee = 10;
-  // Backend URL'inin sonundaki slash'ı temizle
   const backendUrl = (import.meta.env.VITE_BACKEND_URL || "").replace(/\/+$/, "");
   const [search, setSearch] = useState("");
   const [showSearch, setShowSearch] = useState(true);
@@ -49,6 +48,7 @@ const ShopContextProvider = (prop) => {
           { itemId, size },
           { headers: { token } }
         );
+        toast.success("Item added to cart.");
       } catch (error) {
         console.log(error);
         toast.error(error.message);
