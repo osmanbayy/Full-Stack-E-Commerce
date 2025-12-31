@@ -40,8 +40,7 @@ const LatestCollection = () => {
     <motion.div
       className="my-10"
       initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-100px" }}
+      animate={!isLoadingProducts && latestProducts.length > 0 ? "visible" : "hidden"}
       variants={containerVariants}
     >
       <motion.div className="py-8 text-3xl text-center">
@@ -64,7 +63,7 @@ const LatestCollection = () => {
           Array.from({ length: 10 }).map((_, index) => (
             <ProductItemSkeleton key={index} />
           ))
-        ) : (
+        ) : latestProducts.length > 0 ? (
           latestProducts.map((item, index) => (
             <motion.div key={item._id} variants={itemVariants}>
               <ProductItem
@@ -75,7 +74,7 @@ const LatestCollection = () => {
               />
             </motion.div>
           ))
-        )}
+        ) : null}
       </div>
     </motion.div>
   );
