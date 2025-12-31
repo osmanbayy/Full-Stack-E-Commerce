@@ -26,11 +26,24 @@ const SearchBar = () => {
     }
   }, [showSearch]);
 
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter' && search.trim()) {
+  const handleSearch = () => {
+    if (search.trim()) {
       if (!location.pathname.includes('collection')) {
         navigate('/collection');
       }
+      
+      setShowSearch(false);
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && search.trim()) {
+      handleSearch();
+    }
+    
+    if (e.key === 'Escape') {
+      setShowSearch(false);
+      setSearch("");
     }
   };
 
@@ -66,7 +79,15 @@ const SearchBar = () => {
                 className="flex-1 text-base outline-none bg-transparent"
                 placeholder="Search products..."
               />
-              <img src={assets.search_icon} className="w-5 mr-3" alt="" />
+              <motion.img
+                src={assets.search_icon}
+                className="w-5 mr-3 cursor-pointer"
+                alt=""
+                onClick={handleSearch}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              />
               <motion.img
                 onClick={() => {
                   setShowSearch(false);

@@ -35,7 +35,7 @@ const Collection = () => {
   const applyFilter = () => {
     let productsCopy = products.slice();
 
-    if (showSearch && search) {
+    if (search) {
       productsCopy = productsCopy.filter((item) =>
         item.name.toLowerCase().includes(search.toLowerCase())
       );
@@ -75,7 +75,7 @@ const Collection = () => {
 
   useEffect(() => {
     applyFilter();
-  }, [category, subCategory, search, showSearch, products]);
+  }, [category, subCategory, search, products]);
 
   return (
     <div className="flex flex-col gap-1 pt-10 border-t sm:flex-row sm:gap-10">
@@ -189,7 +189,7 @@ const Collection = () => {
               <ProductItemSkeleton key={index} />
             ))}
           </div>
-        ) : filterProducts.length === 0 && (showSearch && search) ? (
+        ) : filterProducts.length === 0 && search ? (
           <div className="flex flex-col items-center justify-center py-20 text-center">
             <p className="text-xl font-medium text-gray-500 mb-2">No items found</p>
             <p className="text-sm text-gray-400">
