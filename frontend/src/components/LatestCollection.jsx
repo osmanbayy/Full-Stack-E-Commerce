@@ -3,6 +3,7 @@ import { ShopContext } from "../context/ShopContext";
 import Title from "./Title";
 import ProductItem from "./ProductItem";
 import ProductItemSkeleton from "./ProductItemSkeleton";
+import { motion } from "framer-motion";
 
 const LatestCollection = () => {
   const { products, isLoadingProducts } = useContext(ShopContext);
@@ -12,15 +13,50 @@ const LatestCollection = () => {
     setLatestProducts(products.slice(0, 10));
   }, [products]);
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.05,
+        delayChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.4,
+        ease: [0.25, 0.46, 0.45, 0.94],
+      },
+    },
+  };
+
   return (
-    <div className="my-10">
-      <div className="py-8 text-3xl text-center">
+    <motion.div
+      className="my-10"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-100px" }}
+      variants={containerVariants}
+    >
+      <motion.div className="py-8 text-3xl text-center">
         <Title text1={"LATEST"} text2={"COLLECTIONS"} />
-        <p className="w-3/4 m-auto text-xs text-gray-600 sm:text-sm md:text-base">
+        <motion.p
+          className="w-3/4 m-auto text-xs text-gray-600 sm:text-sm md:text-base"
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
           Lorem ipsum dolor sit, amet consectetur adipisicing elit. Repudiandae,
           recusandae.
-        </p>
-      </div>
+        </motion.p>
+      </motion.div>
 
       {/* Rendering Products */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-y-6">
@@ -30,17 +66,18 @@ const LatestCollection = () => {
           ))
         ) : (
           latestProducts.map((item, index) => (
-            <ProductItem
-              key={index}
-              id={item._id}
-              image={item.image}
-              name={item.name}
-              price={item.price}
-            />
+            <motion.div key={item._id} variants={itemVariants}>
+              <ProductItem
+                id={item._id}
+                image={item.image}
+                name={item.name}
+                price={item.price}
+              />
+            </motion.div>
           ))
         )}
       </div>
-    </div>
+    </motion.div>
   );
 };
 
