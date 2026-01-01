@@ -3,7 +3,14 @@
     "home": "ANA SAYFA",
     "collection": "KOLEKSİYON",
     "about": "HAKKIMIZDA",
-    "contact": "İLETİŞİM"
+    "contact": "İLETİŞİM",
+    "myProfile": "Profilim",
+    "orders": "Siparişler",
+    "logout": "Çıkış Yap",
+    "logoutConfirm": "Emin misiniz?",
+    "logoutMessage": "Çıkış yapmak istiyor musunuz?",
+    "yes": "Evet",
+    "cancel": "İptal"
   },
   "hero": {
     "bestsellers": "EN ÇOK SATANLAR",
@@ -37,7 +44,14 @@
     "reviews": "Yorumlar",
     "originalProduct": "%100 Orijinal Ürün",
     "cashOnDelivery": "Bu üründe kapıda ödeme mevcuttur.",
-    "returnPolicy": "7 gün içinde kolay iade ve değişim politikası."
+    "returnPolicy": "7 gün içinde kolay iade ve değişim politikası.",
+    "rateProduct": "Bu ürünü değerlendirin",
+    "yourRating": "Değerlendirmeniz",
+    "submitRating": "Değerlendirmeyi Gönder",
+    "onlyPurchased": "Sadece bu ürünü satın alan müşteriler değerlendirebilir.",
+    "loginToRate": "Lütfen değerlendirme yapmak için giriş yapın.",
+    "ratingSubmitted": "Değerlendirmeniz için teşekkürler!",
+    "noReviews": "Henüz yorum yok"
   },
   "search": {
     "placeholder": "Ürün ara...",
@@ -64,10 +78,16 @@
   "orders": {
     "myOrders": "SİPARİŞLERİM",
     "trackOrder": "SİPARİŞİ TAKİP ET",
+    "rateProduct": "Ürünü Değerlendir",
     "quantity": "Miktar",
     "size": "Beden",
     "date": "Tarih",
-    "payment": "Ödeme"
+    "payment": "Ödeme",
+    "orderPlaced": "Sipariş Verildi",
+    "packing": "Paketleniyor",
+    "shipped": "Kargoya Verildi",
+    "outForDelivery": "Kargoda",
+    "delivered": "Teslim Edildi"
   },
   "profile": {
     "myProfile": "PROFİLİM",

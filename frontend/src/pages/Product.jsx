@@ -7,13 +7,18 @@ import RelatedProducts from "../components/RelatedProducts";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { getProductName } from "../utils/productTranslations";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const Product = () => {
   const { productId } = useParams();
-  const { products, currency, addToCart, addToWishList, wishlistItems, removeFromWishlist } = useContext(ShopContext);
+  const { products, currency, addToCart, addToWishList, wishlistItems, removeFromWishlist, backendUrl, token } = useContext(ShopContext);
   const [productData, setProductData] = useState(false);
   const [image, setImage] = useState("");
   const [size, setSize] = useState("");
+  const [rating, setRating] = useState({ averageRating: 0, totalReviews: 0 });
+  const [reviews, setReviews] = useState([]);
+  const [activeTab, setActiveTab] = useState("description");
   const { t, i18n } = useTranslation();
   
   const isInWishlist = productData ? wishlistItems.includes(productData._id) : false;
@@ -39,6 +44,72 @@ const Product = () => {
   useEffect(() => {
     fetchProductData();
   }, [productId, products]);
+
+  useEffect(() => {
+    if (productId) {
+      fetchReviews();
+    }
+  }, [productId]);
+
+  const fetchReviews = async () => {
+    try {
+      const response = await axios.post(backendUrl + "/api/review/product", {
+        productId,
+      });
+      if (response.data.success) {
+        setRating({
+          averageRating: parseFloat(response.data.averageRating),
+          totalReviews: response.data.totalReviews,
+        });
+        setReviews(response.data.reviews);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
+  const renderStars = (avgRating, clickable = false, onStarClick = null) => {
+    const stars = [];
+    const fullStars = Math.floor(avgRating);
+    const hasHalfStar = avgRating % 1 >= 0.5;
+
+    for (let i = 1; i <= 5; i++) {
+      if (i <= fullStars) {
+        stars.push(
+          <img
+            key={i}
+            src={assets.star_icon}
+            alt=""
+            className="w-4 h-4 cursor-pointer"
+            onClick={clickable && onStarClick ? () => onStarClick(i) : undefined}
+          />
+        );
+      } else if (i === fullStars + 1 && hasHalfStar) {
+        stars.push(
+          <img
+            key={i}
+            src={assets.star_dull_icon}
+            alt=""
+            className="w-4 h-4 cursor-pointer opacity-50"
+            onClick={clickable && onStarClick ? () => onStarClick(i) : undefined}
+          />
+        );
+      } else {
+        stars.push(
+          <img
+            key={i}
+            src={assets.star_dull_icon}
+            alt=""
+            className="w-4 h-4 cursor-pointer"
+            onClick={clickable && onStarClick ? () => onStarClick(i) : undefined}
+          />
+        );
+      }
+    }
+
+    return stars;
+  };
 
   return productData ? (
     <div className="pt-10 transition-opacity duration-500 ease-in border-t-2 opacity-100">
@@ -66,12 +137,12 @@ const Product = () => {
         <div className="flex-1">
           <h1 className="mt-2 text-2xl font-medium">{getProductName(productData, i18n.language)}</h1>
           <div className="flex items-center gap-1 mt-2">
-            <img src={assets.star_icon} alt="" className="w-3 5" />
-            <img src={assets.star_icon} alt="" className="w-3 5" />
-            <img src={assets.star_icon} alt="" className="w-3 5" />
-            <img src={assets.star_icon} alt="" className="w-3 5" />
-            <img src={assets.star_dull_icon} alt="" className="w-3 5" />
-            <p className="pl-2">(122)</p>
+            {renderStars(rating.averageRating)}
+            {rating.totalReviews > 0 && (
+              <p className="pl-2 text-sm text-gray-600">
+                ({rating.totalReviews})
+              </p>
+            )}
           </div>
           <p className="mt-5 text-3xl font-medium">
             {currency} {productData.price}
@@ -164,36 +235,80 @@ const Product = () => {
       <div className="mt-20">
         <div className="flex border-b border-gray-200">
           <motion.button
-            className="px-6 py-3 text-sm font-semibold text-gray-700 border-b-2 border-black bg-transparent"
+            onClick={() => setActiveTab("description")}
+            className={`px-6 py-3 text-sm font-semibold ${
+              activeTab === "description"
+                ? "text-gray-700 border-b-2 border-black"
+                : "text-gray-500 bg-transparent hover:text-gray-700"
+            }`}
             whileHover={{ backgroundColor: "#f9fafb" }}
             transition={{ duration: 0.2 }}
           >
             {t("product.description")}
           </motion.button>
           <motion.button
-            className="px-6 py-3 text-sm font-medium text-gray-500 bg-transparent hover:text-gray-700"
+            onClick={() => setActiveTab("reviews")}
+            className={`px-6 py-3 text-sm font-medium ${
+              activeTab === "reviews"
+                ? "text-gray-700 border-b-2 border-black"
+                : "text-gray-500 bg-transparent hover:text-gray-700"
+            }`}
             whileHover={{ backgroundColor: "#f9fafb" }}
             transition={{ duration: 0.2 }}
           >
-            {t("product.reviews")} (122)
+            {t("product.reviews")} ({rating.totalReviews})
           </motion.button>
         </div>
         <div className="flex flex-col gap-4 px-6 py-6 text-sm text-gray-500 border border-t-0 rounded-b-md">
-          <p>
-            An e-commerce website is an online platform that facilities the
-            buying and selling of products or services over the internet. It
-            serves as a virtual marketplace wehere businesses and individuals
-            can showcase their products, interact with customers, and conduct
-            transactions without the nedd for a physical presence. E-commerce
-            websites have gained immense popularity due to their convenience,
-            accessibility, and the global reach they offer.
-          </p>
-          <p>
-            E-commerce websites typically display products or services along
-            with detailed descriptions, images, prices, and any available
-            variations (e.g., sizes,colors). Each product usually has its own
-            dedicated page with relevant information.
-          </p>
+          {activeTab === "description" ? (
+            <>
+              <p>
+                An e-commerce website is an online platform that facilities the
+                buying and selling of products or services over the internet. It
+                serves as a virtual marketplace wehere businesses and individuals
+                can showcase their products, interact with customers, and conduct
+                transactions without the nedd for a physical presence. E-commerce
+                websites have gained immense popularity due to their convenience,
+                accessibility, and the global reach they offer.
+              </p>
+              <p>
+                E-commerce websites typically display products or services along
+                with detailed descriptions, images, prices, and any available
+                variations (e.g., sizes,colors). Each product usually has its own
+                dedicated page with relevant information.
+              </p>
+            </>
+          ) : (
+            <div className="flex flex-col gap-6">
+              {/* Info Message */}
+              <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <p className="text-sm text-blue-800">
+                  {t("product.onlyPurchased")}
+                </p>
+              </div>
+
+              {/* Reviews List */}
+              {reviews.length > 0 ? (
+                <div className="flex flex-col gap-4">
+                  {reviews.map((review, index) => (
+                    <div key={index} className="p-4 border rounded-lg">
+                      <div className="flex items-center gap-2 mb-2">
+                        {renderStars(review.rating)}
+                        <span className="text-xs text-gray-400">
+                          {new Date(review.date).toLocaleDateString()}
+                        </span>
+                      </div>
+                      {review.review && (
+                        <p className="text-sm text-gray-600">{review.review}</p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-sm text-gray-400 italic">{t("product.noReviews")}</p>
+              )}
+            </div>
+          )}
         </div>
       </div>
 

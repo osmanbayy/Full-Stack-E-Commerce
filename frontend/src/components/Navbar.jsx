@@ -3,9 +3,11 @@ import { assets } from "../assets/assets.js";
 import { Link, NavLink } from "react-router-dom";
 import { ShopContext } from "../context/ShopContext.jsx";
 import { useTranslation } from "react-i18next";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Navbar = () => {
   const [visible, setVisible] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
   const { t, i18n } = useTranslation();
 
   const {
@@ -21,11 +23,20 @@ const Navbar = () => {
     i18n.changeLanguage(lng);
   };
 
+  const handleLogoutClick = () => {
+    setShowLogoutModal(true);
+  };
+
   const logout = () => {
     navigate("/login");
     localStorage.removeItem("token");
     setToken("");
     setCartItems({});
+    setShowLogoutModal(false);
+  };
+
+  const cancelLogout = () => {
+    setShowLogoutModal(false);
   };
 
   return (
@@ -104,16 +115,16 @@ const Navbar = () => {
                   onClick={() => navigate("/my-profile")}
                   className="cursor-pointer hover:text-black"
                 >
-                  My Profile
+                  {t("navbar.myProfile")}
                 </p>
                 <p
                   onClick={() => navigate("/orders")}
                   className="cursor-pointer hover:text-black"
                 >
-                  Orders
+                  {t("navbar.orders")}
                 </p>
-                <p onClick={logout} className="cursor-pointer hover:text-black">
-                  Logout
+                <p onClick={handleLogoutClick} className="cursor-pointer hover:text-black">
+                  {t("navbar.logout")}
                 </p>
               </div>
             </div>
@@ -216,6 +227,64 @@ const Navbar = () => {
           </div>
         </div>
       </div>
+
+      {/* Logout Confirmation Modal */}
+      <AnimatePresence>
+        {showLogoutModal && (
+          <>
+            {/* Overlay */}
+            <motion.div
+              className="fixed inset-0 bg-black bg-opacity-50 z-[10000]"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={cancelLogout}
+            />
+            {/* Modal */}
+            <motion.div
+              className="fixed inset-0 z-[10001] flex items-center justify-center p-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <motion.div
+                className="bg-white rounded-lg shadow-xl max-w-md w-full p-6"
+                initial={{ scale: 0.9, opacity: 0, y: 20 }}
+                animate={{ scale: 1, opacity: 1, y: 0 }}
+                exit={{ scale: 0.9, opacity: 0, y: 20 }}
+                transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                  {t("navbar.logoutConfirm")}
+                </h3>
+                <p className="text-gray-600 mb-6">
+                  {t("navbar.logoutMessage")}
+                </p>
+                <div className="flex gap-3 justify-end">
+                  <motion.button
+                    onClick={cancelLogout}
+                    className="px-6 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    {t("navbar.cancel")}
+                  </motion.button>
+                  <motion.button
+                    onClick={logout}
+                    className="px-6 py-2 text-sm font-medium text-white bg-black rounded-md hover:bg-gray-800 transition-colors"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    {t("navbar.yes")}
+                  </motion.button>
+                </div>
+              </motion.div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

@@ -3,7 +3,14 @@
     "home": "HOME",
     "collection": "COLLECTION",
     "about": "ABOUT",
-    "contact": "CONTACT"
+    "contact": "CONTACT",
+    "myProfile": "My Profile",
+    "orders": "Orders",
+    "logout": "Logout",
+    "logoutConfirm": "Are you sure?",
+    "logoutMessage": "Do you want to log out?",
+    "yes": "Yes",
+    "cancel": "Cancel"
   },
   "hero": {
     "bestsellers": "OUR BESTSELLERS",
@@ -37,7 +44,14 @@
     "reviews": "Reviews",
     "originalProduct": "100% Original Product",
     "cashOnDelivery": "Cash on delivery is available on this product.",
-    "returnPolicy": "Easy return and exchange policy within 7 days."
+    "returnPolicy": "Easy return and exchange policy within 7 days.",
+    "rateProduct": "Rate this product",
+    "yourRating": "Your Rating",
+    "submitRating": "Submit Rating",
+    "onlyPurchased": "Only customers who purchased this product can rate it.",
+    "loginToRate": "Please login to rate this product.",
+    "ratingSubmitted": "Thank you for your rating!",
+    "noReviews": "No reviews yet"
   },
   "search": {
     "placeholder": "Search products...",
@@ -64,10 +78,16 @@
   "orders": {
     "myOrders": "MY ORDERS",
     "trackOrder": "TRACK ORDER",
+    "rateProduct": "Rate Product",
     "quantity": "Quantity",
     "size": "Size",
     "date": "Date",
-    "payment": "Payment"
+    "payment": "Payment",
+    "orderPlaced": "Order Placed",
+    "packing": "Packing",
+    "shipped": "Shipped",
+    "outForDelivery": "Out for Delivery",
+    "delivered": "Delivered"
   },
   "profile": {
     "myProfile": "MY PROFILE",

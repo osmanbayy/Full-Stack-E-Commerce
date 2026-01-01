@@ -1,15 +1,17 @@
 /* eslint-disable react/prop-types */
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { ShopContext } from "../context/ShopContext";
 import { Link } from "react-router-dom";
 import { assets } from "../assets/assets.js";
 import { useTranslation } from "react-i18next";
+import axios from "axios";
 
 const ProductItem = ({ id, image, name, price }) => {
-  const { currency, addToWishList, wishlistItems, removeFromWishlist } = useContext(ShopContext);
+  const { currency, addToWishList, wishlistItems, removeFromWishlist, backendUrl } = useContext(ShopContext);
   const [showPopup, setShowPopup] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
-  
+  const [rating, setRating] = useState({ averageRating: 0, totalReviews: 0 });
+
   const isInWishlist = wishlistItems.includes(id);
 
   const handleShareClick = () => {
@@ -36,6 +38,51 @@ const ProductItem = ({ id, image, name, price }) => {
     }
   };
 
+  useEffect(() => {
+    const fetchRating = async () => {
+      try {
+        const response = await axios.post(backendUrl + "/api/review/product", {
+          productId: id,
+        });
+        if (response.data.success) {
+          setRating({
+            averageRating: parseFloat(response.data.averageRating),
+            totalReviews: response.data.totalReviews,
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchRating();
+  }, [id, backendUrl]);
+
+  const renderStars = (avgRating) => {
+    const stars = [];
+    const fullStars = Math.floor(avgRating);
+    const hasHalfStar = avgRating % 1 >= 0.5;
+
+    for (let i = 0; i < fullStars; i++) {
+      stars.push(
+        <img key={i} src={assets.star_icon} alt="" className="w-3 h-3" />
+      );
+    }
+
+    if (hasHalfStar && fullStars < 5) {
+      stars.push(
+        <img key="half" src={assets.star_dull_icon} alt="" className="w-3 h-3 opacity-50" />
+      );
+    }
+
+    for (let i = fullStars + (hasHalfStar ? 1 : 0); i < 5; i++) {
+      stars.push(
+        <img key={i} src={assets.star_dull_icon} alt="" className="w-3 h-3" />
+      );
+    }
+
+    return stars;
+  };
+
   return (
     <div className="flex flex-col rounded-md border-[0.5px] pb-5 hover:shadow-md relative group h-full">
       <Link to={`/product/${id}`} className="text-gray-700 cursor-pointer flex flex-col h-full">
@@ -48,34 +95,39 @@ const ProductItem = ({ id, image, name, price }) => {
         </div>
         <div className="flex flex-col flex-grow pt-3">
           <p className="pb-1 pl-2 text-sm line-clamp-2 min-h-[2.5rem]">{name}</p>
+          <div className="flex items-center gap-1 pl-2 mb-1">
+            {renderStars(rating.averageRating)}
+            {rating.totalReviews > 0 && (
+              <span className="text-xs text-gray-500">({rating.totalReviews})</span>
+            )}
+          </div>
           <p className="pl-2 text-sm font-medium mt-auto">
             {currency} {price}
           </p>
         </div>
       </Link>
-      <div 
-        onClick={handleWishlistClick} 
-        className={`absolute flex items-center justify-center w-10 h-10 transition-all duration-300 rounded-full cursor-pointer top-3 right-3 ${
-          isInWishlist 
-            ? "bg-red-500 opacity-100 translate-y-0" 
-            : "bg-slate-300 opacity-0 transform -translate-y-5 group-hover:opacity-100 group-hover:translate-y-0"
-        }`}
+      <div
+        onClick={handleWishlistClick}
+        className={`absolute flex items-center justify-center w-10 h-10 transition-all duration-300 rounded-full cursor-pointer top-3 right-3 bg-white shadow-md ${isInWishlist
+            ? "opacity-100 translate-y-0"
+            : "opacity-0 transform -translate-y-5 group-hover:opacity-100 group-hover:translate-y-0"
+          }`}
       >
-        <svg 
-          xmlns="http://www.w3.org/2000/svg" 
-          viewBox="0 0 24 24" 
-          fill={isInWishlist ? "white" : "none"} 
-          stroke="white" 
-          strokeWidth="2" 
-          strokeLinecap="round" 
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill={isInWishlist ? "red" : "white"}
+          stroke={isInWishlist ? "red" : "black"}
+          strokeWidth="2"
+          strokeLinecap="round"
           strokeLinejoin="round"
           className="w-5 h-5"
         >
           <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
         </svg>
       </div>
-      <div className="absolute flex items-center justify-center w-10 h-10 transition-all duration-300 transform -translate-y-10 rounded-full opacity-0 cursor-pointer bg-slate-300 group-hover:opacity-100 group-hover:translate-y-0 top-16 right-3">
-        <img onClick={handleShareClick} src={assets.share} alt="" />
+      <div className="absolute flex items-center justify-center w-10 h-10 transition-all duration-300 transform -translate-y-10 rounded-full opacity-0 cursor-pointer bg-white shadow-md group-hover:opacity-100 group-hover:translate-y-0 top-16 right-3">
+        <img onClick={handleShareClick} src={assets.share} alt="" className="w-6 h-6" />
       </div>
 
       {/* Share Popup */}
