@@ -57,19 +57,23 @@ const Navbar = () => {
       </ul>
 
       <div className="flex items-center gap-4">
-        <div className="hidden sm:flex items-center gap-2 border border-gray-300 rounded px-2 py-1">
+        <div className="hidden sm:flex items-center bg-gray-100 rounded-full p-1 shadow-sm">
           <button
             onClick={() => changeLanguage("en")}
-            className={`text-xs font-medium px-2 py-1 rounded transition-colors ${
-              i18n.language === "en" ? "bg-black text-white" : "text-gray-600 hover:bg-gray-100"
+            className={`text-xs font-semibold px-4 py-1.5 rounded-full transition-all duration-200 ${
+              i18n.language === "en" 
+                ? "bg-white text-black shadow-md scale-105" 
+                : "text-gray-500 hover:text-gray-700"
             }`}
           >
             EN
           </button>
           <button
             onClick={() => changeLanguage("tr")}
-            className={`text-xs font-medium px-2 py-1 rounded transition-colors ${
-              i18n.language === "tr" ? "bg-black text-white" : "text-gray-600 hover:bg-gray-100"
+            className={`text-xs font-semibold px-4 py-1.5 rounded-full transition-all duration-200 ${
+              i18n.language === "tr" 
+                ? "bg-white text-black shadow-md scale-105" 
+                : "text-gray-500 hover:text-gray-700"
             }`}
           >
             TR
@@ -124,13 +128,21 @@ const Navbar = () => {
         />
       </div>
 
+      {/* Overlay for mobile menu */}
+      {visible && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-[9998] sm:hidden"
+          onClick={() => setVisible(false)}
+        />
+      )}
+
       {/* Sidebar for small screens */}
       <div
-        className={`absolute top-0 right-0 bottom-0 overflow-hidden bg-white transition-all ${
+        className={`fixed top-0 right-0 bottom-0 z-[9999] overflow-hidden bg-white transition-all sm:hidden ${
           visible ? "w-full" : "w-0"
         }`}
       >
-        <div className="flex flex-col text-gray-600">
+        <div className="flex flex-col text-gray-600 h-full overflow-y-auto">
           <div
             onClick={() => setVisible(false)}
             className="flex items-center gap-4 p-3 cursor-pointer"
@@ -167,15 +179,17 @@ const Navbar = () => {
             {t("navbar.contact")}
           </NavLink>
           <div className="py-3 pl-6 border border-t-2">
-            <p className="mb-2 text-sm font-semibold text-gray-700">Language / Dil</p>
-            <div className="flex items-center gap-2">
+            <p className="mb-3 text-sm font-semibold text-gray-700">Language / Dil</p>
+            <div className="flex items-center bg-gray-100 rounded-full p-1 max-w-[140px]">
               <button
                 onClick={() => {
                   changeLanguage("en");
                   setVisible(false);
                 }}
-                className={`text-sm font-medium px-4 py-2 rounded transition-colors ${
-                  i18n.language === "en" ? "bg-black text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                className={`text-sm font-semibold px-4 py-2 rounded-full transition-all duration-200 flex-1 ${
+                  i18n.language === "en" 
+                    ? "bg-white text-black shadow-md scale-105" 
+                    : "text-gray-500 hover:text-gray-700"
                 }`}
               >
                 EN
@@ -185,8 +199,10 @@ const Navbar = () => {
                   changeLanguage("tr");
                   setVisible(false);
                 }}
-                className={`text-sm font-medium px-4 py-2 rounded transition-colors ${
-                  i18n.language === "tr" ? "bg-black text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                className={`text-sm font-semibold px-4 py-2 rounded-full transition-all duration-200 flex-1 ${
+                  i18n.language === "tr" 
+                    ? "bg-white text-black shadow-md scale-105" 
+                    : "text-gray-500 hover:text-gray-700"
                 }`}
               >
                 TR
