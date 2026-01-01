@@ -97,9 +97,7 @@ const ProductItem = ({ id, image, name, price }) => {
           <p className="pb-1 pl-2 text-sm line-clamp-2 min-h-[2.5rem]">{name}</p>
           <div className="flex items-center gap-1 pl-2 mb-1">
             {renderStars(rating.averageRating)}
-            {rating.totalReviews > 0 && (
-              <span className="text-xs text-gray-500">({rating.totalReviews})</span>
-            )}
+            <span className="text-xs text-gray-500">({rating.totalReviews})</span>
           </div>
           <p className="pl-2 text-sm font-medium mt-auto">
             {currency} {price}
