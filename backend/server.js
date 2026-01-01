@@ -20,37 +20,42 @@ connectCloudinary();
 // Middlewares
 app.use(express.json());
 
-app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  
-  if (
-    !origin ||
-    origin.includes(".vercel.app") ||
-    origin.includes("localhost") ||
-    origin.includes("127.0.0.1") ||
-    process.env.NODE_ENV !== "production"
-  ) {
-    res.header("Access-Control-Allow-Origin", origin || "*");
-    res.header("Access-Control-Allow-Credentials", "true");
-    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH, OPTIONS");
-    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, token, x-requested-with");
-    res.header("Access-Control-Expose-Headers", "Content-Range, X-Content-Range");
-  }
+// CORS Configuration
+const allowedOrigins = [
+  "https://obay-ecommerce.vercel.app",
+  "http://localhost:5173",
+  "http://localhost:3000",
+  "http://127.0.0.1:5173",
+  "http://127.0.0.1:3000",
+];
 
-  if (req.method === "OPTIONS") {
-    return res.sendStatus(200);
-  }
-
-  next();
-});
-
-app.use(cors({
-  origin: true, // Tüm origin'lere izin ver
+// Dynamic origin function for CORS
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    // Check if origin is in allowed list or is a Vercel domain
+    if (
+      allowedOrigins.includes(origin) ||
+      origin.includes(".vercel.app") ||
+      origin.includes("localhost") ||
+      origin.includes("127.0.0.1")
+    ) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization", "token", "x-requested-with"],
-  exposedHeaders: ["Content-Range", "X-Content-Range"]
-}));
+  exposedHeaders: ["Content-Range", "X-Content-Range"],
+  preflightContinue: false,
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
 
 // API Endpoints
 app.use("/api/user", userRouter);
