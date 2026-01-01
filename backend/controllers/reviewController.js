@@ -1,6 +1,7 @@
 import reviewModel from "../models/reviewModel.js";
 import orderModel from "../models/orderModel.js";
 import productModel from "../models/productModel.js";
+import userModel from "../models/userModel.js";
 
 // Add rating/review for a product (only if user has purchased it)
 const addReview = async (req, res) => {
@@ -76,13 +77,24 @@ const getProductReviews = async (req, res) => {
     const { productId } = req.body;
     const reviews = await reviewModel.find({ productId }).sort({ date: -1 });
 
+    // Populate user information for each review
+    const reviewsWithUser = await Promise.all(
+      reviews.map(async (review) => {
+        const user = await userModel.findById(review.userId);
+        return {
+          ...review.toObject(),
+          userName: user ? user.name : "Anonymous",
+        };
+      })
+    );
+
     // Calculate average rating
     const totalRating = reviews.reduce((sum, r) => sum + r.rating, 0);
     const averageRating = reviews.length > 0 ? totalRating / reviews.length : 0;
 
     res.json({
       success: true,
-      reviews,
+      reviews: reviewsWithUser,
       averageRating: averageRating.toFixed(1),
       totalReviews: reviews.length,
     });

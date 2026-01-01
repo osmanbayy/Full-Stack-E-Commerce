@@ -69,6 +69,15 @@ const Product = () => {
   };
 
 
+  const getInitials = (name) => {
+    if (!name) return "??";
+    const parts = name.trim().split(" ");
+    if (parts.length >= 2) {
+      return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    }
+    return name.substring(0, 2).toUpperCase();
+  };
+
   const renderStars = (avgRating, clickable = false, onStarClick = null) => {
     const stars = [];
     const fullStars = Math.floor(avgRating);
@@ -264,15 +273,25 @@ const Product = () => {
                 <div className="flex flex-col gap-4">
                   {reviews.map((review, index) => (
                     <div key={index} className="p-4 border rounded-lg">
-                      <div className="flex items-center gap-2 mb-2">
-                        {renderStars(review.rating)}
-                        <span className="text-xs text-gray-400">
-                          {new Date(review.date).toLocaleDateString()}
-                        </span>
+                      <div className="flex items-start gap-3 mb-3">
+                        {/* User Avatar with Initials */}
+                        <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-sm font-semibold text-gray-700">
+                          {getInitials(review.userName)}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-1">
+                            {renderStars(review.rating)}
+                            <span className="text-xs text-gray-400">
+                              {new Date(review.date).toLocaleDateString()}
+                            </span>
+                          </div>
+                          {review.review && (
+                            <p className="text-sm text-gray-700 mt-2 leading-relaxed">
+                              {review.review}
+                            </p>
+                          )}
+                        </div>
                       </div>
-                      {review.review && (
-                        <p className="text-sm text-gray-600">{review.review}</p>
-                      )}
                     </div>
                   ))}
                 </div>

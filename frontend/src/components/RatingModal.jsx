@@ -9,12 +9,13 @@ import { Star } from "lucide-react";
 const RatingModal = ({ isOpen, onClose, productId, productName, onRatingSubmitted, backendUrl, token }) => {
   const [userRating, setUserRating] = useState(0);
   const [hoveredRating, setHoveredRating] = useState(0);
+  const [reviewText, setReviewText] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { t } = useTranslation();
 
   const handleRatingSubmit = async () => {
     if (userRating === 0) {
-      toast.error("Please select a rating");
+      toast.error(t("product.pleaseSelectRating") || "Please select a rating");
       return;
     }
 
@@ -25,6 +26,7 @@ const RatingModal = ({ isOpen, onClose, productId, productName, onRatingSubmitte
         {
           productId,
           rating: userRating,
+          review: reviewText.trim(),
         },
         { headers: { token } }
       );
@@ -32,6 +34,7 @@ const RatingModal = ({ isOpen, onClose, productId, productName, onRatingSubmitte
       if (response.data.success) {
         toast.success(t("product.ratingSubmitted"));
         setUserRating(0);
+        setReviewText("");
         onRatingSubmitted();
         onClose();
       } else {
@@ -117,6 +120,24 @@ const RatingModal = ({ isOpen, onClose, productId, productName, onRatingSubmitte
                   {t("product.yourRating")}: {userRating} / 5
                 </p>
               )}
+
+              {/* Review Text Area */}
+              <div className="mb-4">
+                <label className="block mb-2 text-sm font-medium text-gray-700">
+                  {t("product.writeReview") || "Write a Review (Optional)"}
+                </label>
+                <textarea
+                  value={reviewText}
+                  onChange={(e) => setReviewText(e.target.value)}
+                  placeholder={t("product.reviewPlaceholder") || "Share your experience with this product..."}
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-black transition-all duration-200 text-gray-900 placeholder-gray-400 resize-none"
+                  rows={4}
+                  maxLength={500}
+                />
+                <p className="text-xs text-gray-400 mt-1 text-right">
+                  {reviewText.length} / 500
+                </p>
+              </div>
 
               <div className="flex gap-3 justify-end">
                 <motion.button
