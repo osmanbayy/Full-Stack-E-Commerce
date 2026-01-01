@@ -2,9 +2,9 @@
 import { useContext, useState, useEffect } from "react";
 import { ShopContext } from "../context/ShopContext";
 import { Link } from "react-router-dom";
-import { assets } from "../assets/assets.js";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
+import { Star, Heart, Share2 } from "lucide-react";
 
 const ProductItem = ({ id, image, name, price }) => {
   const { currency, addToWishList, wishlistItems, removeFromWishlist, backendUrl } = useContext(ShopContext);
@@ -64,19 +64,19 @@ const ProductItem = ({ id, image, name, price }) => {
 
     for (let i = 0; i < fullStars; i++) {
       stars.push(
-        <img key={i} src={assets.star_icon} alt="" className="w-3 h-3" />
+        <Star key={i} className="w-3 h-3 fill-yellow-400 text-yellow-400" />
       );
     }
 
     if (hasHalfStar && fullStars < 5) {
       stars.push(
-        <img key="half" src={assets.star_dull_icon} alt="" className="w-3 h-3 opacity-50" />
+        <Star key="half" className="w-3 h-3 opacity-50" />
       );
     }
 
     for (let i = fullStars + (hasHalfStar ? 1 : 0); i < 5; i++) {
       stars.push(
-        <img key={i} src={assets.star_dull_icon} alt="" className="w-3 h-3" />
+        <Star key={i} className="w-3 h-3 text-gray-300" />
       );
     }
 
@@ -111,21 +111,10 @@ const ProductItem = ({ id, image, name, price }) => {
             : "opacity-0 transform -translate-y-5 group-hover:opacity-100 group-hover:translate-y-0"
           }`}
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill={isInWishlist ? "red" : "white"}
-          stroke={isInWishlist ? "red" : "black"}
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="w-5 h-5"
-        >
-          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-        </svg>
+        <Heart className={`w-5 h-5 ${isInWishlist ? "fill-red-600 text-red-600" : "text-black"}`} />
       </div>
       <div className="absolute flex items-center justify-center w-10 h-10 transition-all duration-300 transform -translate-y-10 rounded-full opacity-0 cursor-pointer bg-white shadow-md group-hover:opacity-100 group-hover:translate-y-0 top-16 right-3">
-        <img onClick={handleShareClick} src={assets.share} alt="" className="w-6 h-6" />
+        <Share2 onClick={handleShareClick} className="w-5 h-5" />
       </div>
 
       {/* Share Popup */}

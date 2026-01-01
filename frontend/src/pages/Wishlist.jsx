@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import { ShopContext } from "../context/ShopContext";
 import Title from "../components/Title";
-import { assets } from "../assets/assets";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { getProductName } from "../utils/productTranslations";
+import { Trash2 } from "lucide-react";
 
 const Wishlist = () => {
   const { wishlistItems, products, currency, removeFromWishlist, token, navigate } = useContext(ShopContext);
@@ -89,7 +89,7 @@ const Wishlist = () => {
                   className="px-3 py-2 text-sm text-white"
                   title="Remove from wishlist"
                 >
-                  <img src={assets.bin_icon} alt="Remove" className="w-4 h-4 mx-auto" />
+                  <Trash2 className="w-4 h-4 mx-auto" />
                 </button>
               </div>
             </div>

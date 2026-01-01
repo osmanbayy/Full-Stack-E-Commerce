@@ -90,6 +90,8 @@
     "myCart": "SEPETİM",
     "yourCart": "SEPETİNİZ",
     "emptyCart": "Sepetiniz boş!",
+    "emptyCartDesc": "Sepetinize henüz ürün eklemediniz. Alışverişe başlayarak sepete ürün ekleyebilirsiniz!",
+    "startShopping": "Alışverişe Başla",
     "proceedToCheckout": "ÖDEMEYE GEÇ",
     "cartTotals": "SEPET TOPLAMI",
     "subtotal": "Ara Toplam",

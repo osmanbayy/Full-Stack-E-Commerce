@@ -4,6 +4,7 @@ import { Link, NavLink } from "react-router-dom";
 import { ShopContext } from "../context/ShopContext.jsx";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
+import { Search, Heart, User, ShoppingCart, Menu, ChevronLeft, UserCircle, Package, LogOut, ChevronRight } from "lucide-react";
 
 const Navbar = () => {
   const [visible, setVisible] = useState(false);
@@ -90,57 +91,64 @@ const Navbar = () => {
             TR
           </button>
         </div>
-        <img
+        <Search
           onClick={() => setShowSearch(true)}
-          src={assets.search_icon}
-          className="w-5 cursor-pointer"
-          alt=""
+          className="w-5 h-5 cursor-pointer"
         />
         <Link to={"/wishlist"}>
-          <img src={assets.wishlist} alt="" />
+          <Heart className="w-5 h-5" />
         </Link>
 
         <div className="relative group">
-          <img
+          <User
             onClick={() => (token ? null : navigate("/login"))}
-            src={assets.profile_icon}
-            className="w-5 cursor-pointer"
-            alt=""
+            className="w-5 h-5 cursor-pointer transition-colors hover:text-gray-700"
           />
-          {/* -------- Dropdown --------- */}
+          {/* -------- Modern Dropdown --------- */}
           {token && (
-            <div className="absolute right-0 hidden pt-4 group-hover:block dropdown-menu">
-              <div className="flex flex-col gap-2 px-5 py-3 text-gray-500 rounded w-36 bg-slate-100">
-                <p
+            <div className="absolute right-0 hidden pt-4 group-hover:block dropdown-menu z-50 transition-all duration-200 opacity-0 group-hover:opacity-100">
+              <div className="flex flex-col gap-1 px-2 py-2 text-sm text-gray-700 rounded-xl w-48 bg-white shadow-2xl border border-gray-100 overflow-hidden">
+                <div
                   onClick={() => navigate("/my-profile")}
-                  className="cursor-pointer hover:text-black"
+                  className="flex items-center gap-3 px-4 py-3 cursor-pointer rounded-lg transition-all duration-200 hover:bg-gray-50 hover:text-black hover:translate-x-1 group/item"
                 >
-                  {t("navbar.myProfile")}
-                </p>
-                <p
+                  <UserCircle className="w-4 h-4 text-gray-500 group-hover/item:text-black transition-colors" />
+                  <span className="flex-1 font-medium">{t("navbar.myProfile")}</span>
+                  <ChevronRight className="w-4 h-4 text-gray-400 opacity-0 group-hover/item:opacity-100 transition-opacity" />
+                </div>
+                
+                <div
                   onClick={() => navigate("/orders")}
-                  className="cursor-pointer hover:text-black"
+                  className="flex items-center gap-3 px-4 py-3 cursor-pointer rounded-lg transition-all duration-200 hover:bg-gray-50 hover:text-black hover:translate-x-1 group/item"
                 >
-                  {t("navbar.orders")}
-                </p>
-                <p onClick={handleLogoutClick} className="cursor-pointer hover:text-black">
-                  {t("navbar.logout")}
-                </p>
+                  <Package className="w-4 h-4 text-gray-500 group-hover/item:text-black transition-colors" />
+                  <span className="flex-1 font-medium">{t("navbar.orders")}</span>
+                  <ChevronRight className="w-4 h-4 text-gray-400 opacity-0 group-hover/item:opacity-100 transition-opacity" />
+                </div>
+                
+                <div className="h-px bg-gray-200 my-1 mx-2" />
+                
+                <div
+                  onClick={handleLogoutClick}
+                  className="flex items-center gap-3 px-4 py-3 cursor-pointer rounded-lg transition-all duration-200 hover:bg-red-50 hover:text-red-600 hover:translate-x-1 group/item"
+                >
+                  <LogOut className="w-4 h-4 text-gray-500 group-hover/item:text-red-600 transition-colors" />
+                  <span className="flex-1 font-medium">{t("navbar.logout")}</span>
+                  <ChevronRight className="w-4 h-4 text-gray-400 opacity-0 group-hover/item:opacity-100 transition-opacity" />
+                </div>
               </div>
             </div>
           )}
         </div>
         <Link to="/cart" className="relative">
-          <img src={assets.cart_icon} className="w-5 min-w-5" alt="" />
+          <ShoppingCart className="w-5 h-5 min-w-5" />
           <p className="absolute right-[-5px] bottom-[-5px] w-4 text-center leading-4 bg-black text-white aspect-square rounded text-[10px]">
             {getCartCount()}
           </p>
         </Link>
-        <img
+        <Menu
           onClick={() => setVisible(true)}
-          src={assets.menu_icon}
-          className="w-5 cursor-pointer sm:hidden"
-          alt=""
+          className="w-5 h-5 cursor-pointer sm:hidden"
         />
       </div>
 
@@ -163,7 +171,7 @@ const Navbar = () => {
             onClick={() => setVisible(false)}
             className="flex items-center gap-4 p-3 cursor-pointer"
           >
-            <img className="h-4 rotate-180" src={assets.dropdown_icon} alt="" />
+            <ChevronLeft className="h-4 w-4 rotate-180" />
             <p>Back</p>
           </div>
           <NavLink

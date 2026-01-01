@@ -2,13 +2,13 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { ShopContext } from "../context/ShopContext";
-import { assets } from "../assets/assets";
 import RelatedProducts from "../components/RelatedProducts";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { getProductName } from "../utils/productTranslations";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { Star, ShoppingCart, Heart, Check } from "lucide-react";
 
 const Product = () => {
   const { productId } = useParams();
@@ -77,31 +77,25 @@ const Product = () => {
     for (let i = 1; i <= 5; i++) {
       if (i <= fullStars) {
         stars.push(
-          <img
+          <Star
             key={i}
-            src={assets.star_icon}
-            alt=""
-            className="w-4 h-4 cursor-pointer"
+            className="w-4 h-4 cursor-pointer fill-yellow-400 text-yellow-400"
             onClick={clickable && onStarClick ? () => onStarClick(i) : undefined}
           />
         );
       } else if (i === fullStars + 1 && hasHalfStar) {
         stars.push(
-          <img
+          <Star
             key={i}
-            src={assets.star_dull_icon}
-            alt=""
             className="w-4 h-4 opacity-50 cursor-pointer"
             onClick={clickable && onStarClick ? () => onStarClick(i) : undefined}
           />
         );
       } else {
         stars.push(
-          <img
+          <Star
             key={i}
-            src={assets.star_dull_icon}
-            alt=""
-            className="w-4 h-4 cursor-pointer"
+            className="w-4 h-4 cursor-pointer text-gray-300"
             onClick={clickable && onStarClick ? () => onStarClick(i) : undefined}
           />
         );
@@ -167,19 +161,7 @@ const Product = () => {
                   transition={{ type: "spring", stiffness: 300 }}
                 >
                   {item === size && (
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
+                    <Check className="w-4 h-4" />
                   )}
                   {item}
                 </motion.button>
@@ -194,7 +176,7 @@ const Product = () => {
               whileTap={{ scale: 0.98 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
-              <img src={assets.cart_icon} alt="cart" className="w-5 h-5 invert" />
+              <ShoppingCart className="w-5 h-5" />
               {t("product.addToCart")}
             </motion.button>
             <motion.button
@@ -208,17 +190,7 @@ const Product = () => {
               whileTap={{ scale: 0.98 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
-              {isInWishlist ? (
-                <svg
-                  className="w-5 h-5 fill-current"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M12,21 L10.55,19.7051771 C5.4,15.1242507 2,12.1029973 2,8.39509537 C2,5.37384196 4.42,3 7.5,3 C9.24,3 10.91,3.79455041 12,5.05013624 C13.09,3.79455041 14.76,3 16.5,3 C19.58,3 22,5.37384196 22,8.39509537 C22,12.1029973 18.6,15.1242507 13.45,19.7149864 L12,21 Z" />
-                </svg>
-              ) : (
-                <img src={assets.wishlist} alt="wishlist" className="w-5 h-5" />
-              )}
+              <Heart className={`w-5 h-5 ${isInWishlist ? "fill-red-600 text-red-600" : ""}`} />
               {isInWishlist ? t("product.removeFromWishlist") : t("product.addToWishlist")}
             </motion.button>
           </div>

@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useContext, useEffect, useRef } from "react";
 import { ShopContext } from "../context/ShopContext";
-import { assets } from "../assets/assets";
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { Search, X } from "lucide-react";
 
 const SearchBar = () => {
   const { search, setSearch, showSearch, setShowSearch } =
@@ -81,27 +81,25 @@ const SearchBar = () => {
                 className="flex-1 text-base outline-none bg-transparent"
                 placeholder={t("search.placeholder")}
               />
-              <motion.img
-                src={assets.search_icon}
-                className="w-5 mr-3 cursor-pointer"
-                alt=""
+              <motion.div
                 onClick={handleSearch}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 transition={{ type: "spring", stiffness: 300 }}
-              />
-              <motion.img
+              >
+                <Search className="w-5 h-5 mr-3 cursor-pointer" />
+              </motion.div>
+              <motion.div
                 onClick={() => {
                   setShowSearch(false);
                   setSearch("");
                 }}
-                src={assets.cross_icon}
-                className="w-4 cursor-pointer"
-                alt=""
                 whileHover={{ scale: 1.2, rotate: 90 }}
                 whileTap={{ scale: 0.9 }}
                 transition={{ type: "spring", stiffness: 300 }}
-              />
+              >
+                <X className="w-4 h-4 cursor-pointer" />
+              </motion.div>
             </div>
           </motion.div>
         </motion.div>

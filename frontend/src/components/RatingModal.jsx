@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { assets } from "../assets/assets";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { Star } from "lucide-react";
 
 const RatingModal = ({ isOpen, onClose, productId, productName, onRatingSubmitted, backendUrl, token }) => {
   const [userRating, setUserRating] = useState(0);
@@ -51,17 +51,22 @@ const RatingModal = ({ isOpen, onClose, productId, productName, onRatingSubmitte
 
     for (let i = 1; i <= 5; i++) {
       stars.push(
-        <motion.img
+        <motion.div
           key={i}
-          src={i <= ratingToShow ? assets.star_icon : assets.star_dull_icon}
-          alt=""
-          className="w-8 h-8 cursor-pointer transition-all"
           onClick={clickable ? () => setUserRating(i) : undefined}
           onMouseEnter={clickable ? () => setHoveredRating(i) : undefined}
           onMouseLeave={clickable ? () => setHoveredRating(0) : undefined}
           whileHover={clickable ? { scale: 1.1 } : {}}
           whileTap={clickable ? { scale: 0.95 } : {}}
-        />
+        >
+          <Star
+            className={`w-8 h-8 cursor-pointer transition-all ${
+              i <= ratingToShow
+                ? "fill-yellow-400 text-yellow-400"
+                : "text-gray-300"
+            }`}
+          />
+        </motion.div>
       );
     }
 

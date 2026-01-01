@@ -90,6 +90,8 @@
     "myCart": "MY CART",
     "yourCart": "YOUR CART",
     "emptyCart": "Your cart is empty!",
+    "emptyCartDesc": "Looks like you haven't added anything to your cart yet. Start shopping to fill it up!",
+    "startShopping": "Start Shopping",
     "proceedToCheckout": "PROCEED TO CHECKOUT",
     "cartTotals": "CART TOTALS",
     "subtotal": "Subtotal",

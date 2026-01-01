@@ -1,13 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useContext, useEffect, useState, useRef } from "react";
 import { ShopContext } from "../context/ShopContext";
-import { assets } from "../assets/assets";
 import Title from "../components/Title";
 import ProductItem from "../components/ProductItem";
 import ProductItemSkeleton from "../components/ProductItemSkeleton";
 import { useTranslation } from "react-i18next";
 import { searchProducts, getProductName } from "../utils/productTranslations";
 import { motion, AnimatePresence } from "framer-motion";
+import { ChevronDown } from "lucide-react";
 
 const Collection = () => {
   const { products, search, showSearch, isLoadingProducts } = useContext(ShopContext);
@@ -134,10 +134,8 @@ const Collection = () => {
           className="flex items-center gap-2 my-2 text-xl cursor-pointer"
         >
           {t("collection.filters")}
-          <img
-            src={assets.dropdown_icon}
-            className={`h-3 sm:hidden ${showFilter ? "rotate-90" : ""}`}
-            alt=""
+          <ChevronDown
+            className={`h-3 w-3 sm:hidden transition-transform ${showFilter ? "rotate-90" : ""}`}
           />
         </p>
         {/* Catogory Filter */}
