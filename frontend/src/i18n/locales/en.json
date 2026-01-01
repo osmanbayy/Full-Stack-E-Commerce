@@ -10,7 +10,8 @@
     "logoutConfirm": "Are you sure?",
     "logoutMessage": "Do you want to log out?",
     "yes": "Yes",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "back": "Back"
   },
   "hero": {
     "bestsellers": "OUR BESTSELLERS",
@@ -79,15 +80,21 @@
     "pleaseSelectSize": "Please Select Product Size!"
   },
   "wishlist": {
-    "yourWishlist": "YOUR WISHLIST",
+    "yourWishlist": "Your Wishlist",
+    "your": "YOUR",
+    "wishlist": "WISHLIST",
     "noItems": "No items in your wishlist!",
+    "noItemsDesc": "Looks like you haven't added anything to your wishlist yet. Start exploring to find products you love!",
+    "exploreProducts": "Explore Products",
     "pleaseLogin": "Please login to view your wishlist.",
+    "addToCart": "Add to Cart",
+    "removeFromWishlist": "Remove from wishlist",
     "itemAdded": "Item added to Wish List!",
     "itemRemoved": "Item removed from Wish List!",
     "loginRequired": "You need to be logged in to add items to Wish List."
   },
   "cart": {
-    "myCart": "MY CART",
+    "myCart": "My Cart",
     "yourCart": "YOUR CART",
     "emptyCart": "Your cart is empty!",
     "emptyCartDesc": "Looks like you haven't added anything to your cart yet. Start shopping to fill it up!",

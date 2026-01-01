@@ -10,7 +10,8 @@
     "logoutConfirm": "Emin misiniz?",
     "logoutMessage": "Çıkış yapmak istiyor musunuz?",
     "yes": "Evet",
-    "cancel": "İptal"
+    "cancel": "İptal",
+    "back": "Geri"
   },
   "hero": {
     "bestsellers": "EN ÇOK SATANLAR",
@@ -79,15 +80,21 @@
     "pleaseSelectSize": "Lütfen Ürün Bedenini Seçin!"
   },
   "wishlist": {
-    "yourWishlist": "İSTEK LİSTENİZ",
+    "yourWishlist": "İstek Listeniz",
+    "your": "İSTEK",
+    "wishlist": "LİSTENİZ",
     "noItems": "İstek listenizde ürün yok!",
+    "noItemsDesc": "Henüz istek listenize ürün eklemediniz. Beğendiğiniz ürünleri bulmak için keşfetmeye başlayın!",
+    "exploreProducts": "Ürünleri Keşfet",
     "pleaseLogin": "İstek listenizi görmek için lütfen giriş yapın.",
+    "addToCart": "Sepete Ekle",
+    "removeFromWishlist": "İstek listesinden çıkar",
     "itemAdded": "Ürün İstek Listesine Eklendi!",
     "itemRemoved": "Ürün İstek Listesinden Çıkarıldı!",
     "loginRequired": "İstek listesine ürün eklemek için giriş yapmanız gerekiyor."
   },
   "cart": {
-    "myCart": "SEPETİM",
+    "myCart": "Sepetim",
     "yourCart": "SEPETİNİZ",
     "emptyCart": "Sepetiniz boş!",
     "emptyCartDesc": "Sepetinize henüz ürün eklemediniz. Alışverişe başlayarak sepete ürün ekleyebilirsiniz!",
