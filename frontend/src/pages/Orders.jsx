@@ -14,6 +14,7 @@ const Orders = () => {
   const { t, i18n } = useTranslation();
 
   const [orderData, setOrderData] = useState([]);
+  const [activeTab, setActiveTab] = useState("active"); // "active" or "history"
   const [ratingModal, setRatingModal] = useState({ isOpen: false, productId: null, productName: null });
 
   const getStatusTranslation = (status) => {
@@ -77,18 +78,56 @@ const Orders = () => {
     return status === "Delivered";
   };
 
+  // Filter orders based on active tab
+  const activeOrders = orderData.filter((item) => !isDelivered(item.status));
+  const historyOrders = orderData.filter((item) => isDelivered(item.status));
+  const displayedOrders = activeTab === "active" ? activeOrders : historyOrders;
+
   return (
     <div className="pt-16 border-t">
       <div className="text-2xl">
         <Title text1={t("orders.myOrders").split(" ")[0]} text2={t("orders.myOrders").split(" ").slice(1).join(" ")} />
       </div>
 
+      {/* Tabs */}
+      <div className="flex gap-4 mt-6 mb-6 border-b border-gray-200">
+        <button
+          onClick={() => setActiveTab("active")}
+          className={`px-6 py-3 text-sm font-semibold transition-colors ${
+            activeTab === "active"
+              ? "text-gray-900 border-b-2 border-black"
+              : "text-gray-500 hover:text-gray-700"
+          }`}
+        >
+          {t("orders.activeOrders")} ({activeOrders.length})
+        </button>
+        <button
+          onClick={() => setActiveTab("history")}
+          className={`px-6 py-3 text-sm font-semibold transition-colors ${
+            activeTab === "history"
+              ? "text-gray-900 border-b-2 border-black"
+              : "text-gray-500 hover:text-gray-700"
+          }`}
+        >
+          {t("orders.orderHistory")} ({historyOrders.length})
+        </button>
+      </div>
+
       <div className="">
-        {orderData.map((item, index) => 
-          <div
-            key={index}
-            className="flex flex-col gap-4 py-4 text-gray-700 border-t border-b md:flex-row md:items-center md:justify-between"
-          >
+        {displayedOrders.length === 0 ? (
+          <div className="py-12 text-center">
+            <p className="text-lg text-gray-500">
+              {activeTab === "active" 
+                ? t("orders.noActiveOrders") 
+                : t("orders.noOrderHistory")}
+            </p>
+          </div>
+        ) : (
+          displayedOrders.map((item, index) => 
+            <div
+              key={index}
+              className="flex flex-col gap-4 py-4 text-gray-700 border-t border-b md:flex-row md:items-center md:justify-between"
+            >
             <div className="flex items-start gap-6 text-sm">
               <img src={item.image[0]} className="w-16 sm:w-20" alt="" />
               <div>
@@ -115,7 +154,7 @@ const Orders = () => {
                 <p className="text-sm md:text-base">{getStatusTranslation(item.status)}</p>
               </div>
               <div className="flex gap-2">
-                {isDelivered(item.status) && (
+                {isDelivered(item.status) ? (
                   <motion.button
                     onClick={() => handleOpenRatingModal(item._id, getProductName(item, i18n.language))}
                     className="px-4 py-2 text-sm font-medium text-white bg-black rounded-sm hover:bg-gray-800 transition-colors"
@@ -124,13 +163,15 @@ const Orders = () => {
                   >
                     {t("orders.rateProduct")}
                   </motion.button>
+                ) : (
+                  <button onClick={loadOrderData} className="px-4 py-2 text-sm font-medium border rounded-sm hover:bg-gray-50 transition-colors">
+                    {t("orders.trackOrder")}
+                  </button>
                 )}
-                <button onClick={loadOrderData} className="px-4 py-2 text-sm font-medium border rounded-sm hover:bg-gray-50 transition-colors">
-                  {t("orders.trackOrder")}
-                </button>
               </div>
             </div>
           </div>
+          )
         )}
       </div>
 

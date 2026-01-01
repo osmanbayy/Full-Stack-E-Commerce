@@ -121,7 +121,11 @@
     "packing": "Paketleniyor",
     "shipped": "Kargoya Verildi",
     "outForDelivery": "Kargoda",
-    "delivered": "Teslim Edildi"
+    "delivered": "Teslim Edildi",
+    "activeOrders": "Aktif Siparişlerim",
+    "orderHistory": "Geçmiş Siparişlerim",
+    "noActiveOrders": "Henüz aktif siparişiniz yok",
+    "noOrderHistory": "Henüz sipariş geçmişiniz yok"
   },
   "profile": {
     "myProfile": "PROFİLİM",

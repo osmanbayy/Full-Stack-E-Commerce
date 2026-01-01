@@ -121,7 +121,11 @@
     "packing": "Packing",
     "shipped": "Shipped",
     "outForDelivery": "Out for Delivery",
-    "delivered": "Delivered"
+    "delivered": "Delivered",
+    "activeOrders": "Active Orders",
+    "orderHistory": "Order History",
+    "noActiveOrders": "No active orders yet",
+    "noOrderHistory": "No order history yet"
   },
   "profile": {
     "myProfile": "MY PROFILE",
