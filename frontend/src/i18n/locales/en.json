@@ -93,6 +93,21 @@
     "subscribeDesc": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo, doloribus!",
     "enterEmail": "Enter your email...",
     "subscribeButton": "SUBSCRIBE"
+  },
+  "about": {
+    "aboutUs": "ABOUT US",
+    "paragraph1": "We are a modern e-commerce brand focused on delivering high-quality products that combine style, functionality, and value. Our goal is to make online shopping simple, reliable, and enjoyable by offering carefully selected collections that meet the needs of today's customers.",
+    "paragraph2": "From product selection to order delivery, every step of our process is designed with attention to detail and customer satisfaction. We work closely with trusted suppliers and continuously update our catalog to ensure that our customers always have access to the latest and most in-demand products.",
+    "paragraph3": "We believe that great shopping experiences are built on transparency, consistency, and trust. That's why we prioritize secure payments, fast shipping, and responsive customer support—so you can shop with confidence every time.",
+    "ourMission": "Our Mission",
+    "missionText": "Our mission is to provide a seamless e-commerce experience by offering quality products at fair prices while maintaining exceptional service standards. We aim to build long-term relationships with our customers by continuously improving our platform, expanding our collections, and staying aligned with evolving trends and expectations.",
+    "whyChooseUs": "WHY CHOOSE US?",
+    "qualityAssurance": "Quality Assurance",
+    "qualityAssuranceDesc": "We carefully select and inspect every product to ensure high quality, durability, and consistency before it reaches our customers.",
+    "convenience": "Convenience",
+    "convenienceDesc": "Enjoy a seamless shopping experience with an easy-to-use platform, secure checkout, and fast, reliable delivery.",
+    "exceptionalService": "Exceptional Customer Service",
+    "exceptionalServiceDesc": "Our support team is always ready to help, ensuring quick responses, clear communication, and customer satisfaction."
   }
 }
 

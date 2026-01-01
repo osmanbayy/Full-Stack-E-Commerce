@@ -93,6 +93,21 @@
     "subscribeDesc": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo, doloribus!",
     "enterEmail": "E-posta adresinizi girin...",
     "subscribeButton": "ABONE OL"
+  },
+  "about": {
+    "aboutUs": "HAKKIMIZDA",
+    "paragraph1": "Stil, işlevsellik ve değeri birleştiren yüksek kaliteli ürünler sunmaya odaklanmış modern bir e-ticaret markasıyız. Amacımız, günümüz müşterilerinin ihtiyaçlarını karşılayan özenle seçilmiş koleksiyonlar sunarak online alışverişi basit, güvenilir ve keyifli hale getirmektir.",
+    "paragraph2": "Ürün seçiminden sipariş teslimatına kadar sürecimizin her adımı, detaylara dikkat ve müşteri memnuniyeti ile tasarlanmıştır. Güvenilir tedarikçilerle yakın çalışıyor ve müşterilerimizin her zaman en son ve en çok talep edilen ürünlere erişebilmesini sağlamak için kataloğumuzu sürekli güncelliyoruz.",
+    "paragraph3": "Harika alışveriş deneyimlerinin şeffaflık, tutarlılık ve güven üzerine kurulduğuna inanıyoruz. Bu yüzden güvenli ödemeler, hızlı kargo ve duyarlı müşteri desteğine öncelik veriyoruz—böylece her seferinde güvenle alışveriş yapabilirsiniz.",
+    "ourMission": "Misyonumuz",
+    "missionText": "Misyonumuz, olağanüstü hizmet standartlarını korurken adil fiyatlarla kaliteli ürünler sunarak sorunsuz bir e-ticaret deneyimi sağlamaktır. Platformumuzu sürekli iyileştirerek, koleksiyonlarımızı genişleterek ve gelişen trendler ve beklentilerle uyumlu kalarak müşterilerimizle uzun vadeli ilişkiler kurmayı hedefliyoruz.",
+    "whyChooseUs": "NEDEN BİZİ SEÇMELİSİNİZ?",
+    "qualityAssurance": "Kalite Güvencesi",
+    "qualityAssuranceDesc": "Müşterilerimize ulaşmadan önce yüksek kalite, dayanıklılık ve tutarlılığı sağlamak için her ürünü dikkatle seçiyor ve inceliyoruz.",
+    "convenience": "Kolaylık",
+    "convenienceDesc": "Kullanımı kolay platform, güvenli ödeme ve hızlı, güvenilir teslimat ile sorunsuz bir alışveriş deneyimi yaşayın.",
+    "exceptionalService": "Olağanüstü Müşteri Hizmetleri",
+    "exceptionalServiceDesc": "Destek ekibimiz her zaman yardıma hazırdır ve hızlı yanıtlar, net iletişim ve müşteri memnuniyeti sağlar."
   }
 }
 

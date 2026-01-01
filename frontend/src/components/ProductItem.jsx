@@ -37,19 +37,21 @@ const ProductItem = ({ id, image, name, price }) => {
   };
 
   return (
-    <div className="rounded-md border-[0.5px] pb-5 hover:shadow-md relative group">
-      <Link to={`/product/${id}`} className="text-gray-700 cursor-pointer">
-        <div className="overflow-hidden">
+    <div className="flex flex-col rounded-md border-[0.5px] pb-5 hover:shadow-md relative group h-full">
+      <Link to={`/product/${id}`} className="text-gray-700 cursor-pointer flex flex-col h-full">
+        <div className="overflow-hidden aspect-square">
           <img
             src={image[0]}
-            className="transition ease-in-out hover:scale-110"
+            className="w-full h-full object-cover transition ease-in-out hover:scale-110"
             alt=""
           />
         </div>
-        <p className="pt-3 pb-1 pl-2 text-sm">{name}</p>
-        <p className="pl-2 text-sm font-medium">
-          {currency} {price}
-        </p>
+        <div className="flex flex-col flex-grow pt-3">
+          <p className="pb-1 pl-2 text-sm line-clamp-2 min-h-[2.5rem]">{name}</p>
+          <p className="pl-2 text-sm font-medium mt-auto">
+            {currency} {price}
+          </p>
+        </div>
       </Link>
       <div 
         onClick={handleWishlistClick} 
