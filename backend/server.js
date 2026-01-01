@@ -20,42 +20,41 @@ connectCloudinary();
 // Middlewares
 app.use(express.json());
 
-// CORS Configuration
-const allowedOrigins = [
-  "https://obay-ecommerce.vercel.app",
-  "http://localhost:5173",
-  "http://localhost:3000",
-  "http://127.0.0.1:5173",
-  "http://127.0.0.1:3000",
-];
+// CORS Configuration - Must be before routes
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  
+  // Set CORS headers for all requests
+  if (origin) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  } else {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+  }
+  
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, token, x-requested-with");
+  res.setHeader("Access-Control-Expose-Headers", "Content-Range, X-Content-Range");
+  res.setHeader("Access-Control-Max-Age", "86400"); // 24 hours
+  
+  // Handle preflight requests
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+  
+  next();
+});
 
-// Dynamic origin function for CORS
-const corsOptions = {
-  origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    
-    // Check if origin is in allowed list or is a Vercel domain
-    if (
-      allowedOrigins.includes(origin) ||
-      origin.includes(".vercel.app") ||
-      origin.includes("localhost") ||
-      origin.includes("127.0.0.1")
-    ) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
+// Additional CORS middleware
+app.use(cors({
+  origin: true, // Allow all origins
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization", "token", "x-requested-with"],
   exposedHeaders: ["Content-Range", "X-Content-Range"],
   preflightContinue: false,
   optionsSuccessStatus: 200
-};
-
-app.use(cors(corsOptions));
+}));
 
 // API Endpoints
 app.use("/api/user", userRouter);
