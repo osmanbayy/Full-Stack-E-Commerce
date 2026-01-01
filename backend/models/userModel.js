@@ -6,7 +6,10 @@ const userSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     cartData: { type: Object, default: {} },
-    wishList: { type: [String], default: [] }
+    wishList: { type: [String], default: [] },
+    isEmailVerified: { type: Boolean, default: false },
+    emailVerificationToken: { type: String, default: null },
+    emailVerificationTokenExpiry: { type: Date, default: null }
   },
   { minimize: false }
 );

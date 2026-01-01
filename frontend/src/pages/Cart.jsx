@@ -5,9 +5,10 @@ import { assets } from "../assets/assets";
 import CartTotal from "../components/CartTotal";
 import { useTranslation } from "react-i18next";
 import { getProductName } from "../utils/productTranslations";
+import toast from "react-hot-toast";
 
 const Cart = () => {
-  const { products, currency, cartItems, updateQuantity, navigate } =
+  const { products, currency, cartItems, updateQuantity, navigate, token } =
     useContext(ShopContext);
   const { t, i18n } = useTranslation();
 
@@ -100,7 +101,14 @@ const Cart = () => {
           <CartTotal />
           <div className="w-full text-end">
             <button
-              onClick={() => navigate("/place-order")}
+              onClick={() => {
+                if (!token) {
+                  toast.error(t("cart.loginRequired"));
+                  navigate("/login");
+                } else {
+                  navigate("/place-order");
+                }
+              }}
               className="px-8 py-3 my-8 text-sm text-white transition-all bg-black hover:tracking-wider"
             >
               {t("cart.proceedToCheckout")}

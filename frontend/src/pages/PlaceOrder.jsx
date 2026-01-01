@@ -152,6 +152,13 @@ const PlaceOrder = () => {
     }
   }, [selectedProvince]);
 
+  useEffect(() => {
+    if (!token) {
+      toast.error(t("placeOrder.loginRequired"));
+      navigate("/login");
+    }
+  }, [token, navigate, t]);
+
   return (
     <form
       onSubmit={onSubmitHandler}

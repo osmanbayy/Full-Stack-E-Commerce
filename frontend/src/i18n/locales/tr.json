@@ -94,7 +94,8 @@
     "cartTotals": "SEPET TOPLAMI",
     "subtotal": "Ara Toplam",
     "shippingFee": "Kargo Ücreti",
-    "total": "Toplam"
+    "total": "Toplam",
+    "loginRequired": "Ödeme yapmak için lütfen giriş yapın"
   },
   "orders": {
     "myOrders": "SİPARİŞLERİM",
@@ -129,7 +130,12 @@
     "forgotPassword": "Şifrenizi mi unuttunuz?",
     "createAccount": "Hesap Oluştur",
     "loginHere": "Buradan Giriş Yap",
-    "signIn": "Giriş Yap"
+    "signIn": "Giriş Yap",
+    "verificationEmailSent": "Doğrulama e-postası gönderildi! Lütfen gelen kutunuzu kontrol edin.",
+    "verificationRequired": "Devam etmek için lütfen e-posta adresinizi doğrulayın. Doğrulama bağlantısı için gelen kutunuzu kontrol edin.",
+    "resendVerification": "Doğrulama E-postasını Yeniden Gönder",
+    "resendSuccess": "Doğrulama e-postası başarıyla gönderildi!",
+    "resendError": "Doğrulama e-postası gönderilemedi. Lütfen tekrar deneyin."
   },
   "placeOrder": {
     "deliveryInformation": "TESLİMAT BİLGİLERİ",
@@ -144,7 +150,22 @@
     "zipcode": "Posta Kodu",
     "country": "Ülke",
     "phone": "Telefon",
-    "cashOnDelivery": "KAPIDA ÖDEME"
+    "cashOnDelivery": "KAPIDA ÖDEME",
+    "loginRequired": "Sipariş vermek için lütfen giriş yapın"
+  },
+  "verifyEmail": {
+    "verifying": "E-postanız doğrulanıyor...",
+    "successTitle": "E-posta Doğrulandı!",
+    "success": "E-postanız başarıyla doğrulandı.",
+    "errorTitle": "Doğrulama Başarısız",
+    "error": "Geçersiz veya süresi dolmuş doğrulama token'ı.",
+    "noToken": "Doğrulama token'ı sağlanmadı.",
+    "redirecting": "Giriş sayfasına yönlendiriliyor...",
+    "resendButton": "Doğrulama E-postasını Yeniden Gönder",
+    "backToLogin": "Girişe Dön",
+    "enterEmail": "E-posta adresinizi girin:",
+    "resendSuccess": "Doğrulama e-postası başarıyla gönderildi!",
+    "resendError": "Doğrulama e-postası gönderilemedi. Lütfen tekrar deneyin."
   },
   "policy": {
     "easyExchange": "Kolay Değişim Politikası",

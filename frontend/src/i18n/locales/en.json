@@ -94,7 +94,8 @@
     "cartTotals": "CART TOTALS",
     "subtotal": "Subtotal",
     "shippingFee": "Shipping Fee",
-    "total": "Total"
+    "total": "Total",
+    "loginRequired": "Please login to proceed to checkout"
   },
   "orders": {
     "myOrders": "MY ORDERS",
@@ -129,7 +130,12 @@
     "forgotPassword": "Forgot your password?",
     "createAccount": "Create an Account",
     "loginHere": "Login Here",
-    "signIn": "Sign In"
+    "signIn": "Sign In",
+    "verificationEmailSent": "Verification email sent! Please check your inbox.",
+    "verificationRequired": "Please verify your email address to continue. Check your inbox for the verification link.",
+    "resendVerification": "Resend Verification Email",
+    "resendSuccess": "Verification email sent successfully!",
+    "resendError": "Failed to send verification email. Please try again."
   },
   "placeOrder": {
     "deliveryInformation": "DELIVERY INFORMATION",
@@ -144,7 +150,22 @@
     "zipcode": "Zipcode",
     "country": "Country",
     "phone": "Phone",
-    "cashOnDelivery": "CASH ON DELIVERY"
+    "cashOnDelivery": "CASH ON DELIVERY",
+    "loginRequired": "Please login to place an order"
+  },
+  "verifyEmail": {
+    "verifying": "Verifying your email...",
+    "successTitle": "Email Verified!",
+    "success": "Your email has been successfully verified.",
+    "errorTitle": "Verification Failed",
+    "error": "Invalid or expired verification token.",
+    "noToken": "No verification token provided.",
+    "redirecting": "Redirecting to login page...",
+    "resendButton": "Resend Verification Email",
+    "backToLogin": "Back to Login",
+    "enterEmail": "Enter your email address:",
+    "resendSuccess": "Verification email sent successfully!",
+    "resendError": "Failed to send verification email. Please try again."
   },
   "policy": {
     "easyExchange": "Easy Exchange Policy",

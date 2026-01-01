@@ -143,3 +143,4 @@ const RatingModal = ({ isOpen, onClose, productId, productName, onRatingSubmitte
 
 export default RatingModal;
 
+

@@ -3,14 +3,18 @@ import { useContext, useEffect, useState } from "react";
 import { ShopContext } from "../context/ShopContext";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 const Login = () => {
   const [currentState, setCurrentState] = useState("Login");
   const { token, setToken, navigate, backendUrl } = useContext(ShopContext);
+  const { t } = useTranslation();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showVerificationMessage, setShowVerificationMessage] = useState(false);
+  const [verificationEmail, setVerificationEmail] = useState("");
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
@@ -23,8 +27,14 @@ const Login = () => {
           password,
         });
         if (response.data.success) {
-          setToken(response.data.token);
-          localStorage.setItem("token", response.data.token);
+          if (response.data.requiresVerification) {
+            setShowVerificationMessage(true);
+            setVerificationEmail(email);
+            toast.success(response.data.message || t("login.verificationEmailSent"));
+          } else if (response.data.token) {
+            setToken(response.data.token);
+            localStorage.setItem("token", response.data.token);
+          }
         } else {
           toast.error(response.data.message);
         }
@@ -38,12 +48,35 @@ const Login = () => {
           setToken(response.data.token);
           localStorage.setItem("token", response.data.token);
         } else {
+          if (response.data.requiresVerification) {
+            setShowVerificationMessage(true);
+            setVerificationEmail(response.data.email || email);
+          }
           toast.error(response.data.message);
         }
       }
     } catch (error) {
       console.log(error);
-      toast.error(error.message);
+      if (error.response?.data?.requiresVerification) {
+        setShowVerificationMessage(true);
+        setVerificationEmail(error.response.data.email || email);
+      }
+      toast.error(error.response?.data?.message || error.message);
+    }
+  };
+
+  const handleResendVerification = async () => {
+    try {
+      const response = await axios.post(backendUrl + "/api/user/resend-verification", {
+        email: verificationEmail,
+      });
+      if (response.data.success) {
+        toast.success(response.data.message || t("login.resendSuccess"));
+      } else {
+        toast.error(response.data.message || t("login.resendError"));
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || t("login.resendError"));
     }
   };
 
@@ -114,6 +147,19 @@ const Login = () => {
       <button className="px-8 py-2 mt-4 text-sm font-light text-white bg-black hover:tracking-widest">
         {currentState === "Login" ? "Sign In" : "Sign Up"}
       </button>
+
+      {showVerificationMessage && (
+        <div className="w-full p-4 mt-4 text-sm text-center bg-blue-50 border border-blue-200 rounded-lg">
+          <p className="mb-2 text-blue-800">{t("login.verificationRequired")}</p>
+          <button
+            type="button"
+            onClick={handleResendVerification}
+            className="text-blue-600 underline hover:text-blue-800"
+          >
+            {t("login.resendVerification")}
+          </button>
+        </div>
+      )}
     </form>
   );
 };
