@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { backendUrl, currency } from "../App";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import { X, Pencil } from "lucide-react";
 import { assets } from "../assets/assets";
 

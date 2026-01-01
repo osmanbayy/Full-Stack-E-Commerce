@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { backendUrl, currency } from "../App";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import { assets } from "../assets/assets";
 
 const Orders = ({ token }) => {
@@ -41,11 +41,14 @@ const Orders = ({ token }) => {
         { headers: { token } }
       );
       if (response.data.success) {
+        toast.success(`Order status updated to ${event.target.value}`);
         await fetchAllOrders();
+      } else {
+        toast.error(response.data.message || "Failed to update order status");
       }
     } catch (error) {
       console.log(error);
-      toast.error(error.message);
+      toast.error(error.message || "Failed to update order status");
     }
   };
 

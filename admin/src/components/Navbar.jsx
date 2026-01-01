@@ -1,4 +1,4 @@
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import { assets } from "../assets/assets";
 
 // eslint-disable-next-line react/prop-types
