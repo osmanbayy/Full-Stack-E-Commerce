@@ -42,7 +42,7 @@ const Navbar = () => {
   return (
     <div className="flex items-center justify-between py-5 font-medium">
       <Link to={"/"}>
-        <img src={assets.logo} className="w-36" alt="" />
+        <img src={assets.logo} className="-ml-5 w-36" alt="logo" />
       </Link>
 
       <ul className="hidden gap-5 text-sm text-gray-700 sm:flex">
@@ -68,7 +68,7 @@ const Navbar = () => {
       </ul>
 
       <div className="flex items-center gap-4">
-        <div className="hidden sm:flex items-center bg-gray-100 rounded-full p-1 shadow-sm">
+        <div className="items-center hidden p-1 bg-gray-100 rounded-full shadow-sm sm:flex">
           <button
             onClick={() => changeLanguage("en")}
             className={`text-xs font-semibold px-4 py-1.5 rounded-full transition-all duration-200 ${
@@ -158,7 +158,7 @@ const Navbar = () => {
           visible ? "w-full" : "w-0"
         }`}
       >
-        <div className="flex flex-col text-gray-600 h-full overflow-y-auto">
+        <div className="flex flex-col h-full overflow-y-auto text-gray-600">
           <div
             onClick={() => setVisible(false)}
             className="flex items-center gap-4 p-3 cursor-pointer"
@@ -249,23 +249,23 @@ const Navbar = () => {
               exit={{ opacity: 0 }}
             >
               <motion.div
-                className="bg-white rounded-lg shadow-xl max-w-md w-full p-6"
+                className="w-full max-w-md p-6 bg-white rounded-lg shadow-xl"
                 initial={{ scale: 0.9, opacity: 0, y: 20 }}
                 animate={{ scale: 1, opacity: 1, y: 0 }}
                 exit={{ scale: 0.9, opacity: 0, y: 20 }}
                 transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
                 onClick={(e) => e.stopPropagation()}
               >
-                <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                <h3 className="mb-2 text-xl font-semibold text-gray-800">
                   {t("navbar.logoutConfirm")}
                 </h3>
-                <p className="text-gray-600 mb-6">
+                <p className="mb-6 text-gray-600">
                   {t("navbar.logoutMessage")}
                 </p>
-                <div className="flex gap-3 justify-end">
+                <div className="flex justify-end gap-3">
                   <motion.button
                     onClick={cancelLogout}
-                    className="px-6 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
+                    className="px-6 py-2 text-sm font-medium text-gray-700 transition-colors bg-gray-100 rounded-md hover:bg-gray-200"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >
@@ -273,7 +273,7 @@ const Navbar = () => {
                   </motion.button>
                   <motion.button
                     onClick={logout}
-                    className="px-6 py-2 text-sm font-medium text-white bg-black rounded-md hover:bg-gray-800 transition-colors"
+                    className="px-6 py-2 text-sm font-medium text-white transition-colors bg-black rounded-md hover:bg-gray-800"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >

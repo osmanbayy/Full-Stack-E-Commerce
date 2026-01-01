@@ -18,6 +18,7 @@ const Add = ({ token }) => {
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("Men");
   const [subCategory, setSubCategory] = useState("Topwear");
+  const [productType, setProductType] = useState("");
   const [bestseller, setBestseller] = useState(false);
   const [sizes, setSizes] = useState([]);
 
@@ -33,6 +34,7 @@ const Add = ({ token }) => {
       formData.append("price", price);
       formData.append("category", category);
       formData.append("subCategory", subCategory);
+      formData.append("productType", productType);
       formData.append("bestseller", bestseller);
       formData.append("sizes", JSON.stringify(sizes));
 
@@ -202,6 +204,30 @@ const Add = ({ token }) => {
             <option value="Topwear">Topwear</option>
             <option value="Bottomwear">Bottomwear</option>
             <option value="Winterwear">Winterwear</option>
+          </select>
+        </div>
+
+        <div>
+          <p className="mb-2">Product Type</p>
+          <select
+            onChange={(e) => setProductType(e.target.value)}
+            className="w-full px-3 py-2"
+          >
+            <option value="">Select Product Type</option>
+            <option value="T-Shirt">T-Shirt</option>
+            <option value="Jacket">Jacket</option>
+            <option value="Sweater">Sweater</option>
+            <option value="Shoes">Shoes</option>
+            <option value="Pants">Pants</option>
+            <option value="Dress">Dress</option>
+            <option value="Shirt">Shirt</option>
+            <option value="Jeans">Jeans</option>
+            <option value="Hoodie">Hoodie</option>
+            <option value="Shorts">Shorts</option>
+            <option value="Skirt">Skirt</option>
+            <option value="Coat">Coat</option>
+            <option value="Boots">Boots</option>
+            <option value="Sneakers">Sneakers</option>
           </select>
         </div>
 

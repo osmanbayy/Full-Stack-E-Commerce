@@ -91,7 +91,7 @@ const Product = () => {
             key={i}
             src={assets.star_dull_icon}
             alt=""
-            className="w-4 h-4 cursor-pointer opacity-50"
+            className="w-4 h-4 opacity-50 cursor-pointer"
             onClick={clickable && onStarClick ? () => onStarClick(i) : undefined}
           />
         );
@@ -189,7 +189,7 @@ const Product = () => {
           <div className="flex flex-col gap-3 mt-6">
             <motion.button
               onClick={() => addToCart(productData._id, size)}
-              className="px-8 py-4 text-sm font-semibold text-white bg-black rounded-md hover:bg-gray-800 transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+              className="flex items-center justify-center gap-2 px-8 py-4 text-sm font-semibold text-white transition-all duration-200 bg-black rounded-md shadow-md hover:bg-gray-800 hover:shadow-lg"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               transition={{ type: "spring", stiffness: 300 }}
@@ -281,7 +281,7 @@ const Product = () => {
           ) : (
             <div className="flex flex-col gap-6">
               {/* Info Message */}
-              <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <div className="p-4 border border-blue-200 rounded-lg bg-blue-50">
                 <p className="text-sm text-blue-800">
                   {t("product.onlyPurchased")}
                 </p>
@@ -305,7 +305,7 @@ const Product = () => {
                   ))}
                 </div>
               ) : (
-                <p className="text-sm text-gray-400 italic">{t("product.noReviews")}</p>
+                <p className="text-sm italic text-gray-400">{t("product.noReviews")}</p>
               )}
             </div>
           )}
