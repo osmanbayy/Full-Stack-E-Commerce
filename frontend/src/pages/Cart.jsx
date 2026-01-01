@@ -9,7 +9,7 @@ import { getProductName } from "../utils/productTranslations";
 const Cart = () => {
   const { products, currency, cartItems, updateQuantity, navigate } =
     useContext(ShopContext);
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [cartData, setCartData] = useState([]);
 
@@ -34,7 +34,7 @@ const Cart = () => {
   return (
     <div className="border-t pt-14">
       <div className="mb-3 text-2xl">
-        <Title text1={"YOUR"} text2={"CART"} />
+        <Title text1={t("cart.yourCart").split(" ")[0]} text2={t("cart.yourCart").split(" ").slice(1).join(" ")} />
       </div>
 
       <div className="">
@@ -103,7 +103,7 @@ const Cart = () => {
               onClick={() => navigate("/place-order")}
               className="px-8 py-3 my-8 text-sm text-white transition-all bg-black hover:tracking-wider"
             >
-              PROCEED TO CHECKOUT
+              {t("cart.proceedToCheckout")}
             </button>
           </div>
         </div>

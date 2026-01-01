@@ -43,3 +43,4 @@ export const searchProducts = (products, searchTerm) => {
   });
 };
 
+

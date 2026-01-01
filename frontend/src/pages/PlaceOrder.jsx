@@ -6,6 +6,7 @@ import { ShopContext } from "../context/ShopContext";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { provinces } from "../utils/provinces";
+import { useTranslation } from "react-i18next";
 
 const PlaceOrder = () => {
   // Default cash on delivery (cod)
@@ -20,6 +21,7 @@ const PlaceOrder = () => {
     delivery_fee,
     products,
   } = useContext(ShopContext);
+  const { t, i18n } = useTranslation();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -80,9 +82,13 @@ const PlaceOrder = () => {
       }
 
       // Add province and district to formData
+      // Format phone number with +90 prefix
+      const formattedPhone = formData.phone ? `+90${formData.phone}` : formData.phone;
+      
       let orderData = {
         address: {
           ...formData,
+          phone: formattedPhone, // Phone with +90 prefix
           city: selectedProvince.toString(),  // Add selectedProvince as city
           state: selectedDistrict.toString(),  // Add selectedDistrict as state
         },
@@ -116,7 +122,26 @@ const PlaceOrder = () => {
 
   const onChangeHandler = (e) => {
     const name = e.target.name;
-    const value = e.target.value;
+    let value = e.target.value;
+
+    // Phone number validation - only allow digits and limit length
+    if (name === "phone") {
+      // Remove any non-digit characters (including +90 if user types it)
+      value = value.replace(/\D/g, "");
+      // Remove leading 0 if user types it (we'll add +90 prefix)
+      if (value.startsWith("0")) {
+        value = value.slice(1);
+      }
+      // Limit to 10 digits (without country code)
+      if (value.length > 10) {
+        value = value.slice(0, 10);
+      }
+    }
+
+    // Zipcode validation - only allow digits
+    if (name === "zipcode") {
+      value = value.replace(/\D/g, "");
+    }
 
     setFormData((data) => ({ ...data, [name]: value }));
   };
@@ -135,7 +160,7 @@ const PlaceOrder = () => {
       {/* ----------- Left Side ------------ */}
       <div className="flex flex-col w-full gap-4 sm:max-w-[480px]">
         <div className="my-3 text-xl sm:text-2xl">
-          <Title text1={"DELIVERY"} text2={"INFORMATION"} />
+          <Title text1={t("placeOrder.deliveryInformation").split(" ")[0]} text2={t("placeOrder.deliveryInformation").split(" ").slice(1).join(" ")} />
         </div>
         <div className="flex gap-3">
           <input
@@ -143,7 +168,7 @@ const PlaceOrder = () => {
             name="firstName"
             value={formData.firstName}
             type="text"
-            placeholder="Firstname"
+            placeholder={t("placeOrder.firstName")}
             className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
             required
           />
@@ -152,7 +177,7 @@ const PlaceOrder = () => {
             name="lastName"
             value={formData.lastName}
             type="text"
-            placeholder="Lastname"
+            placeholder={t("placeOrder.lastName")}
             className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
             required
           />
@@ -163,7 +188,7 @@ const PlaceOrder = () => {
           name="email"
           value={formData.email}
           type="email"
-          placeholder="Email address"
+          placeholder={t("placeOrder.email")}
           className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
           required
         />
@@ -172,7 +197,7 @@ const PlaceOrder = () => {
           name="street"
           value={formData.street}
           type="text"
-          placeholder="Street"
+          placeholder={t("placeOrder.street")}
           className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
           required
         />
@@ -185,7 +210,7 @@ const PlaceOrder = () => {
             className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
             required
           >
-            <option value="">Choose Province</option>
+            <option value="">{t("placeOrder.chooseProvince")}</option>
             {sortedProvinces.map((province) => (
               <option key={province.id} value={province.name}>
                 {province.name}
@@ -206,7 +231,7 @@ const PlaceOrder = () => {
                 </option>
               ))
             ) : (
-              <option disabled={selectedProvince}>Choose District</option>
+              <option disabled={selectedProvince}>{t("placeOrder.chooseDistrict")}</option>
             )}
           </select>
         </div>
@@ -217,7 +242,7 @@ const PlaceOrder = () => {
             name="zipcode"
             value={formData.zipcode}
             type="number"
-            placeholder="Zipcode"
+            placeholder={t("placeOrder.zipcode")}
             className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
             required
           />
@@ -226,21 +251,30 @@ const PlaceOrder = () => {
             name="country"
             value={formData.country}
             type="text"
-            placeholder="Country"
+            placeholder={t("placeOrder.country")}
             className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
             required
           />
         </div>
 
-        <input
-          onChange={onChangeHandler}
-          name="phone"
-          value={formData.phone}
-          type="number"
-          placeholder="Phone"
-          className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
-          required
-        />
+        <div className="relative">
+          <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none">
+            +90
+          </span>
+          <input
+            onChange={onChangeHandler}
+            name="phone"
+            value={formData.phone}
+            type="tel"
+            placeholder={i18n.language === "tr" ? "5XX XXX XX XX" : "5XX XXX XX XX"}
+            className="border border-gray-300 rounded py-1.5 pl-12 pr-3.5 w-full"
+            pattern="[0-9]{10}"
+            maxLength={10}
+            minLength={10}
+            required
+            title={i18n.language === "tr" ? "10 haneli telefon numarası girin (örn: 5551234567)" : "Enter 10 digit phone number (e.g., 5551234567)"}
+          />
+        </div>
       </div>
 
       {/* ------------ Right Side ------------- */}
@@ -250,7 +284,7 @@ const PlaceOrder = () => {
         </div>
 
         <div className="mt-12">
-          <Title text1={"PAYMENT"} text2={"METHOD"} />
+          <Title text1={t("placeOrder.paymentMethod").split(" ")[0]} text2={t("placeOrder.paymentMethod").split(" ").slice(1).join(" ")} />
           {/* --------- Payment Method Selection ---------- */}
           <div className="flex flex-col gap-3 lg:flex-row">
             <div
@@ -287,7 +321,7 @@ const PlaceOrder = () => {
                 }`}
               ></p>
               <p className="mx-4 text-sm font-medium text-gray-500">
-                CASH ON DELIVERY
+                {t("placeOrder.cashOnDelivery")}
               </p>
             </div>
           </div>
@@ -297,7 +331,7 @@ const PlaceOrder = () => {
               type="submit"
               className="px-16 py-3 text-sm text-white bg-black hover:tracking-widest"
             >
-              PLACE ORDER
+              {t("placeOrder.placeOrder")}
             </button>
           </div>
         </div>

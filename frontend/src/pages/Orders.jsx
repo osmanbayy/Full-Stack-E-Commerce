@@ -9,7 +9,7 @@ import { getProductName } from "../utils/productTranslations";
 
 const Orders = () => {
   const { backendUrl, token, currency } = useContext(ShopContext);
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [orderData, setOrderData] = useState([]);
 
@@ -49,7 +49,7 @@ const Orders = () => {
   return (
     <div className="pt-16 border-t">
       <div className="text-2xl">
-        <Title text1={"MY"} text2={"ORDERS"} />
+        <Title text1={t("orders.myOrders").split(" ")[0]} text2={t("orders.myOrders").split(" ").slice(1).join(" ")} />
       </div>
 
       <div className="">
@@ -67,14 +67,14 @@ const Orders = () => {
                     {currency}
                     {item.price}
                   </p>
-                  <p>Quantity: {item.quantity}</p>
-                  <p>Size: {item.size}</p>
+                  <p>{t("orders.quantity")}: {item.quantity}</p>
+                  <p>{t("orders.size")}: {item.size}</p>
                 </div>
                 <p className="mt-1">
-                  Date: <span className="text-gray-400">{new Date(item.date).toDateString()}</span>
+                  {t("orders.date")}: <span className="text-gray-400">{new Date(item.date).toDateString()}</span>
                 </p>
                 <p className="mt-1">
-                  Payment: <span className="text-gray-400">{item.paymentMethod}</span>
+                  {t("orders.payment")}: <span className="text-gray-400">{item.paymentMethod}</span>
                 </p>
               </div>
             </div>
@@ -84,7 +84,7 @@ const Orders = () => {
                 <p className="text-sm md:text-base">{item.status}</p>
               </div>
               <button onClick={loadOrderData} className="px-4 py-2 text-sm font-medium border rounded-sm">
-                TRACK ORDER
+                {t("orders.trackOrder")}
               </button>
             </div>
           </div>

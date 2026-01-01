@@ -19,11 +19,9 @@ connectCloudinary();
 // Middlewares
 app.use(express.json());
 
-// CORS Configuration - Vercel için optimize edilmiş
 app.use((req, res, next) => {
   const origin = req.headers.origin;
   
-  // Tüm Vercel URL'lerini ve localhost'u kabul et
   if (
     !origin ||
     origin.includes(".vercel.app") ||
@@ -38,7 +36,6 @@ app.use((req, res, next) => {
     res.header("Access-Control-Expose-Headers", "Content-Range, X-Content-Range");
   }
 
-  // OPTIONS request için hemen cevap ver
   if (req.method === "OPTIONS") {
     return res.sendStatus(200);
   }
@@ -46,7 +43,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// CORS middleware'i de ekle (ekstra güvenlik için)
 app.use(cors({
   origin: true, // Tüm origin'lere izin ver
   credentials: true,

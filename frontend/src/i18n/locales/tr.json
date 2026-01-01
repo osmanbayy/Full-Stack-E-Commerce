@@ -53,11 +53,34 @@
   },
   "cart": {
     "myCart": "SEPETİM",
-    "emptyCart": "Sepetiniz boş!"
+    "yourCart": "SEPETİNİZ",
+    "emptyCart": "Sepetiniz boş!",
+    "proceedToCheckout": "ÖDEMEYE GEÇ",
+    "cartTotals": "SEPET TOPLAMI",
+    "subtotal": "Ara Toplam",
+    "shippingFee": "Kargo Ücreti",
+    "total": "Toplam"
   },
   "orders": {
     "myOrders": "SİPARİŞLERİM",
-    "trackOrder": "SİPARİŞİ TAKİP ET"
+    "trackOrder": "SİPARİŞİ TAKİP ET",
+    "quantity": "Miktar",
+    "size": "Beden",
+    "date": "Tarih",
+    "payment": "Ödeme"
+  },
+  "profile": {
+    "myProfile": "PROFİLİM",
+    "personalInformation": "Kişisel Bilgiler",
+    "name": "Ad",
+    "email": "E-posta",
+    "accountSettings": "Hesap Ayarları",
+    "viewOrders": "Siparişleri Görüntüle",
+    "viewOrdersDesc": "Sipariş geçmişinizi kontrol edin",
+    "myWishlist": "İstek Listem",
+    "myWishlistDesc": "Kaydedilen ürünlerinizi görüntüleyin",
+    "loading": "Yükleniyor...",
+    "failedToLoad": "Kullanıcı verileri yüklenemedi"
   },
   "login": {
     "login": "Giriş",
@@ -79,7 +102,8 @@
     "chooseDistrict": "İlçe Seçin",
     "zipcode": "Posta Kodu",
     "country": "Ülke",
-    "phone": "Telefon"
+    "phone": "Telefon",
+    "cashOnDelivery": "KAPIDA ÖDEME"
   },
   "policy": {
     "easyExchange": "Kolay Değişim Politikası",

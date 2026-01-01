@@ -53,11 +53,34 @@
   },
   "cart": {
     "myCart": "MY CART",
-    "emptyCart": "Your cart is empty!"
+    "yourCart": "YOUR CART",
+    "emptyCart": "Your cart is empty!",
+    "proceedToCheckout": "PROCEED TO CHECKOUT",
+    "cartTotals": "CART TOTALS",
+    "subtotal": "Subtotal",
+    "shippingFee": "Shipping Fee",
+    "total": "Total"
   },
   "orders": {
     "myOrders": "MY ORDERS",
-    "trackOrder": "TRACK ORDER"
+    "trackOrder": "TRACK ORDER",
+    "quantity": "Quantity",
+    "size": "Size",
+    "date": "Date",
+    "payment": "Payment"
+  },
+  "profile": {
+    "myProfile": "MY PROFILE",
+    "personalInformation": "Personal Information",
+    "name": "Name",
+    "email": "Email",
+    "accountSettings": "Account Settings",
+    "viewOrders": "View Orders",
+    "viewOrdersDesc": "Check your order history",
+    "myWishlist": "My Wishlist",
+    "myWishlistDesc": "View your saved items",
+    "loading": "Loading...",
+    "failedToLoad": "Failed to load user data"
   },
   "login": {
     "login": "Login",
@@ -79,7 +102,8 @@
     "chooseDistrict": "Choose District",
     "zipcode": "Zipcode",
     "country": "Country",
-    "phone": "Phone"
+    "phone": "Phone",
+    "cashOnDelivery": "CASH ON DELIVERY"
   },
   "policy": {
     "easyExchange": "Easy Exchange Policy",
