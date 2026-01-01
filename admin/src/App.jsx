@@ -8,8 +8,6 @@ import { useEffect, useState } from "react";
 import Login from "./components/Login";
 import { Toaster } from "react-hot-toast";
 
-// eslint-disable-next-line react-refresh/only-export-components
-// Backend URL'inin sonundaki slash'ı temizle
 export const backendUrl = (import.meta.env.VITE_BACKEND_URL || "").replace(/\/+$/, "");
 export const currency = '$';
 
