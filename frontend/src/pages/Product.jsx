@@ -32,18 +32,32 @@ const Product = () => {
   };
 
   const fetchProductData = async () => {
-    await products.map((item) => {
-      if (item._id === productId) {
-        setProductData(item);
-        setImage(item.image[0]);
-        return null;
+    // First try to get from context (faster)
+    const contextProduct = products.find((item) => item._id === productId);
+    if (contextProduct) {
+      setProductData(contextProduct);
+      setImage(contextProduct.image[0]);
+    }
+    
+    // Then fetch from backend to ensure we have the latest data
+    try {
+      const response = await axios.post(backendUrl + "/api/product/single", {
+        productId,
+      });
+      if (response.data.success && response.data.product) {
+        setProductData(response.data.product);
+        setImage(response.data.product.image[0]);
       }
-    });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
-    fetchProductData();
-  }, [productId, products]);
+    if (productId) {
+      fetchProductData();
+    }
+  }, [productId]);
 
   useEffect(() => {
     if (productId) {
