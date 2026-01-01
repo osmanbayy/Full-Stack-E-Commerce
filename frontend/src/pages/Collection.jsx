@@ -1,16 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useContext, useEffect, useState, useRef } from "react";
+import { useContext, useEffect, useState, useRef, useCallback } from "react";
 import { ShopContext } from "../context/ShopContext";
 import Title from "../components/Title";
 import ProductItem from "../components/ProductItem";
 import ProductItemSkeleton from "../components/ProductItemSkeleton";
 import { useTranslation } from "react-i18next";
-import { searchProducts, getProductName } from "../utils/productTranslations";
+import { getProductName } from "../utils/productTranslations";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
+import axios from "axios";
 
 const Collection = () => {
-  const { products, search, showSearch, isLoadingProducts } = useContext(ShopContext);
+  const { search, backendUrl } = useContext(ShopContext);
   const [showFilter, setShowFilter] = useState(false);
   const [filterProducts, setFilterProducts] = useState([]);
   const [category, setCategory] = useState([]);
@@ -18,7 +19,12 @@ const Collection = () => {
   const [productType, setProductType] = useState([]);
   const [sortType, setSortType] = useState("relevant");
   const [showSortDropdown, setShowSortDropdown] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
   const sortDropdownRef = useRef(null);
+  const observerTarget = useRef(null);
   const { t, i18n } = useTranslation();
 
   const toggleCategory = (event) => {
@@ -49,54 +55,118 @@ const Collection = () => {
     }
   };
 
-  const applyFilter = () => {
-    let productsCopy = products.slice();
+  const fetchProducts = useCallback(async (page = 1, append = false) => {
+    try {
+      if (page === 1) {
+        setIsLoading(true);
+      } else {
+        setIsLoadingMore(true);
+      }
 
-    if (search) {
-      // Use multilingual search function
-      productsCopy = searchProducts(productsCopy, search);
-    }
+      // Build query parameters
+      const params = new URLSearchParams();
+      params.append("page", page.toString());
+      params.append("limit", "10");
 
-    if (category.length > 0) {
-      productsCopy = productsCopy.filter((item) =>
-        category.includes(item.category)
-      );
-    }
-    if (subCategory.length > 0) {
-      productsCopy = productsCopy.filter((item) =>
-        subCategory.includes(item.subCategory)
-      );
-    }
-    if (productType.length > 0) {
-      productsCopy = productsCopy.filter((item) =>
-        productType.includes(item.productType)
-      );
-    }
-    setFilterProducts(productsCopy);
-  };
+      if (search) {
+        params.append("search", search);
+      }
 
-  const sortProduct = () => {
-    let filterProductCopy = filterProducts.slice();
-    switch (sortType) {
-      case "low-high":
-        setFilterProducts(filterProductCopy.sort((a, b) => a.price - b.price));
-        break;
-      case "high-low":
-        setFilterProducts(filterProductCopy.sort((a, b) => b.price - a.price));
-        break;
-      default:
-        applyFilter();
-        break;
-    }
-  };
+      if (category.length > 0) {
+        category.forEach(cat => params.append("category", cat));
+      }
 
+      if (subCategory.length > 0) {
+        subCategory.forEach(sub => params.append("subCategory", sub));
+      }
+
+      if (productType.length > 0) {
+        productType.forEach(type => params.append("productType", type));
+      }
+
+      const response = await axios.get(`${backendUrl}/api/product/list?${params.toString()}`);
+      
+      if (response.data.success) {
+        const products = response.data.products;
+
+        if (append) {
+          setFilterProducts(prev => {
+            const combined = [...prev, ...products];
+            // Apply sorting to all products
+            if (sortType === "low-high") {
+              return combined.sort((a, b) => a.price - b.price);
+            } else if (sortType === "high-low") {
+              return combined.sort((a, b) => b.price - a.price);
+            }
+            return combined;
+          });
+        } else {
+          // Apply sorting to new products
+          let sortedProducts = products;
+          if (sortType === "low-high") {
+            sortedProducts = products.sort((a, b) => a.price - b.price);
+          } else if (sortType === "high-low") {
+            sortedProducts = products.sort((a, b) => b.price - a.price);
+          }
+          setFilterProducts(sortedProducts);
+        }
+
+        setHasMore(response.data.pagination?.hasMore || false);
+        setCurrentPage(page);
+      }
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    } finally {
+      setIsLoading(false);
+      setIsLoadingMore(false);
+    }
+  }, [search, category, subCategory, productType, backendUrl]);
+
+  // Apply sorting when sortType changes
   useEffect(() => {
-    sortProduct();
+    if (filterProducts.length > 0) {
+      setFilterProducts(prev => {
+        const sorted = [...prev];
+        if (sortType === "low-high") {
+          return sorted.sort((a, b) => a.price - b.price);
+        } else if (sortType === "high-low") {
+          return sorted.sort((a, b) => b.price - a.price);
+        }
+        // For "relevant", we don't need to sort as backend already sorts by date
+        return sorted;
+      });
+    }
   }, [sortType]);
 
+  // Reset and fetch when filters change (but not sortType)
   useEffect(() => {
-    applyFilter();
-}, [category, subCategory, productType, search, products]);
+    setCurrentPage(1);
+    setHasMore(true);
+    fetchProducts(1, false);
+  }, [search, category, subCategory, productType]);
+
+  // Infinite scroll observer
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore && !isLoading && !isLoadingMore) {
+          fetchProducts(currentPage + 1, true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    const currentTarget = observerTarget.current;
+    if (currentTarget) {
+      observer.observe(currentTarget);
+    }
+
+    return () => {
+      if (currentTarget) {
+        observer.unobserve(currentTarget);
+      }
+    };
+  }, [hasMore, isLoading, isLoadingMore, currentPage, fetchProducts]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -411,13 +481,13 @@ const Collection = () => {
           </div>
         </div>
         {/* Map Products */}
-        {isLoadingProducts ? (
+        {isLoading ? (
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 gap-y-6">
             {Array.from({ length: 8 }).map((_, index) => (
               <ProductItemSkeleton key={index} />
             ))}
           </div>
-        ) : filterProducts.length === 0 && search ? (
+        ) : filterProducts.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 text-center">
             <p className="text-xl font-medium text-gray-500 mb-2">{t("collection.noItemsFound")}</p>
             <p className="text-sm text-gray-400">
@@ -425,17 +495,29 @@ const Collection = () => {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 gap-y-6">
-             {filterProducts.map((item, index) => (
-               <ProductItem
-                 key={index}
-                 name={getProductName(item, i18n.language)}
-                 id={item._id}
-                 price={item.price}
-                 image={item.image}
-               />
-             ))}
-          </div>
+          <>
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 gap-y-6">
+              {filterProducts.map((item, index) => (
+                <ProductItem
+                  key={item._id || index}
+                  name={getProductName(item, i18n.language)}
+                  id={item._id}
+                  price={item.price}
+                  image={item.image}
+                />
+              ))}
+            </div>
+            {/* Infinite scroll trigger */}
+            <div ref={observerTarget} className="h-10 flex items-center justify-center">
+              {isLoadingMore && (
+                <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 gap-y-6 w-full">
+                  {Array.from({ length: 4 }).map((_, index) => (
+                    <ProductItemSkeleton key={index} />
+                  ))}
+                </div>
+              )}
+            </div>
+          </>
         )}
       </div>
     </div>

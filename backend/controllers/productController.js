@@ -64,11 +64,66 @@ const addProduct = async (req, res) => {
   }
 };
 
-// Function for list product
+// Function for list product with pagination and filtering
 const listProduct = async (req, res) => {
   try {
-    const products = await productModel.find({});
-    res.json({ success: true, products });
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    // Build filter object
+    const filter = {};
+    
+    if (req.query.category) {
+      const categories = Array.isArray(req.query.category) 
+        ? req.query.category 
+        : [req.query.category];
+      filter.category = { $in: categories };
+    }
+    
+    if (req.query.subCategory) {
+      const subCategories = Array.isArray(req.query.subCategory) 
+        ? req.query.subCategory 
+        : [req.query.subCategory];
+      filter.subCategory = { $in: subCategories };
+    }
+    
+    if (req.query.productType) {
+      const productTypes = Array.isArray(req.query.productType) 
+        ? req.query.productType 
+        : [req.query.productType];
+      filter.productType = { $in: productTypes };
+    }
+    
+    if (req.query.search) {
+      // Search in name, nameEn, nameTr, and description
+      filter.$or = [
+        { name: { $regex: req.query.search, $options: "i" } },
+        { nameEn: { $regex: req.query.search, $options: "i" } },
+        { nameTr: { $regex: req.query.search, $options: "i" } },
+        { description: { $regex: req.query.search, $options: "i" } }
+      ];
+    }
+
+    // Get total count for pagination
+    const totalProducts = await productModel.countDocuments(filter);
+    
+    // Get products with pagination
+    const products = await productModel.find(filter)
+      .sort({ date: -1 }) // Sort by date, newest first
+      .skip(skip)
+      .limit(limit);
+
+    res.json({ 
+      success: true, 
+      products,
+      pagination: {
+        currentPage: page,
+        totalPages: Math.ceil(totalProducts / limit),
+        totalProducts,
+        hasMore: skip + products.length < totalProducts
+      }
+    });
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: error.message });
