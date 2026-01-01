@@ -14,7 +14,13 @@ const LatestCollection = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setLatestProducts(products.slice(0, 10));
+    if (products.length > 0) {
+      // Sort products by date (newest first) and take the latest 10
+      const sortedProducts = [...products].sort((a, b) => (b.date || 0) - (a.date || 0));
+      setLatestProducts(sortedProducts.slice(0, 10));
+    } else {
+      setLatestProducts([]);
+    }
   }, [products]);
 
   return (
