@@ -1,13 +1,16 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { backendUrl, currency } from "../App";
 import toast from "react-hot-toast";
 import { assets } from "../assets/assets";
-import { AlertTriangle, X } from "lucide-react";
+import { AlertTriangle, X, Search, XCircle } from "lucide-react";
 
 const Orders = ({ token }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const searchQuery = searchParams.get("search") || "";
   const [orders, setOrders] = useState([]);
   const [activeTab, setActiveTab] = useState("active"); // "active" or "history"
   const [showStatusModal, setShowStatusModal] = useState(false);
@@ -110,7 +113,19 @@ const Orders = ({ token }) => {
   // Filter orders based on active tab
   const activeOrders = orders.filter(order => order.status !== "Delivered");
   const historyOrders = orders.filter(order => order.status === "Delivered");
-  const displayedOrders = activeTab === "active" ? activeOrders : historyOrders;
+  const tabFilteredOrders = activeTab === "active" ? activeOrders : historyOrders;
+
+  // Filter by search query (tracking number)
+  const displayedOrders = searchQuery
+    ? tabFilteredOrders.filter(order => 
+        order.trackingNumber && 
+        order.trackingNumber.toUpperCase().includes(searchQuery.toUpperCase())
+      )
+    : tabFilteredOrders;
+
+  const clearSearch = () => {
+    setSearchParams({});
+  };
 
   const trackingNumberHandler = async (event, orderId) => {
     const newTrackingNumber = event.target.value.trim().toUpperCase();
@@ -257,8 +272,27 @@ const Orders = ({ token }) => {
   return (
     <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8">
       <div className="mb-6">
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">Orders Management</h1>
-        <p className="text-gray-500">View and manage customer orders</p>
+        <div className="flex items-center justify-between mb-2">
+          <div>
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">Orders Management</h1>
+            <p className="text-gray-500">View and manage customer orders</p>
+          </div>
+          {searchQuery && (
+            <div className="flex items-center gap-2 px-4 py-2 bg-blue-50 border border-blue-200 rounded-lg">
+              <Search className="w-4 h-4 text-blue-600" />
+              <span className="text-sm text-blue-800 font-medium">
+                Searching: <span className="font-mono">{searchQuery}</span>
+              </span>
+              <button
+                onClick={clearSearch}
+                className="ml-2 p-1 text-blue-600 hover:text-blue-800 hover:bg-blue-100 rounded transition-colors"
+                title="Clear search"
+              >
+                <XCircle className="w-4 h-4" />
+              </button>
+            </div>
+          )}
+        </div>
       </div>
       {/* Tabs */}
       <div className="flex gap-4 mb-6 border-b border-gray-200">
@@ -288,14 +322,37 @@ const Orders = ({ token }) => {
       <div>
         {displayedOrders.length === 0 ? (
           <div className="py-12 text-center">
-            <p className="text-lg text-gray-500">
-              {activeTab === "active" 
-                ? "No active orders yet" 
-                : "No order history yet"}
-            </p>
+            {searchQuery ? (
+              <div>
+                <p className="text-lg text-gray-500 mb-2">
+                  No orders found with tracking number: <span className="font-mono font-semibold">{searchQuery}</span>
+                </p>
+                <button
+                  onClick={clearSearch}
+                  className="text-blue-600 hover:text-blue-800 underline text-sm"
+                >
+                  Clear search and show all orders
+                </button>
+              </div>
+            ) : (
+              <p className="text-lg text-gray-500">
+                {activeTab === "active" 
+                  ? "No active orders yet" 
+                  : "No order history yet"}
+              </p>
+            )}
           </div>
         ) : (
-          displayedOrders.map((order, index) => renderOrderCard(order, index))
+          <>
+            {searchQuery && (
+              <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                <p className="text-sm text-blue-800">
+                  Found <span className="font-semibold">{displayedOrders.length}</span> order{displayedOrders.length !== 1 ? "s" : ""} matching <span className="font-mono">{searchQuery}</span>
+                </p>
+              </div>
+            )}
+            {displayedOrders.map((order, index) => renderOrderCard(order, index))}
+          </>
         )}
       </div>
 
