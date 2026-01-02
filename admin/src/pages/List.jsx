@@ -54,7 +54,7 @@ const List = ({ token }) => {
 
       if (response.data.success) {
         const products = response.data.products;
-        
+
         if (append) {
           setList(prev => [...prev, ...products]);
         } else {
@@ -606,11 +606,10 @@ const List = ({ token }) => {
                       }
                     >
                       <p
-                        className={`px-3 py-1 cursor-pointer ${
-                          sizes.includes(size)
+                        className={`px-3 py-1 cursor-pointer ${sizes.includes(size)
                             ? "bg-slate-400"
                             : "bg-pink-100"
-                        }`}
+                          }`}
                       >
                         {size}
                       </p>
@@ -692,7 +691,7 @@ const List = ({ token }) => {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 
