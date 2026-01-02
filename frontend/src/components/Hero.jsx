@@ -9,6 +9,8 @@ const Hero = () => {
   const [slides, setSlides] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [loadedImages, setLoadedImages] = useState(new Set());
+  const [imageLoadingStates, setImageLoadingStates] = useState({});
   const intervalRef = useRef(null);
   const backendUrl = (import.meta.env.VITE_BACKEND_URL || "").replace(/\/+$/, "");
 
@@ -18,6 +20,32 @@ const Hero = () => {
         const response = await axios.get(`${backendUrl}/api/hero-slide/list`);
         if (response.data.success && response.data.slides.length > 0) {
           setSlides(response.data.slides);
+          
+          // Preload all images
+          const imagePromises = response.data.slides.map((slide) => {
+            return new Promise((resolve) => {
+              const img = new Image();
+              img.onload = () => {
+                setLoadedImages((prev) => new Set([...prev, slide.image]));
+                setImageLoadingStates((prev) => ({
+                  ...prev,
+                  [slide.image]: "loaded",
+                }));
+                resolve();
+              };
+              img.onerror = () => {
+                setImageLoadingStates((prev) => ({
+                  ...prev,
+                  [slide.image]: "error",
+                }));
+                resolve(); // Resolve even on error to not block
+              };
+              img.src = slide.image;
+            });
+          });
+
+          // Wait for all images to load (or fail)
+          await Promise.allSettled(imagePromises);
           setIsLoading(false);
         } else {
           setIsLoading(false);
@@ -98,8 +126,10 @@ const Hero = () => {
 
   const currentSlide = slides[currentIndex];
 
+  const isImageLoaded = loadedImages.has(currentSlide?.image);
+
   return (
-    <div className="relative flex flex-col sm:flex-row border border-gray-400 overflow-hidden">
+    <div className="relative flex flex-col sm:flex-row border border-gray-400 overflow-hidden min-h-[400px] sm:min-h-[500px]">
       <AnimatePresence mode="wait">
         <motion.div
           key={currentIndex}
@@ -111,7 +141,7 @@ const Hero = () => {
         >
           {/* Hero Left Side */}
           <motion.div
-            className="w-full sm:w-1/2 flex items-center justify-center py-10 sm:py-0"
+            className="w-full sm:w-1/2 flex items-center justify-center py-10 sm:py-0 min-h-[200px] sm:min-h-[500px]"
             initial={{ x: -50, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.6 }}
@@ -135,14 +165,38 @@ const Hero = () => {
             </div>
           </motion.div>
           {/* Hero Right Side */}
-          <motion.img
-            className="w-full sm:w-1/2 object-cover"
-            src={currentSlide.image}
-            alt={getSlideText(currentSlide, "title")}
-            initial={{ x: 50, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ duration: 0.6 }}
-          />
+          <div className="w-full sm:w-1/2 relative min-h-[200px] sm:min-h-[500px] bg-gray-100">
+            {!isImageLoaded && (
+              <div className="absolute inset-0 bg-gray-200 animate-pulse flex items-center justify-center">
+                <div className="w-full h-full bg-gray-300"></div>
+              </div>
+            )}
+            <motion.img
+              className={`w-full h-full object-cover ${
+                isImageLoaded ? "opacity-100" : "opacity-0"
+              } transition-opacity duration-300`}
+              src={currentSlide.image}
+              alt={getSlideText(currentSlide, "title")}
+              initial={{ x: 50, opacity: 0 }}
+              animate={{ 
+                x: 0, 
+                opacity: isImageLoaded ? 1 : 0 
+              }}
+              transition={{ duration: 0.6 }}
+              onLoad={() => {
+                setLoadedImages((prev) => new Set([...prev, currentSlide.image]));
+                setImageLoadingStates((prev) => ({
+                  ...prev,
+                  [currentSlide.image]: "loaded",
+                }));
+              }}
+              style={{
+                minHeight: "200px",
+                maxHeight: "500px",
+                objectFit: "cover",
+              }}
+            />
+          </div>
         </motion.div>
       </AnimatePresence>
 
