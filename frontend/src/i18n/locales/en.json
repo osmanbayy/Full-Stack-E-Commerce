@@ -98,7 +98,11 @@
     "exploreProducts": "Explore Products",
     "pleaseLogin": "Please login to view your wishlist.",
     "addToCart": "Add to Cart",
-    "removeFromWishlist": "Remove from wishlist",
+    "removeFromWishlist": "Remove from Wishlist",
+    "remove": "Remove",
+    "removeConfirm": "Are you sure you want to remove this item from your wishlist?",
+    "removeModalTitle": "Remove from Wishlist",
+    "removeModalDesc": "Are you sure you want to remove this item?",
     "itemAdded": "Item added to Wish List!",
     "itemRemoved": "Item removed from Wish List!",
     "loginRequired": "You need to be logged in to add items to Wish List."

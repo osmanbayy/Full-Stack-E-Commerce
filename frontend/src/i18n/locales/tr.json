@@ -98,7 +98,11 @@
     "exploreProducts": "Ürünleri Keşfet",
     "pleaseLogin": "İstek listenizi görmek için lütfen giriş yapın.",
     "addToCart": "Sepete Ekle",
-    "removeFromWishlist": "İstek listesinden çıkar",
+    "removeFromWishlist": "İstek Listesinden Çıkar",
+    "remove": "Sil",
+    "removeConfirm": "Bu ürünü istek listenizden çıkarmak istediğinize emin misiniz?",
+    "removeModalTitle": "İstek Listesinden Çıkar",
+    "removeModalDesc": "Bu ürünü çıkarmak istediğinize emin misiniz?",
     "itemAdded": "Ürün İstek Listesine Eklendi!",
     "itemRemoved": "Ürün İstek Listesinden Çıkarıldı!",
     "loginRequired": "İstek listesine ürün eklemek için giriş yapmanız gerekiyor."
