@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { assets } from "../assets/assets";
+import { Coins } from "lucide-react";
 
 const Sidebar = () => {
   return (
@@ -30,7 +31,7 @@ const Sidebar = () => {
           className="flex items-center gap-3 px-3 py-2 border border-r-0 rounded border-to-grounded-lg"
           to={"/finance"}
         >
-          <img className="w-5 h-5" src={assets.order_icon} alt="" />
+          <Coins className="w-5 h-5" />
           <p className="hidden md:block">Finance</p>
         </NavLink>
       </div>

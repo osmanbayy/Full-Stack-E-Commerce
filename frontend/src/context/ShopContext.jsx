@@ -8,7 +8,7 @@ import i18n from "../i18n/config.js";
 export const ShopContext = createContext();
 
 const ShopContextProvider = (prop) => {
-  const currency = "$";
+  const currency = "₺";
   const delivery_fee = 10;
   const backendUrl = (import.meta.env.VITE_BACKEND_URL || "").replace(/\/+$/, "");
   const [search, setSearch] = useState("");

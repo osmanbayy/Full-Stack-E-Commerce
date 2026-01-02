@@ -10,7 +10,7 @@ import Login from "./components/Login";
 import { Toaster } from "react-hot-toast";
 
 export const backendUrl = (import.meta.env.VITE_BACKEND_URL || "").replace(/\/+$/, "");
-export const currency = '$';
+export const currency = '₺';
 
 const App = () => {
   const [token, setToken] = useState(localStorage.getItem("token"));
