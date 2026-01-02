@@ -3,6 +3,7 @@ import { assets } from "../assets/assets";
 import axios from "axios";
 import { backendUrl } from "../App";
 import toast from "react-hot-toast";
+import { Loader2 } from "lucide-react";
 
 // eslint-disable-next-line react/prop-types
 const Add = ({ token }) => {
@@ -24,9 +25,11 @@ const Add = ({ token }) => {
   const [bestseller, setBestseller] = useState(false);
   const [sizes, setSizes] = useState([]);
   const [discount, setDiscount] = useState("0");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     try {
       const formData = new FormData();
@@ -77,10 +80,13 @@ const Add = ({ token }) => {
     } catch (error) {
       console.log(error);
       toast.error(error.message);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
+    <>
     <form
       onSubmit={onSubmitHandler}
       className="flex flex-col items-start w-full gap-3"
@@ -391,11 +397,35 @@ const Add = ({ token }) => {
       </div>
       <button
         type="submit"
-        className="py-3 mt-4 text-white transition-all bg-black rounded-lg w-28 hover:tracking-widest"
+        disabled={isSubmitting}
+        className="py-3 mt-4 text-white transition-all bg-black rounded-lg w-28 hover:tracking-widest disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
       >
-        ADD
+        {isSubmitting ? (
+          <>
+            <Loader2 className="w-4 h-4 animate-spin" />
+            Adding...
+          </>
+        ) : (
+          "ADD"
+        )}
       </button>
     </form>
+
+    {/* Loading Modal */}
+    {isSubmitting && (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 p-8">
+          <div className="flex flex-col items-center justify-center gap-4">
+            <Loader2 className="w-12 h-12 text-blue-600 animate-spin" />
+            <h2 className="text-xl font-semibold text-gray-800">Adding Product</h2>
+            <p className="text-sm text-gray-600 text-center">
+              Please wait while we add your product. This may take a few moments...
+            </p>
+          </div>
+        </div>
+      </div>
+    )}
+  </>
   );
 };
 

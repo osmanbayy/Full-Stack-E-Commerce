@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { backendUrl, currency } from "../App";
 import toast from "react-hot-toast";
 import { X, Pencil } from "lucide-react";
@@ -12,6 +12,11 @@ const List = ({ token }) => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [productToDelete, setProductToDelete] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const observerTarget = useRef(null);
 
   const [image1, setImage1] = useState(false);
   const [image2, setImage2] = useState(false);
@@ -33,20 +38,42 @@ const List = ({ token }) => {
   const [existingImages, setExistingImages] = useState([]);
   const [discount, setDiscount] = useState("0");
 
-  const fetchList = async () => {
+  const fetchList = useCallback(async (page = 1, append = false) => {
     try {
-      const response = await axios.get(backendUrl + "/api/product/list");
+      if (page === 1) {
+        setIsLoading(true);
+      } else {
+        setIsLoadingMore(true);
+      }
+
+      const params = new URLSearchParams();
+      params.append("page", page.toString());
+      params.append("limit", "10");
+
+      const response = await axios.get(`${backendUrl}/api/product/list?${params.toString()}`);
 
       if (response.data.success) {
-        setList(response.data.products);
+        const products = response.data.products;
+        
+        if (append) {
+          setList(prev => [...prev, ...products]);
+        } else {
+          setList(products);
+        }
+
+        setHasMore(response.data.pagination?.hasMore || false);
+        setCurrentPage(page);
       } else {
         toast.error(response.data.message);
       }
     } catch (error) {
       console.log(error);
       toast.error(error.message);
+    } finally {
+      setIsLoading(false);
+      setIsLoadingMore(false);
     }
-  };
+  }, [backendUrl]);
 
   const handleDeleteClick = (id) => {
     setProductToDelete(id);
@@ -65,7 +92,8 @@ const List = ({ token }) => {
 
       if (response.data.success) {
         toast.success(response.data.message);
-        await fetchList();
+        // Remove deleted product from list
+        setList(prev => prev.filter(item => item._id !== productToDelete));
         setShowDeleteModal(false);
         setProductToDelete(null);
       } else {
@@ -161,7 +189,8 @@ const List = ({ token }) => {
 
       if (response.data.success) {
         toast.success(response.data.message);
-        await fetchList();
+        // Refresh current page
+        await fetchList(currentPage, false);
         closeUpdateModal();
       } else {
         toast.error(response.data.message);
@@ -173,8 +202,31 @@ const List = ({ token }) => {
   };
 
   useEffect(() => {
-    fetchList();
-  }, []);
+    fetchList(1, false);
+  }, [fetchList]);
+
+  // Infinite scroll observer
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore && !isLoading && !isLoadingMore) {
+          fetchList(currentPage + 1, true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    const currentTarget = observerTarget.current;
+    if (currentTarget) {
+      observer.observe(currentTarget);
+    }
+
+    return () => {
+      if (currentTarget) {
+        observer.unobserve(currentTarget);
+      }
+    };
+  }, [hasMore, isLoading, isLoadingMore, currentPage, fetchList]);
 
   return (
     <>
@@ -190,36 +242,83 @@ const List = ({ token }) => {
         </div>
 
         {/* ---------- Product List ----------- */}
-        {list.map((item, index) => (
-          <div
-            className="grid grid-cols-[1fr_3fr_1fr] md:grid-cols-[1fr_3fr_1fr_1fr_1fr] border items-center gap-2 py-1 px-2 text-sm hover:bg-slate-100"
-            key={index}
-          >
-            <img className="w-16" src={item.image[0]} alt="" />
-            <p className="font-semibold">{item.name}</p>
-            <p className="hidden md:block">{item.category}</p>
-            <p className="hidden md:block">
-              {currency}
-              {item.price}
-            </p>
-            <div className="flex items-center justify-end gap-3 md:justify-center">
-              <button
-                onClick={() => openUpdateModal(item)}
-                className="p-1 text-blue-600 transition-colors hover:text-blue-800 hover:bg-blue-50 rounded"
-                title="Update Product"
-              >
-                <Pencil className="w-5 h-5" />
-              </button>
-              <button
-                onClick={() => handleDeleteClick(item._id)}
-                className="p-1 text-red-600 transition-colors hover:text-red-800 hover:bg-red-50 rounded"
-                title="Delete Product"
-              >
-                <X className="w-5 h-5" />
-              </button>
+        {isLoading ? (
+          // Skeleton Loading
+          Array.from({ length: 10 }).map((_, index) => (
+            <div
+              key={index}
+              className="grid grid-cols-[1fr_3fr_1fr] md:grid-cols-[1fr_3fr_1fr_1fr_1fr] border items-center gap-2 py-1 px-2 text-sm animate-pulse"
+            >
+              <div className="w-16 h-16 bg-gray-200 rounded"></div>
+              <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+              <div className="hidden md:block h-4 bg-gray-200 rounded w-1/2"></div>
+              <div className="hidden md:block h-4 bg-gray-200 rounded w-1/3"></div>
+              <div className="flex items-center justify-end gap-3 md:justify-center">
+                <div className="w-5 h-5 bg-gray-200 rounded"></div>
+                <div className="w-5 h-5 bg-gray-200 rounded"></div>
+              </div>
             </div>
+          ))
+        ) : list.length === 0 ? (
+          <div className="py-12 text-center">
+            <p className="text-lg text-gray-500">No products found</p>
           </div>
-        ))}
+        ) : (
+          <>
+            {list.map((item, index) => (
+              <div
+                className="grid grid-cols-[1fr_3fr_1fr] md:grid-cols-[1fr_3fr_1fr_1fr_1fr] border items-center gap-2 py-1 px-2 text-sm hover:bg-slate-100"
+                key={item._id || index}
+              >
+                <img className="w-16" src={item.image[0]} alt="" />
+                <p className="font-semibold">{item.name}</p>
+                <p className="hidden md:block">{item.category}</p>
+                <p className="hidden md:block">
+                  {currency}
+                  {item.price}
+                </p>
+                <div className="flex items-center justify-end gap-3 md:justify-center">
+                  <button
+                    onClick={() => openUpdateModal(item)}
+                    className="p-1 text-blue-600 transition-colors hover:text-blue-800 hover:bg-blue-50 rounded"
+                    title="Update Product"
+                  >
+                    <Pencil className="w-5 h-5" />
+                  </button>
+                  <button
+                    onClick={() => handleDeleteClick(item._id)}
+                    className="p-1 text-red-600 transition-colors hover:text-red-800 hover:bg-red-50 rounded"
+                    title="Delete Product"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
+            ))}
+            {/* Infinite scroll trigger */}
+            <div ref={observerTarget} className="h-10 flex items-center justify-center">
+              {isLoadingMore && (
+                <div className="flex flex-col gap-2 w-full">
+                  {Array.from({ length: 5 }).map((_, index) => (
+                    <div
+                      key={index}
+                      className="grid grid-cols-[1fr_3fr_1fr] md:grid-cols-[1fr_3fr_1fr_1fr_1fr] border items-center gap-2 py-1 px-2 text-sm animate-pulse"
+                    >
+                      <div className="w-16 h-16 bg-gray-200 rounded"></div>
+                      <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                      <div className="hidden md:block h-4 bg-gray-200 rounded w-1/2"></div>
+                      <div className="hidden md:block h-4 bg-gray-200 rounded w-1/3"></div>
+                      <div className="flex items-center justify-end gap-3 md:justify-center">
+                        <div className="w-5 h-5 bg-gray-200 rounded"></div>
+                        <div className="w-5 h-5 bg-gray-200 rounded"></div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </>
+        )}
       </div>
 
       {/* Update Modal */}
