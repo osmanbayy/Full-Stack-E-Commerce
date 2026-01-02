@@ -16,6 +16,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import { Toaster } from 'react-hot-toast';
 import Wishlist from "./pages/Wishlist";
 import VerifyEmail from "./pages/VerifyEmail";
+import NotFound from "./pages/NotFound";
 
 const App = () => {
   return (
@@ -37,6 +38,7 @@ const App = () => {
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/my-profile" element={<MyProfile />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
     </div>

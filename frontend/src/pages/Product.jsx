@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { ShopContext } from "../context/ShopContext";
 import RelatedProducts from "../components/RelatedProducts";
 import { motion } from "framer-motion";
@@ -8,12 +8,14 @@ import { useTranslation } from "react-i18next";
 import { getProductName, getProductDescription } from "../utils/productTranslations";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { Star, ShoppingCart, Heart, Check } from "lucide-react";
+import { Star, ShoppingCart, Heart, Check, Loader2 } from "lucide-react";
 
 const Product = () => {
   const { productId } = useParams();
+  const navigate = useNavigate();
   const { products, currency, addToCart, addToWishList, wishlistItems, removeFromWishlist, backendUrl, token } = useContext(ShopContext);
-  const [productData, setProductData] = useState(false);
+  const [productData, setProductData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [image, setImage] = useState("");
   const [size, setSize] = useState("");
   const [rating, setRating] = useState({ averageRating: 0, totalReviews: 0 });
@@ -32,11 +34,15 @@ const Product = () => {
   };
 
   const fetchProductData = async () => {
+    setIsLoading(true);
+    
     // First try to get from context (faster)
     const contextProduct = products.find((item) => item._id === productId);
     if (contextProduct) {
       setProductData(contextProduct);
       setImage(contextProduct.image[0]);
+      setIsLoading(false);
+      return;
     }
     
     // Then fetch from backend to ensure we have the latest data
@@ -47,9 +53,21 @@ const Product = () => {
       if (response.data.success && response.data.product) {
         setProductData(response.data.product);
         setImage(response.data.product.image[0]);
+      } else {
+        // Product not found
+        setProductData(null);
+        setTimeout(() => {
+          navigate("/404");
+        }, 2000);
       }
     } catch (error) {
       console.log(error);
+      setProductData(null);
+      setTimeout(() => {
+        navigate("/404");
+      }, 2000);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -127,6 +145,56 @@ const Product = () => {
 
     return stars;
   };
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-[70vh] flex items-center justify-center py-20">
+        <div className="text-center">
+          <Loader2 className="w-12 h-12 animate-spin text-gray-400 mx-auto mb-4" />
+          <p className="text-gray-600">Loading product...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Product not found state
+  if (!productData) {
+    return (
+      <div className="min-h-[70vh] flex items-center justify-center py-20">
+        <div className="text-center max-w-md mx-auto px-4">
+          <div className="mb-6">
+            <div className="w-24 h-24 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg className="w-12 h-12 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">Product Not Found</h2>
+            <p className="text-gray-600 mb-6">
+              The product you're looking for doesn't exist or has been removed.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <button
+                onClick={() => navigate("/collection")}
+                className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Browse Products
+              </button>
+              <button
+                onClick={() => navigate("/")}
+                className="px-6 py-3 bg-gray-200 text-gray-700 font-semibold rounded-lg hover:bg-gray-300 transition-colors"
+              >
+                Go Home
+              </button>
+            </div>
+            <p className="text-sm text-gray-500 mt-4">
+              Redirecting to 404 page...
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return productData ? (
     <div className="pt-10 transition-opacity duration-500 ease-in border-t-2 opacity-100">
@@ -208,30 +276,24 @@ const Product = () => {
             </div>
           </div>
           <div className="flex flex-col gap-3 mt-6">
-            <motion.button
+            <button
               onClick={() => addToCart(productData._id, size)}
-              className="flex items-center justify-center gap-2 px-8 py-4 text-sm font-semibold text-white transition-all duration-200 bg-black rounded-md shadow-md hover:bg-gray-800 hover:shadow-lg"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              transition={{ type: "spring", stiffness: 300 }}
+              className="flex items-center justify-center gap-2 px-8 py-4 text-sm font-semibold text-white transition-all duration-200 bg-black rounded-md shadow-md hover:bg-gray-800 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]"
             >
               <ShoppingCart className="w-5 h-5" />
               {t("product.addToCart")}
-            </motion.button>
-            <motion.button
+            </button>
+            <button
               onClick={handleWishlistClick}
-              className={`px-8 py-4 text-sm font-semibold rounded-md transition-all duration-200 flex items-center justify-center gap-2 ${
+              className={`px-8 py-4 text-sm font-semibold rounded-md transition-all duration-200 flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98] ${
                 isInWishlist
                   ? "bg-red-50 text-red-600 border-2 border-red-300 hover:bg-red-100 hover:border-red-400"
                   : "text-gray-700 bg-white border-2 border-gray-300 hover:bg-gray-50 hover:border-gray-400"
               }`}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              transition={{ type: "spring", stiffness: 300 }}
             >
               <Heart className={`w-5 h-5 ${isInWishlist ? "fill-red-600 text-red-600" : ""}`} />
               {isInWishlist ? t("product.removeFromWishlist") : t("product.addToWishlist")}
-            </motion.button>
+            </button>
           </div>
           <hr className="mt-8 sm:w-4/5" />
           <div className="flex flex-col gap-1 mt-5 text-sm text-gray-500">
