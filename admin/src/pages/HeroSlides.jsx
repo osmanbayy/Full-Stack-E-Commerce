@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { backendUrl } from "../App";
 import toast from "react-hot-toast";
-import { X, Pencil, Plus, Trash2 } from "lucide-react";
+import { X, Pencil, Plus, Trash2, Loader2 } from "lucide-react";
 import { assets } from "../assets/assets";
 
 // eslint-disable-next-line react/prop-types
@@ -27,6 +27,7 @@ const HeroSlides = ({ token }) => {
   const [buttonTextTr, setButtonTextTr] = useState("");
   const [order, setOrder] = useState("0");
   const [isActive, setIsActive] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const fetchSlides = async () => {
     try {
@@ -132,6 +133,8 @@ const HeroSlides = ({ token }) => {
       return;
     }
 
+    setIsSubmitting(true);
+
     try {
       const formData = new FormData();
       formData.append("title", title || titleEn || titleTr);
@@ -163,11 +166,15 @@ const HeroSlides = ({ token }) => {
     } catch (error) {
       console.log(error);
       toast.error(error.message);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   const updateSlide = async (e) => {
     e.preventDefault();
+
+    setIsSubmitting(true);
 
     try {
       const formData = new FormData();
@@ -204,6 +211,8 @@ const HeroSlides = ({ token }) => {
     } catch (error) {
       console.log(error);
       toast.error(error.message);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -447,14 +456,23 @@ const HeroSlides = ({ token }) => {
               <div className="flex gap-3 mt-4">
                 <button
                   type="submit"
-                  className="py-3 text-white transition-all bg-blue-600 rounded-lg w-28 hover:bg-blue-700"
+                  disabled={isSubmitting}
+                  className="py-3 text-white transition-all bg-blue-600 rounded-lg w-28 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
-                  ADD
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Adding...
+                    </>
+                  ) : (
+                    "ADD"
+                  )}
                 </button>
                 <button
                   type="button"
                   onClick={closeModal}
-                  className="py-3 text-white transition-all bg-gray-500 rounded-lg w-28 hover:bg-gray-600"
+                  disabled={isSubmitting}
+                  className="py-3 text-white transition-all bg-gray-500 rounded-lg w-28 hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   CANCEL
                 </button>
@@ -639,19 +657,45 @@ const HeroSlides = ({ token }) => {
               <div className="flex gap-3 mt-4">
                 <button
                   type="submit"
-                  className="py-3 text-white transition-all bg-blue-600 rounded-lg w-28 hover:bg-blue-700"
+                  disabled={isSubmitting}
+                  className="py-3 text-white transition-all bg-blue-600 rounded-lg w-28 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
-                  UPDATE
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Updating...
+                    </>
+                  ) : (
+                    "UPDATE"
+                  )}
                 </button>
                 <button
                   type="button"
                   onClick={closeModal}
-                  className="py-3 text-white transition-all bg-gray-500 rounded-lg w-28 hover:bg-gray-600"
+                  disabled={isSubmitting}
+                  className="py-3 text-white transition-all bg-gray-500 rounded-lg w-28 hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   CANCEL
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Loading Modal */}
+      {isSubmitting && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 p-8">
+            <div className="flex flex-col items-center justify-center gap-4">
+              <Loader2 className="w-12 h-12 text-blue-600 animate-spin" />
+              <h2 className="text-xl font-semibold text-gray-800">
+                {isUpdateModalOpen ? "Updating Slide" : "Adding Slide"}
+              </h2>
+              <p className="text-sm text-gray-600 text-center">
+                Please wait while we {isUpdateModalOpen ? "update" : "add"} your slide. This may take a few moments...
+              </p>
+            </div>
           </div>
         </div>
       )}
