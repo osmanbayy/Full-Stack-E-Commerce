@@ -5,7 +5,7 @@ import { ShopContext } from "../context/ShopContext";
 import RelatedProducts from "../components/RelatedProducts";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { getProductName } from "../utils/productTranslations";
+import { getProductName, getProductDescription } from "../utils/productTranslations";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Star, ShoppingCart, Heart, Check } from "lucide-react";
@@ -181,7 +181,7 @@ const Product = () => {
             )}
           </p>
           <p className="mt-5 text-gray-500 md:w-4/5">
-            {productData.description}
+            {getProductDescription(productData, i18n.language)}
           </p>
           <div className="flex flex-col gap-4 my-8">
             <p className="text-sm font-medium text-gray-700">{t("product.selectSize")}</p>
@@ -272,23 +272,9 @@ const Product = () => {
         </div>
         <div className="flex flex-col gap-4 px-6 py-6 text-sm text-gray-500 border border-t-0 rounded-b-md">
           {activeTab === "description" ? (
-            <>
-              <p>
-                An e-commerce website is an online platform that facilities the
-                buying and selling of products or services over the internet. It
-                serves as a virtual marketplace wehere businesses and individuals
-                can showcase their products, interact with customers, and conduct
-                transactions without the nedd for a physical presence. E-commerce
-                websites have gained immense popularity due to their convenience,
-                accessibility, and the global reach they offer.
-              </p>
-              <p>
-                E-commerce websites typically display products or services along
-                with detailed descriptions, images, prices, and any available
-                variations (e.g., sizes,colors). Each product usually has its own
-                dedicated page with relevant information.
-              </p>
-            </>
+            <p className="whitespace-pre-line">
+              {productData ? getProductDescription(productData, i18n.language) : ""}
+            </p>
           ) : (
             <div className="flex flex-col gap-6">
               {/* Info Message */}

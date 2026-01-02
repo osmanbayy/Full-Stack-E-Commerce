@@ -24,6 +24,7 @@
     "browseAllCollections": "Tüm Koleksiyonları Görüntüle",
     "bestSellers": "EN ÇOK SATANLAR",
     "bestSellersDesc": "Müşteriler tarafından seçilen en sevilen parçalarımız",
+    "viewAllBestSellers": "Hepsini Gör",
     "onSaleProducts": "İNDİRİMDEKİ ÜRÜNLER",
     "onSaleProductsDesc": "Seçili ürünlerde özel indirimler",
     "viewAllOnSale": "Hepsini Gör"
@@ -60,7 +61,8 @@
     "noItemsFound": "Ürün bulunamadı",
     "tryAdjusting": "Arama veya filtrelerinizi ayarlamayı deneyin",
     "specialOffers": "ÖZEL TEKLİFLER",
-    "onSale": "İndirimde"
+    "onSale": "İndirimde",
+    "bestSeller": "En Çok Satan"
   },
   "product": {
     "selectSize": "Beden Seçin",

@@ -15,6 +15,8 @@ const Add = ({ token }) => {
   const [nameEn, setNameEn] = useState("");
   const [nameTr, setNameTr] = useState("");
   const [description, setDescription] = useState("");
+  const [descriptionEn, setDescriptionEn] = useState("");
+  const [descriptionTr, setDescriptionTr] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("Men");
   const [subCategory, setSubCategory] = useState("Topwear");
@@ -31,7 +33,9 @@ const Add = ({ token }) => {
       formData.append("name", name || nameEn || nameTr); // Fallback for backward compatibility
       formData.append("nameEn", nameEn || name);
       formData.append("nameTr", nameTr || name);
-      formData.append("description", description);
+      formData.append("description", description || descriptionEn || descriptionTr); // Fallback for backward compatibility
+      formData.append("descriptionEn", descriptionEn || description);
+      formData.append("descriptionTr", descriptionTr || description);
       formData.append("price", price);
       formData.append("category", category);
       formData.append("subCategory", subCategory);
@@ -58,6 +62,8 @@ const Add = ({ token }) => {
         setNameEn("");
         setNameTr("");
         setDescription("");
+        setDescriptionEn("");
+        setDescriptionTr("");
         setImage1(false);
         setImage2(false);
         setImage3(false);
@@ -174,13 +180,36 @@ const Add = ({ token }) => {
       </div>
 
       <div className="w-full">
-        <p className="mb-2">Product Description</p>
+        <p className="mb-2">Product Description (Fallback - Optional)</p>
         <textarea
           onChange={(e) => setDescription(e.target.value)}
           value={description}
           className="w-full max-w-[500px] px-3 py-2 resize-none"
           type="text"
-          placeholder="Write Content Here..."
+          placeholder="Write Content Here... (Will be used if descriptionEn/descriptionTr not provided)"
+        />
+      </div>
+
+      <div className="w-full">
+        <p className="mb-2">Product Description (English) *</p>
+        <textarea
+          onChange={(e) => setDescriptionEn(e.target.value)}
+          value={descriptionEn}
+          className="w-full max-w-[500px] px-3 py-2 resize-none"
+          type="text"
+          placeholder="Write English Description Here..."
+          required
+        />
+      </div>
+
+      <div className="w-full">
+        <p className="mb-2">Product Description (Turkish) *</p>
+        <textarea
+          onChange={(e) => setDescriptionTr(e.target.value)}
+          value={descriptionTr}
+          className="w-full max-w-[500px] px-3 py-2 resize-none"
+          type="text"
+          placeholder="Türkçe Açıklama Buraya..."
           required
         />
       </div>

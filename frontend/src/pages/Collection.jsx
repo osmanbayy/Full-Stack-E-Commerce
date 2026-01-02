@@ -6,7 +6,6 @@ import ProductItem from "../components/ProductItem";
 import ProductItemSkeleton from "../components/ProductItemSkeleton";
 import { useTranslation } from "react-i18next";
 import { getProductName } from "../utils/productTranslations";
-import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import axios from "axios";
 import { useSearchParams } from "react-router-dom";
@@ -20,6 +19,7 @@ const Collection = () => {
   const [subCategory, setSubCategory] = useState([]);
   const [productType, setProductType] = useState([]);
   const [onSale, setOnSale] = useState(false);
+  const [bestseller, setBestseller] = useState(false);
   const [sortType, setSortType] = useState("relevant");
   const [showSortDropdown, setShowSortDropdown] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -58,11 +58,15 @@ const Collection = () => {
     }
   };
 
-  // Check URL params for onSale filter
+  // Check URL params for filters
   useEffect(() => {
     const onSaleParam = searchParams.get("onSale");
+    const bestsellerParam = searchParams.get("bestseller");
     if (onSaleParam === "true") {
       setOnSale(true);
+    }
+    if (bestsellerParam === "true") {
+      setBestseller(true);
     }
   }, [searchParams]);
 
@@ -104,6 +108,10 @@ const Collection = () => {
         if (onSale) {
           products = products.filter((item) => item.discount && item.discount > 0);
         }
+        // Filter by bestseller if bestseller is true
+        if (bestseller) {
+          products = products.filter((item) => item.bestseller === true);
+        }
 
         if (append) {
           setFilterProducts(prev => {
@@ -136,7 +144,7 @@ const Collection = () => {
       setIsLoading(false);
       setIsLoadingMore(false);
     }
-  }, [search, category, subCategory, productType, onSale, backendUrl]);
+  }, [search, category, subCategory, productType, onSale, bestseller, backendUrl]);
 
   // Apply sorting when sortType changes
   useEffect(() => {
@@ -159,7 +167,7 @@ const Collection = () => {
     setCurrentPage(1);
     setHasMore(true);
     fetchProducts(1, false);
-  }, [search, category, subCategory, productType, onSale]);
+  }, [search, category, subCategory, productType, onSale, bestseller]);
 
   // Infinite scroll observer
   useEffect(() => {
@@ -451,6 +459,15 @@ const Collection = () => {
               />
               {t("collection.onSale")}
             </p>
+            <p className="flex gap-2">
+              <input
+                type="checkbox"
+                className="w-3"
+                checked={bestseller}
+                onChange={(e) => setBestseller(e.target.checked)}
+              />
+              {t("collection.bestSeller")}
+            </p>
           </div>
         </div>
       </div>
@@ -461,20 +478,18 @@ const Collection = () => {
           <Title text1={t("collection.allCollections").split(" ")[0]} text2={t("collection.allCollections").split(" ").slice(1).join(" ")} />
           {/* Product Sort - Custom Dropdown */}
           <div className="relative" ref={sortDropdownRef}>
-            <motion.button
+            <button
               onClick={() => setShowSortDropdown(!showSortDropdown)}
-              className="flex items-center justify-between gap-3 bg-white border-2 border-gray-300 rounded-lg px-4 py-2.5 pr-3 text-sm font-medium text-gray-700 cursor-pointer transition-all duration-200 hover:border-gray-400 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-black focus:border-black min-w-[160px]"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+              className="flex items-center justify-between gap-3 bg-white border-2 border-gray-300 rounded-lg px-4 py-2.5 pr-3 text-sm font-medium text-gray-700 cursor-pointer transition-all duration-200 hover:border-gray-400 hover:shadow-md hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-black focus:border-black min-w-[160px]"
             >
               <span>{selectedSortLabel}</span>
-              <motion.svg
-                className="w-5 h-5 text-gray-500"
+              <svg
+                className={`w-5 h-5 text-gray-500 transition-transform duration-200 ${
+                  showSortDropdown ? "rotate-180" : ""
+                }`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
-                animate={{ rotate: showSortDropdown ? 180 : 0 }}
-                transition={{ duration: 0.2 }}
               >
                 <path
                   strokeLinecap="round"
@@ -482,37 +497,27 @@ const Collection = () => {
                   strokeWidth={2}
                   d="M19 9l-7 7-7-7"
                 />
-              </motion.svg>
-            </motion.button>
+              </svg>
+            </button>
             
             {/* Dropdown Options */}
-            <AnimatePresence>
-              {showSortDropdown && (
-                <motion.div
-                  className="absolute right-0 mt-2 w-full bg-white border-2 border-gray-300 rounded-lg shadow-lg overflow-hidden z-50"
-                  initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  {sortOptions.map((option, index) => (
-                    <motion.button
-                      key={option.value}
-                      onClick={() => handleSortSelect(option.value)}
-                      className={`w-full text-left px-4 py-3 text-sm font-medium transition-colors ${
-                        sortType === option.value
-                          ? "bg-black text-white"
-                          : "text-gray-700 hover:bg-gray-100"
-                      } ${index !== sortOptions.length - 1 ? "border-b border-gray-200" : ""}`}
-                      whileHover={{ backgroundColor: sortType === option.value ? "#000" : "#f3f4f6" }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      {option.label}
-                    </motion.button>
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
+            {showSortDropdown && (
+              <div className="absolute right-0 mt-2 w-full bg-white border-2 border-gray-300 rounded-lg shadow-lg overflow-hidden z-50 transition-all duration-200 opacity-100 transform translate-y-0 scale-100">
+                {sortOptions.map((option, index) => (
+                  <button
+                    key={option.value}
+                    onClick={() => handleSortSelect(option.value)}
+                    className={`w-full text-left px-4 py-3 text-sm font-medium transition-colors duration-150 ${
+                      sortType === option.value
+                        ? "bg-black text-white"
+                        : "text-gray-700 hover:bg-gray-100"
+                    } ${index !== sortOptions.length - 1 ? "border-b border-gray-200" : ""}`}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </div>
         {/* Map Products */}

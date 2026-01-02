@@ -11,6 +11,8 @@ const addProduct = async (req, res) => {
       nameEn,
       nameTr,
       description,
+      descriptionEn,
+      descriptionTr,
       price,
       category,
       subCategory,
@@ -42,7 +44,9 @@ const addProduct = async (req, res) => {
       name: name || nameEn || nameTr, // Backward compatibility
       nameEn: nameEn || name,
       nameTr: nameTr || name,
-      description,
+      description: description || descriptionEn || descriptionTr, // Backward compatibility
+      descriptionEn: descriptionEn || description,
+      descriptionTr: descriptionTr || description,
       category,
       subCategory,
       productType: productType || "",
@@ -164,6 +168,8 @@ const updateProduct = async (req, res) => {
       nameEn,
       nameTr,
       description,
+      descriptionEn,
+      descriptionTr,
       price,
       category,
       subCategory,
@@ -223,7 +229,11 @@ const updateProduct = async (req, res) => {
       updateData.nameEn = nameEn || name || product.nameEn;
       updateData.nameTr = nameTr || name || product.nameTr;
     }
-    if (description !== undefined) updateData.description = description;
+    if (description !== undefined || descriptionEn !== undefined || descriptionTr !== undefined) {
+      updateData.description = description || descriptionEn || descriptionTr || product.description;
+      updateData.descriptionEn = descriptionEn || description || product.descriptionEn;
+      updateData.descriptionTr = descriptionTr || description || product.descriptionTr;
+    }
     if (price !== undefined) updateData.price = Number(price);
     if (category !== undefined) updateData.category = category;
     if (subCategory !== undefined) updateData.subCategory = subCategory;
