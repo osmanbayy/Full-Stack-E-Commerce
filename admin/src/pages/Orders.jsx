@@ -57,6 +57,29 @@ const Orders = ({ token }) => {
     }
   };
 
+  const paymentHandler = async (event, orderId) => {
+    try {
+      const paymentStatus = event.target.value === "true";
+      const response = await axios.post(
+        backendUrl + "/api/order/payment",
+        {
+          orderId,
+          payment: paymentStatus
+        },
+        { headers: { token } }
+      );
+      if (response.data.success) {
+        toast.success(response.data.message);
+        await fetchAllOrders();
+      } else {
+        toast.error(response.data.message || "Failed to update payment status");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message || "Failed to update payment status");
+    }
+  };
+
   useEffect(() => {
     fetchAllOrders();
   }, [token]);
@@ -68,7 +91,7 @@ const Orders = ({ token }) => {
 
   const renderOrderCard = (order, index) => (
     <div
-      className="grid grid-cols-1 sm:grid-cols-[0.5fr_2fr_1fr] lg:grid-cols-[0.5fr_2fr_1fr_1fr_1fr] gap-3 items-start border-2 border-gray-200 p-5 md:p-8 my-3 md:my-4 text-xs sm:text-sm text-gray-700"
+      className="grid grid-cols-1 sm:grid-cols-[0.5fr_2fr_1fr] lg:grid-cols-[0.5fr_2fr_1fr_1fr_1fr_1fr] gap-3 items-start border-2 border-gray-200 p-5 md:p-8 my-3 md:my-4 text-xs sm:text-sm text-gray-700"
       key={index}
     >
       <img className="w-12" src={assets.parcel_icon} alt="" />
@@ -117,7 +140,6 @@ const Orders = ({ token }) => {
           Items: {order.items.length}
         </p>
         <p className="mt-3">Method: {order.paymentMethod}</p>
-        <p>Payment: {order.payment ? "Done" : "Pending"}</p>
         <p>Date: {new Date(order.date).toLocaleDateString()}</p>
         <p className="mt-2 font-semibold">Status: {order.status}</p>
       </div>
@@ -126,21 +148,41 @@ const Orders = ({ token }) => {
         {currency} {order.amount}
       </p>
       
-      {activeTab === "active" ? (
+      <div className="flex flex-col gap-2">
+        <label className="text-xs font-semibold text-gray-600">Payment Status</label>
         <select
-          onChange={(event) => statusHandler(event, order._id)}
-          value={order.status}
-          className="p-2 font-semibold border border-gray-300 rounded"
+          onChange={(event) => paymentHandler(event, order._id)}
+          value={order.payment ? "true" : "false"}
+          className={`p-2 font-semibold border border-gray-300 rounded ${
+            order.payment ? "bg-green-50 text-green-700" : "bg-yellow-50 text-yellow-700"
+          }`}
         >
-          <option value="Order Placed">Order Placed</option>
-          <option value="Packing">Packing</option>
-          <option value="Shipped">Shipped</option>
-          <option value="Out for Delivery">Out for Delivery</option>
-          <option value="Delivered">Delivered</option>
+          <option value="false">Pending</option>
+          <option value="true">Completed</option>
         </select>
+      </div>
+      
+      {activeTab === "active" ? (
+        <div className="flex flex-col gap-2">
+          <label className="text-xs font-semibold text-gray-600">Order Status</label>
+          <select
+            onChange={(event) => statusHandler(event, order._id)}
+            value={order.status}
+            className="p-2 font-semibold border border-gray-300 rounded"
+          >
+            <option value="Order Placed">Order Placed</option>
+            <option value="Packing">Packing</option>
+            <option value="Shipped">Shipped</option>
+            <option value="Out for Delivery">Out for Delivery</option>
+            <option value="Delivered">Delivered</option>
+          </select>
+        </div>
       ) : (
-        <div className="p-2 font-semibold text-gray-600 bg-gray-100 rounded">
-          {order.status}
+        <div className="flex flex-col gap-2">
+          <label className="text-xs font-semibold text-gray-600">Order Status</label>
+          <div className="p-2 font-semibold text-gray-600 bg-gray-100 rounded">
+            {order.status}
+          </div>
         </div>
       )}
     </div>

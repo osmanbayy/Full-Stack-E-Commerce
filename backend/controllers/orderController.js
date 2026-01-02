@@ -68,6 +68,58 @@ const updateStatus = async (req, res) => {
   }
 };
 
+// Update Payment Status from Admin Panel
+const updatePayment = async (req, res) => {
+  try {
+    const { orderId, payment } = req.body;
+    await orderModel.findByIdAndUpdate(orderId, { payment });
+    res.json({ 
+      success: true, 
+      message: payment ? "Payment marked as completed!" : "Payment marked as pending!" 
+    });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
+// Get Financial Statistics
+const getFinancialStats = async (req, res) => {
+  try {
+    const allOrders = await orderModel.find({});
+    
+    const totalOrders = allOrders.length;
+    const totalRevenue = allOrders
+      .filter(order => order.payment === true)
+      .reduce((sum, order) => sum + order.amount, 0);
+    
+    const pendingPayments = allOrders
+      .filter(order => order.payment === false)
+      .reduce((sum, order) => sum + order.amount, 0);
+    
+    const completedPayments = allOrders
+      .filter(order => order.payment === true)
+      .length;
+    
+    const pendingPaymentsCount = allOrders
+      .filter(order => order.payment === false)
+      .length;
+
+    res.json({
+      success: true,
+      stats: {
+        totalOrders,
+        totalRevenue,
+        pendingPayments,
+        completedPayments,
+        pendingPaymentsCount
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
 export {
   placeOrderCOD,
   placeOrderRazorpay,
@@ -75,4 +127,6 @@ export {
   allOrders,
   userOrders,
   updateStatus,
+  updatePayment,
+  getFinancialStats,
 };
