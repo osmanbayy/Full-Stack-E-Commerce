@@ -9,14 +9,17 @@ import { getProductName } from "../utils/productTranslations";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import axios from "axios";
+import { useSearchParams } from "react-router-dom";
 
 const Collection = () => {
   const { search, backendUrl } = useContext(ShopContext);
+  const [searchParams] = useSearchParams();
   const [showFilter, setShowFilter] = useState(false);
   const [filterProducts, setFilterProducts] = useState([]);
   const [category, setCategory] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
   const [productType, setProductType] = useState([]);
+  const [onSale, setOnSale] = useState(false);
   const [sortType, setSortType] = useState("relevant");
   const [showSortDropdown, setShowSortDropdown] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -55,6 +58,14 @@ const Collection = () => {
     }
   };
 
+  // Check URL params for onSale filter
+  useEffect(() => {
+    const onSaleParam = searchParams.get("onSale");
+    if (onSaleParam === "true") {
+      setOnSale(true);
+    }
+  }, [searchParams]);
+
   const fetchProducts = useCallback(async (page = 1, append = false) => {
     try {
       if (page === 1) {
@@ -87,7 +98,12 @@ const Collection = () => {
       const response = await axios.get(`${backendUrl}/api/product/list?${params.toString()}`);
       
       if (response.data.success) {
-        const products = response.data.products;
+        let products = response.data.products;
+
+        // Filter by discount if onSale is true
+        if (onSale) {
+          products = products.filter((item) => item.discount && item.discount > 0);
+        }
 
         if (append) {
           setFilterProducts(prev => {
@@ -120,7 +136,7 @@ const Collection = () => {
       setIsLoading(false);
       setIsLoadingMore(false);
     }
-  }, [search, category, subCategory, productType, backendUrl]);
+  }, [search, category, subCategory, productType, onSale, backendUrl]);
 
   // Apply sorting when sortType changes
   useEffect(() => {
@@ -143,7 +159,7 @@ const Collection = () => {
     setCurrentPage(1);
     setHasMore(true);
     fetchProducts(1, false);
-  }, [search, category, subCategory, productType]);
+  }, [search, category, subCategory, productType, onSale]);
 
   // Infinite scroll observer
   useEffect(() => {
@@ -415,6 +431,25 @@ const Collection = () => {
                 onChange={toggleProductType}
               />
               {t("collection.sneakers")}
+            </p>
+          </div>
+        </div>
+        {/* On Sale Filter */}
+        <div
+          className={`border border-gray-300 pl-5 py-3 my-5 ${
+            showFilter ? "" : "hidden"
+          } sm:block`}
+        >
+          <p className="mb-3 text-sm font-medium">{t("collection.specialOffers")}</p>
+          <div className="flex flex-col gap-2 text-sm font-light text-gray-700">
+            <p className="flex gap-2">
+              <input
+                type="checkbox"
+                className="w-3"
+                checked={onSale}
+                onChange={(e) => setOnSale(e.target.checked)}
+              />
+              {t("collection.onSale")}
             </p>
           </div>
         </div>

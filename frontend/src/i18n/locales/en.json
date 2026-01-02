@@ -23,7 +23,10 @@
     "latestCollectionsDesc": "Discover our newest designs, crafted for the season.",
     "browseAllCollections": "Browse All Collections",
     "bestSellers": "BEST SELLERS",
-    "bestSellersDesc": "Our most loved pieces, chosen by customers"
+    "bestSellersDesc": "Our most loved pieces, chosen by customers",
+    "onSaleProducts": "ON SALE PRODUCTS",
+    "onSaleProductsDesc": "Special discounts on selected items",
+    "viewAllOnSale": "View All On Sale"
   },
   "collection": {
     "allCollections": "ALL COLLECTIONS",
@@ -55,7 +58,9 @@
     "lowToHigh": "Low to High",
     "highToLow": "High to Low",
     "noItemsFound": "No items found",
-    "tryAdjusting": "Try adjusting your search or filters"
+    "tryAdjusting": "Try adjusting your search or filters",
+    "specialOffers": "SPECIAL OFFERS",
+    "onSale": "On Sale"
   },
   "product": {
     "selectSize": "Select Size",

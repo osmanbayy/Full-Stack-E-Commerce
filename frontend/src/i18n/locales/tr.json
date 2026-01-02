@@ -23,7 +23,10 @@
     "latestCollectionsDesc": "Mevsim için tasarlanmış en yeni tasarımlarımızı keşfedin.",
     "browseAllCollections": "Tüm Koleksiyonları Görüntüle",
     "bestSellers": "EN ÇOK SATANLAR",
-    "bestSellersDesc": "Müşteriler tarafından seçilen en sevilen parçalarımız"
+    "bestSellersDesc": "Müşteriler tarafından seçilen en sevilen parçalarımız",
+    "onSaleProducts": "İNDİRİMDEKİ ÜRÜNLER",
+    "onSaleProductsDesc": "Seçili ürünlerde özel indirimler",
+    "viewAllOnSale": "Hepsini Gör"
   },
   "collection": {
     "allCollections": "TÜM KOLEKSİYONLAR",
@@ -55,7 +58,9 @@
     "lowToHigh": "Düşükten Yükseğe",
     "highToLow": "Yüksekten Düşüğe",
     "noItemsFound": "Ürün bulunamadı",
-    "tryAdjusting": "Arama veya filtrelerinizi ayarlamayı deneyin"
+    "tryAdjusting": "Arama veya filtrelerinizi ayarlamayı deneyin",
+    "specialOffers": "ÖZEL TEKLİFLER",
+    "onSale": "İndirimde"
   },
   "product": {
     "selectSize": "Beden Seçin",
