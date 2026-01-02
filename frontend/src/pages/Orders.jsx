@@ -148,7 +148,7 @@ const Orders = () => {
                 <p className="mt-1">
                   {t("orders.payment")}: <span className="text-gray-400">{item.paymentMethod}</span>
                 </p>
-                {item.trackingNumber && item.status === "Shipped" && (
+                {item.trackingNumber && (item.status === "Shipped" || item.status === "Out for Delivery") && (
                   <p className="mt-2">
                     <span className="font-semibold text-gray-700">{t("orders.orderNumber")}:</span>{" "}
                     <span className="text-blue-600 font-mono font-semibold">{item.trackingNumber}</span>
