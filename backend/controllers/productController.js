@@ -17,6 +17,7 @@ const addProduct = async (req, res) => {
       productType,
       sizes,
       bestseller,
+      discount,
     } = req.body;
 
     const image1 = req.files.image1 && req.files.image1[0];
@@ -47,6 +48,7 @@ const addProduct = async (req, res) => {
       productType: productType || "",
       price: Number(price),
       bestseller: bestseller === "true" ? true : false,
+      discount: discount ? Number(discount) : 0,
       sizes: JSON.parse(sizes),
       image: imagesUrl,
       date: Date.now(),
@@ -168,6 +170,7 @@ const updateProduct = async (req, res) => {
       productType,
       sizes,
       bestseller,
+      discount,
       existingImages, // JSON string of existing image URLs to keep
     } = req.body;
 
@@ -229,6 +232,7 @@ const updateProduct = async (req, res) => {
     if (bestseller !== undefined) {
       updateData.bestseller = bestseller === "true" || bestseller === true;
     }
+    if (discount !== undefined) updateData.discount = Number(discount);
     if (imagesUrl.length > 0) updateData.image = imagesUrl;
 
     await productModel.findByIdAndUpdate(id, updateData);

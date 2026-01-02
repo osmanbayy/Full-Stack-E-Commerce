@@ -69,7 +69,7 @@ const BestSeller = () => {
             ) : bestSeller.length > 0 ? (
                 bestSeller.map((item, index)=> (
                     <motion.div key={item._id} variants={itemVariants}>
-                        <ProductItem id={item._id} image={item.image} name={getProductName(item, i18n.language)} price={item.price} />
+                        <ProductItem id={item._id} image={item.image} name={getProductName(item, i18n.language)} price={item.price} discount={item.discount || 0} />
                     </motion.div>
                 ))
             ) : null}

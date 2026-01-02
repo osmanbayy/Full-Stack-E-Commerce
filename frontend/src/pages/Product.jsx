@@ -162,7 +162,23 @@ const Product = () => {
             )}
           </div>
           <p className="mt-5 text-3xl font-medium">
-            {currency} {productData.price}
+            {productData.discount > 0 ? (
+              <div className="flex items-center gap-3">
+                <span className="text-2xl font-bold text-red-600">
+                  {currency} {(productData.price * (1 - productData.discount / 100)).toFixed(2)}
+                </span>
+                <span className="text-lg text-gray-400 line-through">
+                  {currency} {productData.price}
+                </span>
+                <span className="px-2 py-1 text-sm font-semibold text-white bg-red-500 rounded">
+                  %{productData.discount} OFF
+                </span>
+              </div>
+            ) : (
+              <span className="text-2xl font-bold">
+                {currency} {productData.price}
+              </span>
+            )}
           </p>
           <p className="mt-5 text-gray-500 md:w-4/5">
             {productData.description}

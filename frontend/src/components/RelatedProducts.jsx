@@ -38,6 +38,7 @@ const RelatedProducts = ({ category, subCategory }) => {
             name={getProductName(item, i18n.language)}
             image={item.image}
             price={item.price}
+            discount={item.discount || 0}
           />
         ))}
       </div>

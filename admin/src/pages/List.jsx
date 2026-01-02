@@ -29,6 +29,7 @@ const List = ({ token }) => {
   const [bestseller, setBestseller] = useState(false);
   const [sizes, setSizes] = useState([]);
   const [existingImages, setExistingImages] = useState([]);
+  const [discount, setDiscount] = useState("0");
 
   const fetchList = async () => {
     try {
@@ -85,6 +86,7 @@ const List = ({ token }) => {
     setSubCategory(product.subCategory || "Topwear");
     setProductType(product.productType || "");
     setBestseller(product.bestseller || false);
+    setDiscount(product.discount?.toString() || "0");
     setSizes(product.sizes || []);
     setExistingImages(product.image || []);
     setImage1(false);
@@ -106,6 +108,7 @@ const List = ({ token }) => {
     setSubCategory("Topwear");
     setProductType("");
     setBestseller(false);
+    setDiscount("0");
     setSizes([]);
     setExistingImages([]);
     setImage1(false);
@@ -133,6 +136,7 @@ const List = ({ token }) => {
       formData.append("subCategory", subCategory);
       formData.append("productType", productType);
       formData.append("bestseller", bestseller);
+      formData.append("discount", discount);
       formData.append("sizes", JSON.stringify(sizes));
       formData.append("existingImages", JSON.stringify(existingImages));
 
@@ -435,6 +439,19 @@ const List = ({ token }) => {
                     type="number"
                     placeholder="25"
                     required
+                  />
+                </div>
+
+                <div>
+                  <p className="mb-2">Discount (%)</p>
+                  <input
+                    onChange={(e) => setDiscount(e.target.value)}
+                    value={discount}
+                    className="w-full px-3 py-2 sm:w-[120px]"
+                    type="number"
+                    min="0"
+                    max="100"
+                    placeholder="0"
                   />
                 </div>
               </div>

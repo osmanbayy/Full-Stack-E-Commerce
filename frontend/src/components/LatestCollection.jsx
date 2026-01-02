@@ -46,6 +46,7 @@ const LatestCollection = () => {
               image={item.image}
               name={getProductName(item, i18n.language)}
               price={item.price}
+              discount={item.discount || 0}
             />
           ))
         ) : null}

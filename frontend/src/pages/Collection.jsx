@@ -503,6 +503,7 @@ const Collection = () => {
                   name={getProductName(item, i18n.language)}
                   id={item._id}
                   price={item.price}
+                  discount={item.discount || 0}
                   image={item.image}
                 />
               ))}

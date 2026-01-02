@@ -12,6 +12,7 @@ const productSchema = new mongoose.Schema({
   productType: { type: String, required: false }, // T-Shirt, Jacket, Sweater, Shoes, etc.
   sizes: { type: Array, required: true },
   bestseller: { type: Boolean },
+  discount: { type: Number, default: 0, min: 0, max: 100 }, // Discount percentage (0-100)
   date: { type: Number, required: true },
 });
 

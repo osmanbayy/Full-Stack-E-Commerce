@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import axios from "axios";
 import { Star, Heart, Share2 } from "lucide-react";
 
-const ProductItem = ({ id, image, name, price }) => {
+const ProductItem = ({ id, image, name, price, discount = 0 }) => {
   const { currency, addToWishList, wishlistItems, removeFromWishlist, backendUrl } = useContext(ShopContext);
   const [showPopup, setShowPopup] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
@@ -83,8 +83,15 @@ const ProductItem = ({ id, image, name, price }) => {
     return stars;
   };
 
+  const discountedPrice = discount > 0 ? price * (1 - discount / 100) : price;
+
   return (
     <div className="flex flex-col rounded-md border-[0.5px] pb-5 hover:shadow-md relative group h-full">
+      {discount > 0 && (
+        <div className="absolute top-2 left-2 z-10 bg-red-500 text-white px-2 py-1 rounded text-xs font-semibold">
+          - %{discount}
+        </div>
+      )}
       <Link to={`/product/${id}`} className="text-gray-700 cursor-pointer flex flex-col h-full">
         <div className="overflow-hidden aspect-square">
           <img
@@ -99,9 +106,22 @@ const ProductItem = ({ id, image, name, price }) => {
             {renderStars(rating.averageRating)}
             <span className="text-xs text-gray-500">({rating.totalReviews})</span>
           </div>
-          <p className="pl-2 text-sm font-medium mt-auto">
-            {currency} {price}
-          </p>
+          <div className="pl-2 mt-auto">
+            {discount > 0 ? (
+              <div className="flex items-center gap-2">
+                <p className="text-sm font-medium text-red-600">
+                  {currency} {discountedPrice.toFixed(2)}
+                </p>
+                <p className="text-xs text-gray-400 line-through">
+                  {currency} {price}
+                </p>
+              </div>
+            ) : (
+              <p className="text-sm font-medium">
+                {currency} {price}
+              </p>
+            )}
+          </div>
         </div>
       </Link>
       <div
