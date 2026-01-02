@@ -5,10 +5,13 @@ import axios from "axios";
 import { backendUrl, currency } from "../App";
 import toast from "react-hot-toast";
 import { assets } from "../assets/assets";
+import { AlertTriangle, X } from "lucide-react";
 
 const Orders = ({ token }) => {
   const [orders, setOrders] = useState([]);
   const [activeTab, setActiveTab] = useState("active"); // "active" or "history"
+  const [showStatusModal, setShowStatusModal] = useState(false);
+  const [pendingStatusChange, setPendingStatusChange] = useState(null); // { orderId, newStatus, currentStatus }
 
   const fetchAllOrders = async () => {
     if (!token) {
@@ -31,20 +34,30 @@ const Orders = ({ token }) => {
     }
   };
 
-  const statusHandler = async (event, orderId ) => {
+  const handleStatusChange = (event, orderId, currentStatus) => {
+    const newStatus = event.target.value;
+    if (newStatus === currentStatus) {
+      return; // No change, do nothing
+    }
+    setPendingStatusChange({ orderId, newStatus, currentStatus });
+    setShowStatusModal(true);
+  };
+
+  const confirmStatusChange = async () => {
+    if (!pendingStatusChange) return;
+
     try {
       const response = await axios.post(
         backendUrl + "/api/order/status",
         {
-          orderId,
-          status: event.target.value
+          orderId: pendingStatusChange.orderId,
+          status: pendingStatusChange.newStatus
         },
         { headers: { token } }
       );
       if (response.data.success) {
-        const newStatus = event.target.value;
-        toast.success(`Order status updated to ${newStatus}`);
-        if (newStatus === "Delivered") {
+        toast.success(`Order status updated to ${pendingStatusChange.newStatus}`);
+        if (pendingStatusChange.newStatus === "Delivered") {
           toast.success("Order moved to Order History");
         }
         await fetchAllOrders();
@@ -54,7 +67,17 @@ const Orders = ({ token }) => {
     } catch (error) {
       console.log(error);
       toast.error(error.message || "Failed to update order status");
+    } finally {
+      setShowStatusModal(false);
+      setPendingStatusChange(null);
     }
+  };
+
+  const cancelStatusChange = () => {
+    setShowStatusModal(false);
+    setPendingStatusChange(null);
+    // Reset select to current status by refreshing orders
+    fetchAllOrders();
   };
 
   const paymentHandler = async (event, orderId) => {
@@ -209,7 +232,7 @@ const Orders = ({ token }) => {
         <div className="flex flex-col gap-2">
           <label className="text-xs font-semibold text-gray-600">Order Status</label>
           <select
-            onChange={(event) => statusHandler(event, order._id)}
+            onChange={(event) => handleStatusChange(event, order._id, order.status)}
             value={order.status}
             className="p-2 font-semibold border border-gray-300 rounded"
           >
@@ -275,6 +298,51 @@ const Orders = ({ token }) => {
           displayedOrders.map((order, index) => renderOrderCard(order, index))
         )}
       </div>
+
+      {/* Status Change Confirmation Modal */}
+      {showStatusModal && pendingStatusChange && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full">
+            <div className="p-6">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center flex-shrink-0">
+                  <AlertTriangle className="w-6 h-6 text-yellow-600" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold text-gray-800">Confirm Status Change</h2>
+                  <p className="text-sm text-gray-500">Are you sure you want to change the order status?</p>
+                </div>
+              </div>
+
+              <div className="bg-gray-50 rounded-lg p-4 mb-6">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm text-gray-600">Current Status:</span>
+                  <span className="font-semibold text-gray-800">{pendingStatusChange.currentStatus}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600">New Status:</span>
+                  <span className="font-semibold text-blue-600">{pendingStatusChange.newStatus}</span>
+                </div>
+              </div>
+
+              <div className="flex gap-3">
+                <button
+                  onClick={confirmStatusChange}
+                  className="flex-1 px-4 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  Confirm
+                </button>
+                <button
+                  onClick={cancelStatusChange}
+                  className="flex-1 px-4 py-3 bg-gray-100 text-gray-700 font-semibold rounded-lg hover:bg-gray-200 transition-colors"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
