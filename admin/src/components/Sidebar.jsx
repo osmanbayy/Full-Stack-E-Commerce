@@ -34,6 +34,13 @@ const Sidebar = () => {
           <Coins className="w-5 h-5" />
           <p className="hidden md:block">Finance</p>
         </NavLink>
+        <NavLink
+          className="flex items-center gap-3 px-3 py-2 border border-r-0 rounded border-to-grounded-lg"
+          to={"/hero-slides"}
+        >
+          <img className="w-5 h-5" src={assets.order_icon} alt="" />
+          <p className="hidden md:block">Hero Slides</p>
+        </NavLink>
       </div>
     </div>
   );
