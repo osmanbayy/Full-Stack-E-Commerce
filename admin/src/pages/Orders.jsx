@@ -177,7 +177,7 @@ const Orders = ({ token }) => {
       </p>
       
       <div className="flex flex-col gap-2">
-        <label className="text-xs font-semibold text-gray-600">Tracking Number</label>
+        <label className="text-xs font-semibold text-gray-600">Order Number</label>
         <input
           type="text"
           value={order.trackingNumber || ""}

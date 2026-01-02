@@ -133,7 +133,7 @@
     "orderHistory": "Order History",
     "noActiveOrders": "No active orders yet",
     "noOrderHistory": "No order history yet",
-    "trackingNumber": "Tracking Number"
+    "orderNumber": "Order Number"
   },
   "profile": {
     "myProfile": "MY PROFILE",

@@ -133,7 +133,7 @@
     "orderHistory": "Geçmiş Siparişlerim",
     "noActiveOrders": "Henüz aktif siparişiniz yok",
     "noOrderHistory": "Henüz sipariş geçmişiniz yok",
-    "trackingNumber": "Kargo Takip Numarası"
+    "orderNumber": "Sipariş Numarası"
   },
   "profile": {
     "myProfile": "PROFİLİM",
