@@ -5,7 +5,8 @@ import {
   Plus, 
   List, 
   ShoppingBag,
-  LayoutDashboard
+  LayoutDashboard,
+  MessageSquare
 } from "lucide-react";
 
 const Sidebar = () => {
@@ -17,6 +18,7 @@ const Sidebar = () => {
     { path: "/orders", icon: ShoppingBag, label: "Orders" },
     { path: "/finance", icon: Coins, label: "Finance" },
     { path: "/hero-slides", icon: Sliders, label: "Hero Slides" },
+    { path: "/contact-messages", icon: MessageSquare, label: "Messages" },
   ];
 
   return (

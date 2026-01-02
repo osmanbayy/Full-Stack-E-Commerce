@@ -10,6 +10,7 @@ import orderRouter from "./routes/orderRoute.js";
 import wishlistRouter from "./routes/wishlistRoute.js";
 import reviewRouter from "./routes/reviewRoute.js";
 import heroSlideRouter from "./routes/heroSlideRoute.js";
+import contactRouter from "./routes/contactRoute.js";
 
 // App Config
 const app = express();
@@ -65,6 +66,7 @@ app.use("/api/order", orderRouter);
 app.use("/api/wishlist", wishlistRouter);
 app.use("/api/review", reviewRouter);
 app.use("/api/hero-slide", heroSlideRouter);
+app.use("/api/contact", contactRouter);
 
 app.get("/", (req, res) => {
   res.send("API Working!");

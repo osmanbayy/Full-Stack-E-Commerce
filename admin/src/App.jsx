@@ -6,6 +6,7 @@ import List from "./pages/List";
 import Orders from "./pages/Orders";
 import Finance from "./pages/Finance";
 import HeroSlides from "./pages/HeroSlides";
+import ContactMessages from "./pages/ContactMessages";
 import { useEffect, useState } from "react";
 import Login from "./components/Login";
 import { Toaster } from "react-hot-toast";
@@ -50,6 +51,7 @@ const App = () => {
                   <Route path="/orders" element={<Orders token={token} />} />
                   <Route path="/finance" element={<Finance token={token} />} />
                   <Route path="/hero-slides" element={<HeroSlides token={token} />} />
+                  <Route path="/contact-messages" element={<ContactMessages token={token} />} />
                 </Routes>
               </div>
             </main>
