@@ -1,4 +1,5 @@
 import contactModel from "../models/contactModel.js";
+import { sendContactReply } from "../utils/emailService.js";
 
 // Submit contact form
 const submitContact = async (req, res) => {
@@ -80,5 +81,62 @@ const markAsUnread = async (req, res) => {
   }
 };
 
-export { submitContact, getAllContacts, markAsRead, markAsUnread };
+// Reply to contact message
+const replyToContact = async (req, res) => {
+  try {
+    const { messageId, replyMessage } = req.body;
+
+    if (!messageId || !replyMessage) {
+      return res.json({
+        success: false,
+        message: "Message ID and reply message are required!",
+      });
+    }
+
+    // Get the contact message
+    const contact = await contactModel.findById(messageId);
+    if (!contact) {
+      return res.json({
+        success: false,
+        message: "Contact message not found!",
+      });
+    }
+
+    // Send email reply
+    const emailResult = await sendContactReply(
+      contact.email,
+      contact.name,
+      contact.subject,
+      replyMessage
+    );
+
+    if (!emailResult.success) {
+      return res.json({
+        success: false,
+        message: "Failed to send email reply. Please try again later.",
+      });
+    }
+
+    // Update contact message with reply info
+    await contactModel.findByIdAndUpdate(messageId, {
+      replied: true,
+      repliedAt: Date.now(),
+      replyMessage: replyMessage,
+      read: true, // Also mark as read when replied
+    });
+
+    res.json({
+      success: true,
+      message: "Reply sent successfully to " + contact.email,
+    });
+  } catch (error) {
+    console.log("Reply to contact error:", error);
+    res.json({
+      success: false,
+      message: "Failed to send reply. Please try again later.",
+    });
+  }
+};
+
+export { submitContact, getAllContacts, markAsRead, markAsUnread, replyToContact };
 

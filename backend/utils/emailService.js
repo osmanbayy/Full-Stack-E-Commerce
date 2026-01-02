@@ -76,5 +76,66 @@ export const sendResendVerificationEmail = async (email, verificationToken, name
   return sendVerificationEmail(email, verificationToken, name);
 };
 
+// Send contact reply email
+export const sendContactReply = async (userEmail, userName, userSubject, adminReply) => {
+  try {
+    const transporter = createTransporter();
+    
+    const mailOptions = {
+      from: `"${process.env.EMAIL_FROM_NAME || "E-Commerce App"}" <${process.env.SMTP_USER}>`,
+      to: userEmail,
+      subject: `Re: ${userSubject}`,
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <style>
+            body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+            .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+            .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+            .content { padding: 30px; background-color: #f9f9f9; }
+            .reply-box { background-color: #fff; padding: 20px; border-left: 4px solid #667eea; margin: 20px 0; border-radius: 5px; }
+            .footer { text-align: center; padding: 20px; font-size: 12px; color: #666; background-color: #f0f0f0; border-radius: 0 0 10px 10px; }
+            .original-message { background-color: #f5f5f5; padding: 15px; border-radius: 5px; margin-top: 20px; font-size: 14px; color: #666; }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="header">
+              <h1>Reply to Your Message</h1>
+            </div>
+            <div class="content">
+              <p>Hello ${userName},</p>
+              <p>Thank you for contacting us. We have received your message and here is our response:</p>
+              
+              <div class="reply-box">
+                ${adminReply.split('\n').map(para => `<p>${para}</p>`).join('')}
+              </div>
+              
+              <p>If you have any further questions or concerns, please don't hesitate to contact us again.</p>
+              
+              <div class="original-message">
+                <p><strong>Your original message:</strong></p>
+                <p><strong>Subject:</strong> ${userSubject}</p>
+              </div>
+              
+              <p>Best regards,<br>Customer Support Team</p>
+            </div>
+            <div class="footer">
+              <p>&copy; 2024 E-Commerce App. All rights reserved.</p>
+            </div>
+          </div>
+        </body>
+        </html>
+      `,
+    };
 
+    const info = await transporter.sendMail(mailOptions);
+    console.log("Contact reply email sent: %s", info.messageId);
+    return { success: true, messageId: info.messageId };
+  } catch (error) {
+    console.error("Error sending contact reply email:", error);
+    return { success: false, error: error.message };
+  }
+};
 

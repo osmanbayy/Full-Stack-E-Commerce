@@ -8,6 +8,9 @@ const contactSchema = new mongoose.Schema({
   message: { type: String, required: true },
   date: { type: Number, default: Date.now },
   read: { type: Boolean, default: false },
+  replied: { type: Boolean, default: false },
+  repliedAt: { type: Number, required: false },
+  replyMessage: { type: String, required: false },
 });
 
 const contactModel = mongoose.models.Contact || mongoose.model("Contact", contactSchema);

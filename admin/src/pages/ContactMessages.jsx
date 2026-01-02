@@ -12,7 +12,9 @@ import {
   Eye, 
   EyeOff,
   Loader2,
-  X
+  X,
+  Send,
+  CheckCircle
 } from "lucide-react";
 
 const ContactMessages = ({ token }) => {
@@ -21,6 +23,9 @@ const ContactMessages = ({ token }) => {
   const [selectedMessage, setSelectedMessage] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [filter, setFilter] = useState("all"); // "all", "read", "unread"
+  const [replyText, setReplyText] = useState("");
+  const [isReplying, setIsReplying] = useState(false);
+  const [showReplyForm, setShowReplyForm] = useState(false);
 
   const fetchMessages = async () => {
     if (!token) {
@@ -98,8 +103,55 @@ const ContactMessages = ({ token }) => {
   const openMessage = (message) => {
     setSelectedMessage(message);
     setShowModal(true);
+    setReplyText("");
+    setShowReplyForm(false);
     if (!message.read) {
       markAsRead(message._id);
+    }
+  };
+
+  const handleReply = async () => {
+    if (!replyText.trim()) {
+      toast.error("Please enter a reply message");
+      return;
+    }
+
+    setIsReplying(true);
+    try {
+      const response = await axios.post(
+        backendUrl + "/api/contact/reply",
+        {
+          messageId: selectedMessage._id,
+          replyMessage: replyText,
+        },
+        { headers: { token } }
+      );
+
+      if (response.data.success) {
+        toast.success("Reply sent successfully!");
+        setReplyText("");
+        setShowReplyForm(false);
+        // Refresh messages
+        await fetchMessages();
+        // Update selected message
+        const updatedMessage = messages.find(msg => msg._id === selectedMessage._id);
+        if (updatedMessage) {
+          setSelectedMessage({
+            ...updatedMessage,
+            replied: true,
+            repliedAt: Date.now(),
+            replyMessage: replyText,
+            read: true,
+          });
+        }
+      } else {
+        toast.error(response.data.message || "Failed to send reply");
+      }
+    } catch (error) {
+      console.error("Reply error:", error);
+      toast.error("Failed to send reply. Please try again.");
+    } finally {
+      setIsReplying(false);
     }
   };
 
@@ -234,6 +286,12 @@ const ContactMessages = ({ token }) => {
                             New
                           </span>
                         )}
+                        {message.replied && (
+                          <span className="px-2 py-0.5 bg-green-600 text-white text-xs rounded-full font-semibold flex items-center gap-1">
+                            <CheckCircle className="w-3 h-3" />
+                            Replied
+                          </span>
+                        )}
                       </div>
                       <p className="text-sm text-gray-500 mb-2">{message.subject}</p>
                       <p className="text-gray-600 line-clamp-2">{message.message}</p>
@@ -345,8 +403,88 @@ const ContactMessages = ({ token }) => {
                 </div>
               </div>
 
+              {/* Reply Status */}
+              {selectedMessage.replied && (
+                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                  <div className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="text-sm font-semibold text-green-800">Replied</span>
+                        <span className="text-xs text-gray-500">
+                          {formatDate(selectedMessage.repliedAt)}
+                        </span>
+                      </div>
+                      <div className="bg-white rounded-lg p-3 border border-green-200">
+                        <p className="text-sm text-gray-700 whitespace-pre-wrap">
+                          {selectedMessage.replyMessage}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Reply Form */}
+              {!selectedMessage.replied && (
+                <div className="border-t border-gray-200 pt-6">
+                  {!showReplyForm ? (
+                    <button
+                      onClick={() => setShowReplyForm(true)}
+                      className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all font-semibold"
+                    >
+                      <Send className="w-5 h-5" />
+                      Reply to Message
+                    </button>
+                  ) : (
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                          Your Reply
+                        </label>
+                        <textarea
+                          value={replyText}
+                          onChange={(e) => setReplyText(e.target.value)}
+                          placeholder="Type your reply here..."
+                          rows="6"
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all outline-none resize-none"
+                        />
+                      </div>
+                      <div className="flex gap-3">
+                        <button
+                          onClick={handleReply}
+                          disabled={isReplying || !replyText.trim()}
+                          className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          {isReplying ? (
+                            <>
+                              <Loader2 className="w-5 h-5 animate-spin" />
+                              Sending...
+                            </>
+                          ) : (
+                            <>
+                              <Send className="w-5 h-5" />
+                              Send Reply
+                            </>
+                          )}
+                        </button>
+                        <button
+                          onClick={() => {
+                            setShowReplyForm(false);
+                            setReplyText("");
+                          }}
+                          className="px-4 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-semibold"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
               {/* Actions */}
-              <div className="flex gap-3 pt-4 border-t border-gray-200">
+              <div className="flex flex-wrap gap-3 pt-4 border-t border-gray-200">
                 {selectedMessage.read ? (
                   <button
                     onClick={() => {
@@ -373,7 +511,7 @@ const ContactMessages = ({ token }) => {
                   className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
                 >
                   <Mail className="w-4 h-4" />
-                  Reply via Email
+                  Open Email Client
                 </a>
               </div>
             </div>
