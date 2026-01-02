@@ -153,7 +153,11 @@ const HeroSlides = ({ token }) => {
       const response = await axios.post(
         backendUrl + "/api/hero-slide/add",
         formData,
-        { headers: { token } }
+        { 
+          headers: { 
+            token
+          } 
+        }
       );
 
       if (response.data.success) {
@@ -198,7 +202,11 @@ const HeroSlides = ({ token }) => {
       const response = await axios.post(
         backendUrl + "/api/hero-slide/update",
         formData,
-        { headers: { token } }
+        { 
+          headers: { 
+            token
+          } 
+        }
       );
 
       if (response.data.success) {

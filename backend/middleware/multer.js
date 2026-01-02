@@ -1,6 +1,13 @@
 import multer from "multer";
+import os from "os";
+
+// Use /tmp for Vercel, otherwise use system temp directory
+const dest = process.env.VERCEL ? "/tmp" : os.tmpdir();
 
 const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, dest);
+  },
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
     const cleanFileName = file.originalname.replace(/\s+/g, "_"); // Boşlukları temizler

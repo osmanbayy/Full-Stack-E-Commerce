@@ -34,7 +34,7 @@ app.use((req, res, next) => {
   
   res.setHeader("Access-Control-Allow-Credentials", "true");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, token, x-requested-with");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, token, x-requested-with, Accept");
   res.setHeader("Access-Control-Expose-Headers", "Content-Range, X-Content-Range");
   res.setHeader("Access-Control-Max-Age", "86400"); // 24 hours
   
@@ -51,7 +51,7 @@ app.use(cors({
   origin: true, // Allow all origins
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization", "token", "x-requested-with"],
+  allowedHeaders: ["Content-Type", "Authorization", "token", "x-requested-with", "Accept"],
   exposedHeaders: ["Content-Range", "X-Content-Range"],
   preflightContinue: false,
   optionsSuccessStatus: 200
