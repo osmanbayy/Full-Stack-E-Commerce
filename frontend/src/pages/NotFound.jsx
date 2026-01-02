@@ -71,10 +71,10 @@ const NotFound = () => {
                 Collection
               </Link>
               <Link
-                to="/about"
+                to="/faq"
                 className="text-sm text-blue-600 hover:text-blue-700 hover:underline transition-colors"
               >
-                About
+                FAQ
               </Link>
               <Link
                 to="/contact"

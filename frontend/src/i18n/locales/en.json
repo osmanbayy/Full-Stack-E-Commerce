@@ -2,7 +2,7 @@
   "navbar": {
     "home": "HOME",
     "collection": "COLLECTION",
-    "about": "ABOUT",
+    "about": "FAQ",
     "contact": "CONTACT",
     "myProfile": "My Profile",
     "orders": "Orders",
@@ -228,20 +228,25 @@
     "enterEmail": "Enter your email...",
     "subscribeButton": "SUBSCRIBE"
   },
-  "about": {
-    "aboutUs": "ABOUT US",
-    "paragraph1": "We are a modern e-commerce brand focused on delivering high-quality products that combine style, functionality, and value. Our goal is to make online shopping simple, reliable, and enjoyable by offering carefully selected collections that meet the needs of today's customers.",
-    "paragraph2": "From product selection to order delivery, every step of our process is designed with attention to detail and customer satisfaction. We work closely with trusted suppliers and continuously update our catalog to ensure that our customers always have access to the latest and most in-demand products.",
-    "paragraph3": "We believe that great shopping experiences are built on transparency, consistency, and trust. That's why we prioritize secure payments, fast shipping, and responsive customer support—so you can shop with confidence every time.",
-    "ourMission": "Our Mission",
-    "missionText": "Our mission is to provide a seamless e-commerce experience by offering quality products at fair prices while maintaining exceptional service standards. We aim to build long-term relationships with our customers by continuously improving our platform, expanding our collections, and staying aligned with evolving trends and expectations.",
-    "whyChooseUs": "WHY CHOOSE US?",
-    "qualityAssurance": "Quality Assurance",
-    "qualityAssuranceDesc": "We carefully select and inspect every product to ensure high quality, durability, and consistency before it reaches our customers.",
-    "convenience": "Convenience",
-    "convenienceDesc": "Enjoy a seamless shopping experience with an easy-to-use platform, secure checkout, and fast, reliable delivery.",
-    "exceptionalService": "Exceptional Customer Service",
-    "exceptionalServiceDesc": "Our support team is always ready to help, ensuring quick responses, clear communication, and customer satisfaction."
+  "faq": {
+    "faq": "FREQUENTLY ASKED QUESTIONS",
+    "description": "Find answers to the most common questions about our products, shipping, returns, and more.",
+    "question1": "What payment methods do you accept?",
+    "answer1": "We accept cash on delivery (COD) for all orders. Payment is made when you receive your order at your doorstep.",
+    "question2": "How long does shipping take?",
+    "answer2": "Standard shipping typically takes 3-7 business days depending on your location. You will receive a tracking number once your order is shipped so you can monitor its progress.",
+    "question3": "What is your return policy?",
+    "answer3": "We offer a 7-day return policy. If you're not satisfied with your purchase, you can return it within 7 days of delivery. Items must be unused and in their original packaging.",
+    "question4": "How can I track my order?",
+    "answer4": "Once your order is shipped, you will receive an order number via email. You can use this number to track your order status in the 'My Orders' section of your account.",
+    "question5": "Do you ship internationally?",
+    "answer5": "Currently, we ship within Turkey. For international shipping inquiries, please contact our customer service team.",
+    "question6": "What if I receive a damaged or defective product?",
+    "answer6": "If you receive a damaged or defective product, please contact us immediately. We will arrange for a replacement or full refund at no extra cost to you.",
+    "question7": "Can I modify or cancel my order?",
+    "answer7": "You can cancel your order within 24 hours of placing it. After that, if your order has already been processed, please contact our customer service team for assistance.",
+    "question8": "How do I add items to my wishlist?",
+    "answer8": "Simply click the heart icon on any product you like. You can view all your saved items in the 'Wishlist' section. You need to be logged in to use this feature."
   },
   "contact": {
     "contactUs": "CONTACT",

@@ -58,7 +58,7 @@ const Navbar = () => {
           <hr className="w-2/4 border-none h-[1.5px] bg-gray-700 hidden" />
         </NavLink>
 
-        <NavLink to="/about" className="flex flex-col items-center gap-1">
+        <NavLink to="/faq" className="flex flex-col items-center gap-1">
           <p>{t("navbar.about")}</p>
           <hr className="w-2/4 border-none h-[1.5px] bg-gray-700 hidden" />
         </NavLink>
@@ -298,7 +298,7 @@ const Navbar = () => {
           <NavLink
             onClick={() => setVisible(false)}
             className="flex items-center gap-3 py-2 pl-6 border"
-            to="/about"
+            to="/faq"
           >
             <Info className="w-5 h-5" />
             <span>{t("navbar.about")}</span>

@@ -2,7 +2,7 @@
   "navbar": {
     "home": "ANA SAYFA",
     "collection": "KOLEKSİYON",
-    "about": "HAKKIMIZDA",
+    "about": "SSS",
     "contact": "İLETİŞİM",
     "myProfile": "Profilim",
     "orders": "Siparişler",
@@ -228,20 +228,25 @@
     "enterEmail": "E-posta adresinizi girin...",
     "subscribeButton": "ABONE OL"
   },
-  "about": {
-    "aboutUs": "HAKKIMIZDA",
-    "paragraph1": "Stil, işlevsellik ve değeri birleştiren yüksek kaliteli ürünler sunmaya odaklanmış modern bir e-ticaret markasıyız. Amacımız, günümüz müşterilerinin ihtiyaçlarını karşılayan özenle seçilmiş koleksiyonlar sunarak online alışverişi basit, güvenilir ve keyifli hale getirmektir.",
-    "paragraph2": "Ürün seçiminden sipariş teslimatına kadar sürecimizin her adımı, detaylara dikkat ve müşteri memnuniyeti ile tasarlanmıştır. Güvenilir tedarikçilerle yakın çalışıyor ve müşterilerimizin her zaman en son ve en çok talep edilen ürünlere erişebilmesini sağlamak için kataloğumuzu sürekli güncelliyoruz.",
-    "paragraph3": "Harika alışveriş deneyimlerinin şeffaflık, tutarlılık ve güven üzerine kurulduğuna inanıyoruz. Bu yüzden güvenli ödemeler, hızlı kargo ve duyarlı müşteri desteğine öncelik veriyoruz—böylece her seferinde güvenle alışveriş yapabilirsiniz.",
-    "ourMission": "Misyonumuz",
-    "missionText": "Misyonumuz, olağanüstü hizmet standartlarını korurken adil fiyatlarla kaliteli ürünler sunarak sorunsuz bir e-ticaret deneyimi sağlamaktır. Platformumuzu sürekli iyileştirerek, koleksiyonlarımızı genişleterek ve gelişen trendler ve beklentilerle uyumlu kalarak müşterilerimizle uzun vadeli ilişkiler kurmayı hedefliyoruz.",
-    "whyChooseUs": "NEDEN BİZİ SEÇMELİSİNİZ?",
-    "qualityAssurance": "Kalite Güvencesi",
-    "qualityAssuranceDesc": "Müşterilerimize ulaşmadan önce yüksek kalite, dayanıklılık ve tutarlılığı sağlamak için her ürünü dikkatle seçiyor ve inceliyoruz.",
-    "convenience": "Kolaylık",
-    "convenienceDesc": "Kullanımı kolay platform, güvenli ödeme ve hızlı, güvenilir teslimat ile sorunsuz bir alışveriş deneyimi yaşayın.",
-    "exceptionalService": "Olağanüstü Müşteri Hizmetleri",
-    "exceptionalServiceDesc": "Destek ekibimiz her zaman yardıma hazırdır ve hızlı yanıtlar, net iletişim ve müşteri memnuniyeti sağlar."
+  "faq": {
+    "faq": "SIK SORULAN SORULAR",
+    "description": "Ürünlerimiz, kargo, iade ve daha fazlası hakkında en sık sorulan soruların cevaplarını bulun.",
+    "question1": "Hangi ödeme yöntemlerini kabul ediyorsunuz?",
+    "answer1": "Tüm siparişler için kapıda ödeme (COD) kabul ediyoruz. Ödeme, siparişinizi kapınızda teslim aldığınızda yapılır.",
+    "question2": "Kargo ne kadar sürer?",
+    "answer2": "Standart kargo genellikle konumunuza bağlı olarak 3-7 iş günü sürer. Siparişiniz kargoya verildiğinde bir sipariş numarası alacaksınız ve durumunu takip edebileceksiniz.",
+    "question3": "İade politikası nedir?",
+    "answer3": "7 günlük iade politikamız vardır. Satın aldığınız üründen memnun değilseniz, teslimattan itibaren 7 gün içinde iade edebilirsiniz. Ürünler kullanılmamış ve orijinal ambalajında olmalıdır.",
+    "question4": "Siparişimi nasıl takip edebilirim?",
+    "answer4": "Siparişiniz kargoya verildiğinde, e-posta ile bir sipariş numarası alacaksınız. Bu numarayı hesabınızın 'Siparişlerim' bölümünde sipariş durumunuzu takip etmek için kullanabilirsiniz.",
+    "question5": "Uluslararası kargo yapıyor musunuz?",
+    "answer5": "Şu anda sadece Türkiye içi kargo yapıyoruz. Uluslararası kargo sorguları için lütfen müşteri hizmetlerimizle iletişime geçin.",
+    "question6": "Hasarlı veya kusurlu bir ürün alırsam ne olur?",
+    "answer6": "Hasarlı veya kusurlu bir ürün alırsanız, lütfen derhal bizimle iletişime geçin. Size ekstra maliyet olmadan değişim veya tam iade düzenleyeceğiz.",
+    "question7": "Siparişimi değiştirebilir veya iptal edebilir miyim?",
+    "answer7": "Siparişinizi verme tarihinden itibaren 24 saat içinde iptal edebilirsiniz. Bundan sonra, siparişiniz zaten işleme alınmışsa, lütfen yardım için müşteri hizmetlerimizle iletişime geçin.",
+    "question8": "Ürünleri istek listeme nasıl eklerim?",
+    "answer8": "Beğendiğiniz herhangi bir ürünün kalp simgesine tıklamanız yeterlidir. Kaydedilen tüm ürünlerinizi 'İstek Listesi' bölümünde görüntüleyebilirsiniz. Bu özelliği kullanmak için giriş yapmanız gerekir."
   },
   "contact": {
     "contactUs": "İLETİŞİM",
