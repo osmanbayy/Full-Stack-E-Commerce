@@ -89,9 +89,37 @@ const Orders = ({ token }) => {
   const historyOrders = orders.filter(order => order.status === "Delivered");
   const displayedOrders = activeTab === "active" ? activeOrders : historyOrders;
 
+  const trackingNumberHandler = async (event, orderId) => {
+    const newTrackingNumber = event.target.value.trim().toUpperCase();
+    if (!newTrackingNumber) {
+      toast.error("Tracking number cannot be empty");
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        backendUrl + "/api/order/tracking-number",
+        {
+          orderId,
+          trackingNumber: newTrackingNumber,
+        },
+        { headers: { token } }
+      );
+      if (response.data.success) {
+        toast.success(response.data.message || "Tracking number updated!");
+        await fetchAllOrders();
+      } else {
+        toast.error(response.data.message || "Failed to update tracking number");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response?.data?.message || "Failed to update tracking number");
+    }
+  };
+
   const renderOrderCard = (order, index) => (
     <div
-      className="grid grid-cols-1 sm:grid-cols-[0.5fr_2fr_1fr] lg:grid-cols-[0.5fr_2fr_1fr_1fr_1fr_1fr] gap-3 items-start border-2 border-gray-200 p-5 md:p-8 my-3 md:my-4 text-xs sm:text-sm text-gray-700"
+      className="grid grid-cols-1 sm:grid-cols-[0.5fr_2fr_1fr] lg:grid-cols-[0.5fr_2fr_1fr_1fr_1fr_1fr_1fr] gap-3 items-start border-2 border-gray-200 p-5 md:p-8 my-3 md:my-4 text-xs sm:text-sm text-gray-700"
       key={index}
     >
       <img className="w-12" src={assets.parcel_icon} alt="" />
@@ -147,6 +175,21 @@ const Orders = ({ token }) => {
       <p className="text-sm sm:text-[15px]">
         {currency} {order.amount}
       </p>
+      
+      <div className="flex flex-col gap-2">
+        <label className="text-xs font-semibold text-gray-600">Tracking Number</label>
+        <input
+          type="text"
+          value={order.trackingNumber || ""}
+          onChange={(event) => trackingNumberHandler(event, order._id)}
+          placeholder="TRK123456789"
+          className="p-2 font-semibold border border-gray-300 rounded bg-blue-50 text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          style={{ textTransform: "uppercase" }}
+        />
+        {order.trackingNumber && (
+          <p className="text-xs text-gray-500">Click to edit</p>
+        )}
+      </div>
       
       <div className="flex flex-col gap-2">
         <label className="text-xs font-semibold text-gray-600">Payment Status</label>

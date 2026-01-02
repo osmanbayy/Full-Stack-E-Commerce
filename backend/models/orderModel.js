@@ -9,6 +9,7 @@ const orderSchema = new mongoose.Schema({
   paymentMethod: { type: String, required: true },
   payment: { type: Boolean, required: true, default: false },
   date: { type: Number, required: true },
+  trackingNumber: { type: String, required: false, unique: true, sparse: true },
 });
 
 const orderModel = mongoose.model.Order || mongoose.model("Order", orderSchema);

@@ -1,10 +1,29 @@
 import orderModel from "../models/orderModel.js";
 import userModel from "../models/userModel.js";
 
+// Generate unique tracking number
+const generateTrackingNumber = () => {
+  const prefix = "TRK";
+  const timestamp = Date.now().toString().slice(-8); // Last 8 digits of timestamp
+  const random = Math.floor(Math.random() * 10000).toString().padStart(4, "0"); // 4 digit random
+  return `${prefix}${timestamp}${random}`.toUpperCase();
+};
+
 // Placing orders using Cash On Delivery Method
 const placeOrderCOD = async (req, res) => {
   try {
     const { userId, items, amount, address } = req.body;
+
+    // Generate unique tracking number
+    let trackingNumber;
+    let isUnique = false;
+    while (!isUnique) {
+      trackingNumber = generateTrackingNumber();
+      const existingOrder = await orderModel.findOne({ trackingNumber });
+      if (!existingOrder) {
+        isUnique = true;
+      }
+    }
 
     const orderData = {
       userId,
@@ -14,6 +33,7 @@ const placeOrderCOD = async (req, res) => {
       paymentMethod: "COD",
       payment: false,
       date: Date.now(),
+      trackingNumber,
     };
 
     const newOrder = new orderModel(orderData);
@@ -21,7 +41,7 @@ const placeOrderCOD = async (req, res) => {
 
     await userModel.findByIdAndUpdate(userId, { cartData: {} });
 
-    res.json({ success: true, message: "Order Placed!" });
+    res.json({ success: true, message: "Order Placed!", trackingNumber });
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: error.message });
@@ -82,6 +102,39 @@ const updatePayment = async (req, res) => {
   }
 };
 
+// Update Tracking Number from Admin Panel
+const updateTrackingNumber = async (req, res) => {
+  try {
+    const { orderId, trackingNumber } = req.body;
+    
+    if (!trackingNumber || trackingNumber.trim() === "") {
+      return res.json({ success: false, message: "Tracking number is required!" });
+    }
+
+    // Check if tracking number already exists (excluding current order)
+    const existingOrder = await orderModel.findOne({ 
+      trackingNumber: trackingNumber.trim().toUpperCase(),
+      _id: { $ne: orderId }
+    });
+
+    if (existingOrder) {
+      return res.json({ success: false, message: "Tracking number already exists!" });
+    }
+
+    await orderModel.findByIdAndUpdate(orderId, { 
+      trackingNumber: trackingNumber.trim().toUpperCase() 
+    });
+    
+    res.json({ 
+      success: true, 
+      message: "Tracking number updated successfully!" 
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
 // Get Financial Statistics
 const getFinancialStats = async (req, res) => {
   try {
@@ -128,5 +181,6 @@ export {
   userOrders,
   updateStatus,
   updatePayment,
+  updateTrackingNumber,
   getFinancialStats,
 };

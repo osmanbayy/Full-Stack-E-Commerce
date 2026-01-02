@@ -47,6 +47,8 @@ const Orders = () => {
             item["payment"] = order.payment;
             item["paymentMethod"] = order.paymentMethod;
             item["date"] = order.date;
+            item["trackingNumber"] = order.trackingNumber;
+            item["orderId"] = order._id;
             allOrdersItems.push(item);
           });
         });
@@ -146,6 +148,12 @@ const Orders = () => {
                 <p className="mt-1">
                   {t("orders.payment")}: <span className="text-gray-400">{item.paymentMethod}</span>
                 </p>
+                {item.trackingNumber && (
+                  <p className="mt-2">
+                    <span className="font-semibold text-gray-700">{t("orders.trackingNumber")}:</span>{" "}
+                    <span className="text-blue-600 font-mono font-semibold">{item.trackingNumber}</span>
+                  </p>
+                )}
               </div>
             </div>
             <div className="flex flex-col gap-3 md:flex-row md:justify-between md:w-1/2 md:items-center">
