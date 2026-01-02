@@ -229,11 +229,16 @@ const List = ({ token }) => {
   }, [hasMore, isLoading, isLoadingMore, currentPage, fetchList]);
 
   return (
-    <>
-      <p className="mb-2">All Products List</p>
+    <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">All Products</h1>
+          <p className="text-gray-500">Manage your product inventory</p>
+        </div>
+      </div>
       <div className="flex flex-col gap-2">
         {/* ------------ List Table Title-------------- */}
-        <div className="hidden md:grid grid-cols-[1fr_3fr_1fr_1fr_1fr] items-center py-1 px-2 border bg-gray-100 text-sm">
+        <div className="hidden md:grid grid-cols-[1fr_3fr_1fr_1fr_1fr] items-center py-3 px-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg text-sm font-semibold text-gray-700 border border-gray-200">
           <b>Image</b>
           <b>Name</b>
           <b>Category</b>
@@ -267,7 +272,7 @@ const List = ({ token }) => {
           <>
             {list.map((item, index) => (
               <div
-                className="grid grid-cols-[1fr_3fr_1fr] md:grid-cols-[1fr_3fr_1fr_1fr_1fr] border items-center gap-2 py-1 px-2 text-sm hover:bg-slate-100"
+                className="grid grid-cols-[1fr_3fr_1fr] md:grid-cols-[1fr_3fr_1fr_1fr_1fr] border border-gray-200 rounded-lg items-center gap-2 py-3 px-4 text-sm hover:bg-gray-50 transition-colors duration-200 mb-2"
                 key={item._id || index}
               >
                 <img className="w-16" src={item.image[0]} alt="" />

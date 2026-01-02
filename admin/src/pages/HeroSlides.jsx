@@ -225,9 +225,12 @@ const HeroSlides = ({ token }) => {
   };
 
   return (
-    <>
-      <div className="flex justify-between items-center mb-4">
-        <p className="text-lg font-semibold">Hero Slides Management</p>
+    <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+      <div className="flex justify-between items-center mb-6">
+        <div>
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">Hero Slides</h1>
+          <p className="text-gray-500">Manage homepage slider content</p>
+        </div>
         <button
           onClick={openAddModal}
           className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
@@ -749,7 +752,7 @@ const HeroSlides = ({ token }) => {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

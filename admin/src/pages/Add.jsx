@@ -86,7 +86,11 @@ const Add = ({ token }) => {
   };
 
   return (
-    <>
+    <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+      <div className="mb-6">
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">Add New Product</h1>
+        <p className="text-gray-500">Create a new product for your store</p>
+      </div>
     <form
       onSubmit={onSubmitHandler}
       className="flex flex-col items-start w-full gap-3"
@@ -425,7 +429,7 @@ const Add = ({ token }) => {
         </div>
       </div>
     )}
-  </>
+    </div>
   );
 };
 

@@ -51,10 +51,14 @@ const Finance = ({ token }) => {
   }
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold mb-8 text-gray-800">Financial Overview</h1>
+    <div className="space-y-6">
+      <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+        <div className="mb-6">
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">Financial Overview</h1>
+          <p className="text-gray-500">Track your revenue and payment statistics</p>
+        </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {/* Total Revenue Card */}
         <div className="bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-200 rounded-lg p-6 shadow-md">
           <div className="flex items-center justify-between">
@@ -159,6 +163,7 @@ const Finance = ({ token }) => {
           </p>
         </div>
       </div>
+    </div>
     </div>
   );
 };

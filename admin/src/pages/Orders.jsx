@@ -189,7 +189,11 @@ const Orders = ({ token }) => {
   );
 
   return (
-    <div>
+    <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+      <div className="mb-6">
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">Orders Management</h1>
+        <p className="text-gray-500">View and manage customer orders</p>
+      </div>
       {/* Tabs */}
       <div className="flex gap-4 mb-6 border-b border-gray-200">
         <button
