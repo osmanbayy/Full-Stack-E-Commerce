@@ -146,7 +146,19 @@
     "myWishlist": "İstek Listem",
     "myWishlistDesc": "Kaydedilen ürünlerinizi görüntüleyin",
     "loading": "Yükleniyor...",
-    "failedToLoad": "Kullanıcı verileri yüklenemedi"
+    "failedToLoad": "Kullanıcı verileri yüklenemedi",
+    "totalOrders": "Toplam Sipariş",
+    "activeOrders": "Aktif Siparişler",
+    "wishlistItems": "İstek Listesi Ürünleri",
+    "memberSince": "Üyelik Tarihi",
+    "quickActions": "Hızlı İşlemler",
+    "accountOverview": "Hesap Özeti",
+    "recentActivity": "Son Aktiviteler",
+    "editProfile": "Profili Düzenle",
+    "changePassword": "Şifre Değiştir",
+    "privacySettings": "Gizlilik Ayarları",
+    "viewCart": "Sepeti Görüntüle",
+    "viewCartDesc": "Alışveriş sepetinizi kontrol edin"
   },
   "login": {
     "login": "Giriş",

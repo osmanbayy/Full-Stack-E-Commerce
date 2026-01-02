@@ -146,7 +146,19 @@
     "myWishlist": "My Wishlist",
     "myWishlistDesc": "View your saved items",
     "loading": "Loading...",
-    "failedToLoad": "Failed to load user data"
+    "failedToLoad": "Failed to load user data",
+    "totalOrders": "Total Orders",
+    "activeOrders": "Active Orders",
+    "wishlistItems": "Wishlist Items",
+    "memberSince": "Member Since",
+    "quickActions": "Quick Actions",
+    "accountOverview": "Account Overview",
+    "recentActivity": "Recent Activity",
+    "editProfile": "Edit Profile",
+    "changePassword": "Change Password",
+    "privacySettings": "Privacy Settings",
+    "viewCart": "View Cart",
+    "viewCartDesc": "Check your shopping cart"
   },
   "login": {
     "login": "Login",
