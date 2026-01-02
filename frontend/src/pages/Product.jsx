@@ -21,6 +21,9 @@ const Product = () => {
   const [rating, setRating] = useState({ averageRating: 0, totalReviews: 0 });
   const [reviews, setReviews] = useState([]);
   const [activeTab, setActiveTab] = useState("description");
+  const [isHovering, setIsHovering] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [imageRef, setImageRef] = useState(null);
   const { t, i18n } = useTranslation();
   
   const isInWishlist = productData ? wishlistItems.includes(productData._id) : false;
@@ -214,8 +217,62 @@ const Product = () => {
             ))}
           </div>
           {/* -------------  Main image  --------------- */}
-          <div className="w-full sm:w-[80%]">
-            <img src={image} className="w-full h-auto" alt="" />
+          <div 
+            className="w-full sm:w-[80%] relative overflow-hidden cursor-zoom-in group"
+            onMouseEnter={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}
+            onMouseMove={(e) => {
+              if (imageRef && window.innerWidth >= 640) { // Only on desktop
+                const rect = imageRef.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width) * 100;
+                const y = ((e.clientY - rect.top) / rect.height) * 100;
+                setMousePosition({ x, y });
+              }
+            }}
+          >
+            <img 
+              ref={setImageRef}
+              src={image} 
+              className="w-full h-auto transition-transform duration-300 ease-out" 
+              alt=""
+              style={{
+                transform: isHovering && window.innerWidth >= 640 ? `scale(3)` : 'scale(1)',
+                transformOrigin: `${mousePosition.x}% ${mousePosition.y}%`
+              }}
+            />
+            {/* Magnifier lens overlay - Desktop only */}
+            {isHovering && window.innerWidth >= 640 && (
+              <>
+                {/* Lens border */}
+                <div 
+                  className="absolute pointer-events-none border-2 border-white shadow-2xl"
+                  style={{
+                    width: '150px',
+                    height: '150px',
+                    left: `${mousePosition.x}%`,
+                    top: `${mousePosition.y}%`,
+                    transform: 'translate(-50%, -50%)',
+                    borderRadius: '50%',
+                    zIndex: 20,
+                    boxShadow: '0 0 0 2px rgba(0,0,0,0.1), 0 0 20px rgba(0,0,0,0.3)'
+                  }}
+                >
+                  {/* Inner circle indicator */}
+                  <div 
+                    className="absolute inset-0 rounded-full border border-white/50"
+                    style={{
+                      background: 'radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%)'
+                    }}
+                  ></div>
+                </div>
+                {/* Zoom hint */}
+                <div 
+                  className="absolute bottom-4 right-4 bg-black/70 text-white px-3 py-1.5 rounded-lg text-xs font-medium pointer-events-none z-30 backdrop-blur-sm"
+                >
+                  🔍 Zoom
+                </div>
+              </>
+            )}
           </div>
         </div>
         {/* ------------- Product Info -------------- */}
