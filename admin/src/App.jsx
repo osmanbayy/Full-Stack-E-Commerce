@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import Add from "./pages/Add";
@@ -44,6 +44,7 @@ const App = () => {
             <main className="flex-1 md:ml-64 pb-20 md:pb-0">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
                 <Routes>
+                  <Route path="/" element={<Navigate to="/add" replace />} />
                   <Route path="/add" element={<Add token={token} />} />
                   <Route path="/list" element={<List token={token} />} />
                   <Route path="/orders" element={<Orders token={token} />} />

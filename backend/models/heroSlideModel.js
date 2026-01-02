@@ -59,3 +59,4 @@ const heroSlideModel = mongoose.models.heroSlide || mongoose.model("heroSlide", 
 
 export default heroSlideModel;
 
+

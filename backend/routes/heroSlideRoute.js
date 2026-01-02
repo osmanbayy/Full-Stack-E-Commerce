@@ -32,3 +32,4 @@ heroSlideRouter.post("/remove", adminAuth, removeHeroSlide);
 
 export default heroSlideRouter;
 
+
